@@ -88,6 +88,37 @@ const deleteCourses = (ids: number[]) : String => {
     return "Courses are successfully deleted";
 }
 
+const updateCourse = (id: number, courseUpdateInfo: CourseUpdateView) : Course => {
+    let currentCourse = getCourseById(id);
+    throwErrorIfExist(courseUpdateInfo.name, courseUpdateInfo.phase);
+
+    let requiredCourses: Course[] = [];
+    courseUpdateInfo.requiredPassedCourses.forEach(courseId => {
+        if (courseId === id) throw new Error("Course cannot require itself");
+        let course: Course = getCourseById(courseId);
+        requiredCourses.push(course);
+    });
+
+    if (currentCourse.phase !== courseUpdateInfo.phase
+        || currentCourse.credits !== courseUpdateInfo.credits) {
+            let errorMessage = "Course's phase or credits cannot be changed, because it is chosen in ISP";
+        throwErrorIfChosenInIsp(id, errorMessage);
+    }
+
+    let course = new Course({
+        id: id,
+        name: courseUpdateInfo.name,
+        description: courseUpdateInfo.description,
+        phase: courseUpdateInfo.phase,
+        credits: courseUpdateInfo.credits,
+        lecturers: courseUpdateInfo.lecturers,
+        isElective: courseUpdateInfo.isElective,
+        requiredPassedCourses: requiredCourses
+    });
+
+    return CourseRepository.save(course);
+}
+
 const throwErrorIfNotExist = (id: number) : void => {
     let res: Course | null = CourseRepository.findById(id);
     if (res === null) {
