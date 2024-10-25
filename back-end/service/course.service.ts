@@ -115,8 +115,19 @@ const updateCourse = (id: number, courseUpdateInfo: CourseUpdateView) : Course =
         isElective: courseUpdateInfo.isElective,
         requiredPassedCourses: requiredCourses
     });
-
+    
     return CourseRepository.save(course);
+}
+
+const deleteCourses = (ids: number[]) : String => {
+    ids.forEach(id => {
+        throwErrorIfNotExist(id);
+        throwErrorIfChosenInIsp(id);
+        throwErrorIfPassedByStudent(id);
+        throwErrorIfRequiredByCourse(id);
+    });
+    CourseRepository.deleteCourses(ids);
+    return "Courses are successfully deleted";
 }
 
 const throwErrorIfNotExist = (id: number) : void => {
