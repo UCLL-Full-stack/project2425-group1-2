@@ -45,6 +45,12 @@ CREATE TABLE "Course" (
 );
 
 -- CreateTable
+CREATE TABLE "CourseRequiredPassedCourses" (
+    "courseId" INTEGER NOT NULL,
+    "requiredCourseId" INTEGER NOT NULL
+);
+
+-- CreateTable
 CREATE TABLE "StudentPassedCourse" (
     "courseId" INTEGER NOT NULL,
     "studentId" INTEGER NOT NULL
@@ -53,7 +59,7 @@ CREATE TABLE "StudentPassedCourse" (
 -- CreateTable
 CREATE TABLE "Invoice" (
     "id" SERIAL NOT NULL,
-    "amount" DOUBLE PRECISION NOT NULL,
+    "totalAmount" DOUBLE PRECISION NOT NULL,
     "paidAmount" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "paymentReference" VARCHAR(256) NOT NULL,
     "deadline" TIMESTAMP(0) NOT NULL DEFAULT NOW() + interval '3 month',
@@ -86,6 +92,12 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "AdministrativePrivilege_adminId_privilegeId_key" ON "AdministrativePrivilege"("adminId", "privilegeId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Course_name_phase_key" ON "Course"("name", "phase");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "CourseRequiredPassedCourses_courseId_requiredCourseId_key" ON "CourseRequiredPassedCourses"("courseId", "requiredCourseId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "StudentPassedCourse_courseId_studentId_key" ON "StudentPassedCourse"("courseId", "studentId");
 
 -- CreateIndex
@@ -99,6 +111,12 @@ ALTER TABLE "AdministrativePrivilege" ADD CONSTRAINT "AdministrativePrivilege_ad
 
 -- AddForeignKey
 ALTER TABLE "AdministrativePrivilege" ADD CONSTRAINT "AdministrativePrivilege_privilegeId_fkey" FOREIGN KEY ("privilegeId") REFERENCES "Privilege"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CourseRequiredPassedCourses" ADD CONSTRAINT "CourseRequiredPassedCourses_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CourseRequiredPassedCourses" ADD CONSTRAINT "CourseRequiredPassedCourses_requiredCourseId_fkey" FOREIGN KEY ("requiredCourseId") REFERENCES "Course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "StudentPassedCourse" ADD CONSTRAINT "StudentPassedCourse_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
