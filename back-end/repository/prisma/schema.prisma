@@ -57,9 +57,19 @@ model Course {
   credits           Int
   isElective        Boolean
   lecturers         String[]
+  requiredBy    CourseRequiredPassedCourses[] @relation(name: "RequiredBy")
+  requiredPassedCourses CourseRequiredPassedCourses[] @relation(name: "Required")
   isps              CourseAddedISP[]
   passedStudents    StudentPassedCourse[]
   @@unique([name, phase])
+}
+
+model CourseRequiredPassedCourses {
+  courseId          Int
+  course            Course @relation(name: "RequiredBy", fields: [courseId], references: [id])
+  requiredCourseId  Int
+  requiredCourse    Course @relation(name: "Required", fields: [requiredCourseId], references: [id])
+  @@unique([courseId, requiredCourseId])
 }
 
 model StudentPassedCourse {
@@ -72,7 +82,7 @@ model StudentPassedCourse {
 
 model Invoice {
   id                Int   @id @default(autoincrement())
-  amount            Float
+  totalAmount       Float
   paidAmount        Float  @default(0)
   paymentReference  String  @db.VarChar(256)
   deadline          DateTime  @db.Timestamp(0) @default(dbgenerated("NOW() + interval '3 month'"))
