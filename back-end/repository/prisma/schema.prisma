@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                Int   @id @default(autoincrement())
+  name              String  @db.VarChar(256)
+  email             String  @unique @db.VarChar(256)
+  password          String  @db.VarChar(256)
+  userType          UserTypes
+
+  //student
+  nationality       String  @db.VarChar(256)
+  isps              Isp[]
+  courses           StudentPassedCourse[]
+
+  //administrative
+  privileges        AdministrativePrivilege[]
+}
+
+enum UserTypes {
+  STUDENT
+  ADMINISTRATIVE
+}
+
+model Privilege {
+  id                Int   @id @default(autoincrement())
+  name              String  @db.VarChar(256)
+  description       String  @db.VarChar(256)
+  administratives   AdministrativePrivilege[]
+}
+
+model AdministrativePrivilege {
+  adminId           Int 
+  admin             User @relation(fields: [adminId], references: [id])
+  privilegeId       Int
+  privilege         Privilege @relation(fields: [privilegeId], references: [id])
+  @@unique([adminId, privilegeId])
+}
+
+model Course {
+  id                Int   @id @default(autoincrement())
+  name              String  @db.VarChar(256)
+  description       String  @db.VarChar(256)
+  phase             Int
+  credits           Int
+  isElective        Boolean
+  lecturers         String[]
+  isps              CourseAddedISP[]
+  passedStudents    StudentPassedCourse[]
+}
+
+model StudentPassedCourse {
+  courseId          Int
+  course            Course @relation(fields: [courseId], references: [id])
+  studentId         Int
+  student           User @relation(fields: [studentId], references: [id])
+  @@unique([courseId, studentId])
+}
+
+model Invoice {
+  id                Int   @id @default(autoincrement())
+  amount            Float
+  paidAmount        Float  @default(0)
+  paymentReference  String  @db.VarChar(256)
+  deadline          DateTime  @db.Timestamp(0) @default(dbgenerated("NOW() + interval '3 month'"))
+  ispId             Int @unique
+  isp               Isp @relation(fields: [ispId], references: [id])
+}
+
+model Isp {
+  id                Int  @id @default(autoincrement())
+  totalCredits      Int  @default(60)
+  startYear         Int
+  invoice           Invoice?
+  studentId         Int
+  student           User @relation(fields: [studentId], references: [id]) 
+  courses           CourseAddedISP[]
+}
+
+model CourseAddedISP {
+  courseId          Int
+  course            Course @relation(fields: [courseId], references: [id])
+  ispId             Int
+  isp               Isp @relation(fields: [ispId], references: [id])
+  @@unique([courseId, ispId])
+}
+
+
+
