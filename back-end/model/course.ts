@@ -64,4 +64,49 @@ export class Course {
             this.lecturers.every((lecturer, index) => lecturer === other.lecturers[index])
         );
     }
+
+    public static fromWithRequiredCourses({
+        id,
+        name,
+        description,
+        phase,
+        credits,
+        lecturers,
+        isElective,
+        requiredPassedCourses,
+    }: PrismaCourse & {requiredPassedCourses: PrismaCourse[]}): Course {
+
+        return new Course({
+            id,
+            name,
+            description,
+            phase,
+            credits,
+            lecturers,
+            isElective,
+            requiredPassedCourses: requiredPassedCourses.map((course) => Course.from(course)),
+        });
+    }
+
+    public static from({
+        id,
+        name,
+        description,
+        phase,
+        credits,
+        lecturers,
+        isElective
+    }: PrismaCourse): Course {
+
+        return new Course({
+            id,
+            name,
+            description,
+            phase,
+            credits,
+            lecturers,
+            isElective,
+            requiredPassedCourses: [],
+        });
+    }
 }

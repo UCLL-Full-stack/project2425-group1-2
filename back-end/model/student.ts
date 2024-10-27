@@ -1,12 +1,20 @@
-import { Course } from "./course";
-import { User } from "./user";
-
+import { Course } from './course';
+import { User } from './user';
+import { PrismaStudent } from '../types/prismaTypesExtension';
+import { Course as PrismaCourse } from '@prisma/client';
 export class Student extends User {
     public readonly nationality: string;
     public readonly startYear: number;
     public readonly passedCourses: Course[];
 
-    constructor(student: { id: number; name: string; email: string; password: string; nationality: string; startYear: number; passedCourses: Course[] }) {
+    constructor(student: {
+        id: number;
+        name: string;
+        email: string;
+        password: string;
+        nationality: string;
+        passedCourses: Course[];
+    }) {
         super({
             id: student.id,
             name: student.name,
@@ -40,5 +48,40 @@ export class Student extends User {
             this.nationality === student.nationality &&
             this.passedCourses.every((passedCourse,index)=> passedCourse.equals(student.passedCourses[index]))
         );
+    }
+
+    public static fromIncludeAll({
+        id,
+        name,
+        email,
+        password,
+        nationality,
+        passedCourses,
+    }: PrismaStudent & { passedCourses: PrismaCourse[] }): Student {
+        return new Student({
+            id,
+            name,
+            email,
+            password,
+            nationality,
+            passedCourses: passedCourses.map(Course.from)
+        });
+    }
+
+    public static from({
+        id,
+        name,
+        email,
+        password,
+        nationality
+    }: PrismaStudent): Student {
+        return new Student({
+            id,
+            name,
+            email,
+            password,
+            nationality,
+            passedCourses: []
+        });
     }
 }

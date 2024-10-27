@@ -8,7 +8,6 @@ let students: Student[] = [
         email: 'alice.johnson@example.com',
         password: 'password123',
         nationality: 'American',
-        startYear: 2024,
         passedCourses: [],
     }),
     new Student({
@@ -17,7 +16,6 @@ let students: Student[] = [
         email: 'bob.smith@example.com',
         password: 'password123',
         nationality: 'British',
-        startYear: 2024,
         passedCourses: [],
     }),
     new Student({
@@ -26,7 +24,6 @@ let students: Student[] = [
         email: 'charlie.brown@example.com',
         password: 'password123',
         nationality: 'Canadian',
-        startYear: 2024,
         passedCourses: [],
     }),
     new Student({
@@ -35,7 +32,6 @@ let students: Student[] = [
         email: 'diana.prince@example.com',
         password: 'password123',
         nationality: 'Australian',
-        startYear: 2024,
         passedCourses: [],
     }),
     new Student({
@@ -44,7 +40,6 @@ let students: Student[] = [
         email: 'ethan.hunt@example.com',
         password: 'password123',
         nationality: 'New Zealander',
-        startYear: 2024,
         passedCourses: [courses[0]],
     }),
 ];

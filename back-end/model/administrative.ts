@@ -1,6 +1,9 @@
 // administrative.ts
 import { User } from "./user";
 import { Privilege } from "./privilege";
+import { Privilege as PrismaPrivilege} from "@prisma/client";
+import { PrismaAdministrative } from "../types/prismaTypesExtension";
+
 
 export class Administrative extends User {
     private readonly _privileges: Privilege[];
@@ -26,4 +29,19 @@ export class Administrative extends User {
     }
 
 
+    public static from({
+        id,
+        name,
+        email,
+        password,
+        privileges,
+    }: PrismaAdministrative & {privileges: PrismaPrivilege[]}): Administrative {
+        return new Administrative({
+            id,
+            name,
+            email,
+            password,
+            privileges: privileges.map(Privilege.from),
+        });
+    }
 }

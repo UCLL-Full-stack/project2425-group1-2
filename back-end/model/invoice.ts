@@ -1,4 +1,6 @@
 import { ISP } from "./isp";
+import { Invoice as PrismaInvoice, Isp as PrismaISP, Course as PrismaCourse } from "@prisma/client";
+import { PrismaStudent } from "../types/prismaTypesExtension";
 
 export class Invoice {
     public readonly id?: number;
@@ -46,5 +48,21 @@ export class Invoice {
             this.paidAmount === invoice.paidAmount&&
             this.isp === invoice.isp
         );
+    }
+
+    public static from({
+        id,
+        totalAmount,
+        deadline,
+        paidAmount,
+        isp,
+    }: PrismaInvoice & { isp : PrismaISP & { courses : PrismaCourse[], student: PrismaStudent}}): Invoice {
+        return new Invoice({
+            id,
+            totalAmount,
+            deadline,
+            paidAmount,
+            isp: ISP.from(isp),
+        });
     }
 }

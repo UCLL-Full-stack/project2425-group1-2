@@ -1,3 +1,5 @@
+import { Privilege as PrismaPrivilege} from "@prisma/client";
+
 export class Privilege {
     public readonly id?: number; // This is optional
     public readonly name: string;
