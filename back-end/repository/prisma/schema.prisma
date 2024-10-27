@@ -59,6 +59,7 @@ model Course {
   lecturers         String[]
   isps              CourseAddedISP[]
   passedStudents    StudentPassedCourse[]
+  @@unique([name, phase])
 }
 
 model StudentPassedCourse {

@@ -1,3 +1,4 @@
+import { IspStatus } from "@prisma/client";
 import { Course } from "./course";
 import { Student } from "./student";
 
@@ -11,7 +12,7 @@ export class ISP {
 
     constructor(isp: {
         id: number;
-        status: string;
+        status: IspStatus;
         totalCredits: number;
         year: number;
         courses: Course[];
