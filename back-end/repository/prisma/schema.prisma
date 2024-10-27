@@ -83,10 +83,16 @@ model Isp {
   id                Int  @id @default(autoincrement())
   totalCredits      Int  @default(60)
   startYear         Int
+  status            IspStatus
   invoice           Invoice?
   studentId         Int
   student           User @relation(fields: [studentId], references: [id]) 
   courses           CourseAddedISP[]
+}
+
+enum IspStatus {
+  NOTSUBMITTED
+  SUBMITTED
 }
 
 model CourseAddedISP {
