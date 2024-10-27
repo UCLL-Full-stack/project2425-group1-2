@@ -47,7 +47,7 @@ async function createISP(isp: ISP) {
         update: {},
         create: {
         totalCredits: isp.totalCredits,
-        startYear: isp.year,
+        startYear: isp.startYear,
         status: isp.status,
         student: {
             connect: { email: isp.student.email },

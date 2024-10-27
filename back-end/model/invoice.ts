@@ -56,7 +56,7 @@ export class Invoice {
         deadline,
         paidAmount,
         isp,
-    }: PrismaInvoice & { isp : PrismaISP & { courses : PrismaCourse[], student: PrismaStudent}}): Invoice {
+    }: PrismaInvoice & { isp : PrismaISP & { courses : PrismaCourse[], student: PrismaStudent }}): Invoice {
         return new Invoice({
             id,
             totalAmount,
