@@ -1,11 +1,16 @@
-import prisma from './prismaClient'
-import students from '../../data/students'
-import courses from '../../data/courses'
-import isp from '../../data/isp'
-import { ISP } from '../../model/isp';
-import { Student } from '../../model/student';
-import { Course } from '../../model/course';
+import prisma from '../repository/prisma/prismaClient'
+import students from '../data/students'
+import courses from '../data/courses'
+import isp from '../data/isp'
+import { ISP } from '../model/isp';
+import { Student } from '../model/student';
+import { Course } from '../model/course';
 async function main() {
+    await prisma.course.deleteMany();
+    await prisma.user.deleteMany();
+    await prisma.isp.deleteMany();
+    
+
     students.forEach(async (student) => {
         await createStudent(student);
     });
