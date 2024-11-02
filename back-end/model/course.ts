@@ -1,3 +1,5 @@
+import { Course as PrismaCourse } from '@prisma/client';
+
 export class Course {
     public readonly id?: number;
     public readonly name: string;

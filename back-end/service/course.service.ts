@@ -50,46 +50,6 @@ const createCourse = (courseInfo: CourseUpdateView) : Course => {
 
 const updateCourse = (id: number, courseUpdateInfo: CourseUpdateView) : Course => {
     let currentCourse = getCourseById(id);
-    
-    let requiredCourses: Course[] = [];
-    courseUpdateInfo.requiredPassedCourses.forEach(courseId => {
-        if (courseId === id) throw new Error(ERROR_COURSE_REQUIRE_ITSELF);
-        let course: Course = getCourseById(courseId);
-        requiredCourses.push(course);
-    });
-    
-    if (currentCourse.phase !== courseUpdateInfo.phase
-        || currentCourse.credits !== courseUpdateInfo.credits) {
-        throwErrorIfChosenInIsp(id, ERROR_COURSE_PHASE_CREDITS_CHANGE);
-    }
-    
-    let course = new Course({
-        id: id,
-        name: courseUpdateInfo.name,
-        description: courseUpdateInfo.description,
-        phase: courseUpdateInfo.phase,
-        credits: courseUpdateInfo.credits,
-        lecturers: courseUpdateInfo.lecturers,
-        isElective: courseUpdateInfo.isElective,
-        requiredPassedCourses: requiredCourses
-    });
-    
-    return CourseRepository.save(course);
-}
-
-const deleteCourses = (ids: number[]) : String => {
-    ids.forEach(id => {
-        throwErrorIfNotExist(id);
-        throwErrorIfChosenInIsp(id);
-        throwErrorIfPassedByStudent(id);
-        throwErrorIfRequiredByCourse(id);
-    });
-    CourseRepository.deleteCourses(ids);
-    return "Courses are successfully deleted";
-}
-
-const updateCourse = (id: number, courseUpdateInfo: CourseUpdateView) : Course => {
-    let currentCourse = getCourseById(id);
     throwErrorIfExist(courseUpdateInfo.name, courseUpdateInfo.phase);
 
     let requiredCourses: Course[] = [];

@@ -1,3 +1,4 @@
+import { IspStatus } from "@prisma/client";
 import { Invoice } from "../../model/invoice";
 import { ISP } from "../../model/isp";
 import { Student } from "../../model/student";
@@ -8,15 +9,14 @@ const mockStudent = new Student({
     email: "jane.doe@example.com",
     password: "password123",
     nationality: "Belgian",
-    startYear: 2022,
     passedCourses: []
 })
 
 const mockISP = new ISP({
     id: 1,
-    status: "active",
+    status: IspStatus.SUBMITTED,
     totalCredits: 30,
-    year: 2022,
+    startYear: 2022,
     courses: [],
     student: mockStudent
 });

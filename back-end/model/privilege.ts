@@ -20,4 +20,28 @@ export class Privilege {
             throw new Error("Description is required.");
         }
     }
+
+    get id(): number | undefined {
+        return this._id;
+    }
+
+    get name(): string {
+        return this._name;
+    }
+
+    get description(): string {
+        return this._description;
+    }
+
+    public static from({
+        id,
+        name,
+        description
+    }: PrismaPrivilege): Privilege {
+        return new Privilege({
+            id,
+            name,
+            description
+        });
+    }
 }

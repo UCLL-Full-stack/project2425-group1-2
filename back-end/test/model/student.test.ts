@@ -19,7 +19,6 @@ test('given: valid student data, when: student is created, then: user fields are
         email: 'alice@example.com',
         password: 'password123',
         nationality: 'American',
-        startYear: 2021,
         passedCourses: [mockCourse]
     });
 
@@ -36,7 +35,6 @@ test('given: missing name, when: student is created, then: an error is thrown', 
         email: 'bob@example.com',
         password: 'password123',
         nationality: 'Canadian',
-        startYear: 2021,
         passedCourses: []
     });
 
@@ -50,7 +48,6 @@ test('given: missing email, when: student is created, then: an error is thrown',
         email: '',
         password: 'password123',
         nationality: 'Canadian',
-        startYear: 2021,
         passedCourses: []
     });
 
@@ -64,25 +61,10 @@ test('given: missing password, when: student is created, then: an error is throw
         email: 'bob@example.com',
         password: '',
         nationality: 'Canadian',
-        startYear: 2021,
         passedCourses: []
     });
 
     expect(createStudent).toThrow('Password is required.');
-});
-
-test('given: invalid start year, when: student is created, then: an error is thrown', () => {
-    const createStudent = () => new Student({
-        id: 6,
-        name: 'Charlie',
-        email: 'charlie@example.com',
-        password: 'password123',
-        nationality: 'Canadian',
-        startYear: 123,
-        passedCourses: []
-    });
-
-    expect(createStudent).toThrow('Start year should be 4 digit.');
 });
 
 test('given: valid data, when: two students are created, then: equals method returns correct result', () => {
@@ -92,7 +74,6 @@ test('given: valid data, when: two students are created, then: equals method ret
         email: 'diana@example.com',
         password: 'password123',
         nationality: 'Canadian',
-        startYear: 2021,
         passedCourses: [mockCourse]
     });
 
@@ -102,7 +83,6 @@ test('given: valid data, when: two students are created, then: equals method ret
         email: 'diana@example.com',
         password: 'password123',
         nationality: 'Canadian',
-        startYear: 2021,
         passedCourses: [mockCourse]
     });
 
@@ -116,7 +96,6 @@ test('given: different data, when: two students are compared, then: equals metho
         email: 'eve@example.com',
         password: 'password123',
         nationality: 'American',
-        startYear: 2021,
         passedCourses: []
     });
 
@@ -126,7 +105,6 @@ test('given: different data, when: two students are compared, then: equals metho
         email: 'evelyn@example.com',
         password: 'differentpassword',
         nationality: 'Canadian',
-        startYear: 2022,
         passedCourses: []
     });
 
