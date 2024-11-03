@@ -1,0 +1,67 @@
+export class Course {
+    public readonly id?: number;
+    public readonly name: string;
+    public readonly description: string;
+    public readonly phase: number;
+    public readonly credits: number;
+    public readonly lecturers: string[];
+    public readonly isElective: boolean;
+    public readonly requiredPassedCourses: Course[];
+
+    constructor(course: {
+        id?: number;
+        name: string;
+        description: string;
+        phase: number;
+        credits: number;
+        lecturers: string[];
+        isElective: boolean;
+        requiredPassedCourses: Course[];
+    }) {
+        this.validate(course);
+        this.id = course.id;
+        this.name = course.name;
+        this.description = course.description;
+        this.phase = course.phase;
+        this.credits = course.credits;
+        this.lecturers = course.lecturers;
+        this.isElective = course.isElective;
+        this.requiredPassedCourses = course.requiredPassedCourses;
+    }
+
+    validate(course: {name: string; description: string; phase: number; credits: number; lecturers: string[]; isElective: boolean; }) {
+        if (!course.name || course.name.length === 0) {
+            throw new Error("Name is required.");
+        }
+        if (!course.description || course.description.length === 0) {
+            throw new Error("Description is required.");
+        }
+        if (!course.phase || course.phase < 0) {
+            throw new Error("Phase is required.");
+        }
+        if (!course.credits || course.credits <= 0) {
+            throw new Error("Credits are required and cannot be negative.");
+        }
+        if (course.isElective === null) {
+            throw new Error("Course has to be an elective or non elective.");
+        }
+    }
+
+    public set requiredCourse(course: Course) {
+        if (this.requiredPassedCourses.includes(course)) {
+            throw new Error("Course is already required");
+        }
+        this.requiredPassedCourses.push(course);
+    }
+
+    public equals(other: Course): boolean {
+        return (
+            this.id === other.id &&
+            this.name === other.name &&
+            this.phase === other.phase &&
+            this.credits === other.credits &&
+            this.isElective === other.isElective &&
+            this.lecturers.every((lecturer, index) => lecturer === other.lecturers[index])
+        );
+    }
+}
