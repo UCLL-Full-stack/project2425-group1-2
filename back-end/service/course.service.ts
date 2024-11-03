@@ -50,7 +50,6 @@ const createCourse = (courseInfo: CourseUpdateView) : Course => {
 
 const updateCourse = (id: number, courseUpdateInfo: CourseUpdateView) : Course => {
     let currentCourse = getCourseById(id);
-    
     let requiredCourses: Course[] = [];
     courseUpdateInfo.requiredPassedCourses.forEach(courseId => {
         if (courseId === id) throw new Error(ERROR_COURSE_REQUIRE_ITSELF);

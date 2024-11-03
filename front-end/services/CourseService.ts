@@ -1,4 +1,4 @@
-import { Course } from '../types/index';
+import { Course, CourseUpdateView } from '../types/index';
 import { BACKEND_APP_URL } from '@/utils/urls';
 
 const URL = BACKEND_APP_URL + '/courses';
@@ -18,7 +18,7 @@ const getCourseById = async (id: number) => {
   return response;
 }
 
-const createCourse = async (course: Course) => {
+const createCourse = async (course: CourseUpdateView) => {
   const response = await fetch(URL, {
     method: 'POST',
     headers: {
@@ -29,7 +29,7 @@ const createCourse = async (course: Course) => {
   return response;
 }
 
-const updateCourse = async (id: number, course: Course) => {
+const updateCourse = async (id: number, course: CourseUpdateView) => {
   const response = await fetch(`${URL}/${id}`, {
     method: 'PUT',
     headers: {

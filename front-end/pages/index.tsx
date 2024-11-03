@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import Header from "@/components/header/Header";
 import { useEffect, useState } from "react";
 import CourseService from "@/services/CourseService";
-import { Course, CourseShort } from "@/types";
+import { Course, CourseShort, convertCourseToUpdateView } from "@/types";
 import CourseManagementOverviewTab from "@/components/courses/CourseManagementOverviewTab";
 import UpdateCourseForm from "@/components/courses/UpdateCourseForm";
 import ErrorDialog from "@/components/ErrorDialog";
@@ -33,7 +33,8 @@ export default function Home() {
   };
 
   const updateCourse = async (course: Course) => {
-    const data = await CourseService.updateCourse(course.id, course);
+    const updateCourseView = convertCourseToUpdateView(course);
+    const data = await CourseService.updateCourse(course.id, updateCourseView);
     if (!data.ok) {
       const error = await data.json();
       handleError(error);
@@ -43,7 +44,8 @@ export default function Home() {
   };
 
   const createCourse = async (course: Course) => {
-    const data = await CourseService.createCourse(course);
+    const updateCourseView = convertCourseToUpdateView(course);
+    const data = await CourseService.createCourse(updateCourseView);
     if (!data.ok) {
       const error = await data.json();
       handleError(error);

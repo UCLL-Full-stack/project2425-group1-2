@@ -33,6 +33,7 @@ const UpdateCourseForm: React.FC<Props> = ({
       newErrors.phase = "Phase must be a positive number.";
     if (formData.credits <= 0)
       newErrors.credits = "Credits must be a positive number.";
+    
 
     setErrors(newErrors);
 
