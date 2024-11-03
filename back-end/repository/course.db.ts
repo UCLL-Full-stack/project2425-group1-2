@@ -3,6 +3,7 @@ import courses from '../data/courses';
 import DBtryCatcher from '../util/tryCatchWrapper';
 
 let DBcourses: Course[] = Array.from(courses);
+let idCounter = DBcourses.length+1;
 
 const initDb = (): void => {
     DBcourses = Array.from(courses);
@@ -31,7 +32,7 @@ const deleteCourses = DBtryCatcher((ids: number[]): void => {
 const save = DBtryCatcher((course: Course): Course => {
     if (course.id == undefined) {
         course = new Course({
-            id: DBcourses.length + 1,
+            id: idCounter++,
             name: course.name,
             description: course.description,
             phase: course.phase,
