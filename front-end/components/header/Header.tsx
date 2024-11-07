@@ -14,7 +14,7 @@ const Header: React.FC = () => {
   return (
     <header className="flex flex-row justify-between p-2 px-4 bg-primary shadow-[0_3px_4px_rgba(0,0,0,0.8)]">
       <div className="flex items-center">
-        <Image className="mr-1" src="/images/Brand.png" alt="ucll" width={IMAGE_WIDTH} height={IMAGE_HEIGHT} />
+        <Image priority className="mr-1 w-auto h-auto" src="/images/Brand.svg" alt="ucll" width={IMAGE_WIDTH} height={IMAGE_HEIGHT}/>
         <h1>ISP submission system</h1>
       </div>
       <nav className="flex items-center">
