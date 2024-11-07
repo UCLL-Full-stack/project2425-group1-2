@@ -1,6 +1,4 @@
 import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
 import Header from "@/components/header/Header";
 import { useEffect, useState } from "react";
 import CourseService from "@/services/CourseService";
@@ -9,15 +7,14 @@ import CourseManagementOverviewTab from "@/components/courses/CourseManagementOv
 import UpdateCourseForm from "@/components/courses/UpdateCourseForm";
 import ErrorDialog from "@/components/ErrorDialog";
 import CreateCourseForm from "@/components/courses/CreateCourseForm";
+import DefaultHead from "@/components/DefaultHead";
 
-export default function Home() {
+const TITLE = "Course Management";
+
+export default function CourseManagement() {
   const [courses, setCourses] = useState<CourseShort[]>([]);
-  const [updatingCourse, setUpdatingCourse] = useState<Course | null>(
-    null
-  );
-  const [creatingCourse, setCreatingCourse] = useState<Course | null>(
-    null
-  );
+  const [updatingCourse, setUpdatingCourse] = useState<Course | null>(null);
+  const [creatingCourse, setCreatingCourse] = useState<Course | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const getCourses = async () => {
@@ -52,7 +49,7 @@ export default function Home() {
     }
     setCreatingCourse(null);
     getCourses();
-  }
+  };
 
   const deleteCourse = async (id: number) => {
     const data = await CourseService.deleteCourses([id]);
@@ -62,7 +59,7 @@ export default function Home() {
     }
     setUpdatingCourse(null);
     getCourses();
-  }
+  };
 
   const handleError = (error: {}) => {
     const newErrors: { [key: string]: string } = {};
@@ -81,43 +78,28 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Course Management</title>
-        <meta name="description" content="ISP" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        ></link>
+        <title>{TITLE}</title>
       </Head>
-      <div className="font-poppins text-white font-bold text-sm bg-secondary">
-        <Header />
-        <main className="min-h-screen">
-          <CourseManagementOverviewTab
-            courses={courses}
-            redactorCourse={redactorCourse}
-            isActive={
-              updatingCourse == null && Object.keys(errors).length === 0
-            }
-            setCreatingCourse={setCreatingCourse}
-          />
-          <UpdateCourseForm
-            course={updatingCourse}
-            onUpdate={updateCourse}
-            onDelete={deleteCourse}
-            onClose={() => setUpdatingCourse(null)}
-          />
-          <CreateCourseForm
-            course={creatingCourse}
-            onCreate={createCourse}
-            onClose={() => setCreatingCourse(null)}
-          />
-          {errors && Object.keys(errors).length > 0 && (
-            <ErrorDialog errors={errors} setErrors={setErrors} />
-          )}
-
-        </main>
-      </div>
+      <CourseManagementOverviewTab
+        courses={courses}
+        redactorCourse={redactorCourse}
+        isActive={updatingCourse == null && Object.keys(errors).length === 0}
+        setCreatingCourse={setCreatingCourse}
+      />
+      <UpdateCourseForm
+        course={updatingCourse}
+        onUpdate={updateCourse}
+        onDelete={deleteCourse}
+        onClose={() => setUpdatingCourse(null)}
+      />
+      <CreateCourseForm
+        course={creatingCourse}
+        onCreate={createCourse}
+        onClose={() => setCreatingCourse(null)}
+      />
+      {errors && Object.keys(errors).length > 0 && (
+        <ErrorDialog errors={errors} setErrors={setErrors} />
+      )}
     </>
   );
 }
