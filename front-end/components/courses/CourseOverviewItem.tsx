@@ -17,16 +17,16 @@ const CourseOverviewItem: React.FC<Props> = ({
   return (
     <>
       {course && (
-        <article
+        <section
           className={`bg-primary shadow-regular mb-3`}
         >
           <div className="flex flex-row justify-between p-2">
-            <div className="flex flex-row gap-2 items-center">
+            <article className="flex flex-row gap-2 items-center">
               <p>{course.name}</p>
               <p>{year} Year</p>
               <p>{semester} Semester</p>
               <p>{course.credits} Credits</p>
-            </div>
+            </article>
 
             <button
               className={`p-1 shadow-regular  bg-danger rounded ${
@@ -38,7 +38,7 @@ const CourseOverviewItem: React.FC<Props> = ({
               Edit
             </button>
           </div>
-        </article>
+        </section>
       )}
     </>
   );
