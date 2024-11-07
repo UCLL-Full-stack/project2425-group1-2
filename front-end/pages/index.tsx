@@ -1,4 +1,5 @@
 import ErrorDialog from "@/components/ErrorDialog";
+import TabsOverviewSection from "@/components/home/TabsOverviewSection";
 import Head from "next/head";
 import { useState } from "react";
 
@@ -22,6 +23,7 @@ export default function Home() {
       <Head>
         <title>{TITLE}</title>
       </Head>
+      <TabsOverviewSection />
       {errors && Object.keys(errors).length > 0 && (
         <ErrorDialog errors={errors} setErrors={setErrors} />
       )}
