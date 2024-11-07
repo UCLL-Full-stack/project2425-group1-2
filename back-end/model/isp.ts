@@ -8,7 +8,7 @@ export class ISP {
     public readonly id?: number;
     public readonly status: string;
     public readonly totalCredits: number;
-    public readonly year: number;
+    public readonly startYear: number;
     public readonly courses: Course[];
     public readonly student: Student;
 
@@ -24,7 +24,7 @@ export class ISP {
         this.id = isp.id;
         this.status = isp.status;
         this.totalCredits = isp.totalCredits;
-        this.year = isp.startYear;
+        this.startYear = isp.startYear;
         this.courses = isp.courses ||[];
         this.student = isp.student;
     }
@@ -53,7 +53,7 @@ export class ISP {
             this.id === isp.id &&
             this.status === isp.status &&
             this.totalCredits === isp.totalCredits &&
-            this.year === isp.year &&
+            this.startYear === isp.startYear &&
             this.courses.length === isp.courses.length &&
             this.courses.every((course, index) => course.equals(isp.courses[index]))
         );

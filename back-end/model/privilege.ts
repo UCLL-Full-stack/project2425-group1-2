@@ -21,18 +21,6 @@ export class Privilege {
         }
     }
 
-    get id(): number | undefined {
-        return this._id;
-    }
-
-    get name(): string {
-        return this._name;
-    }
-
-    get description(): string {
-        return this._description;
-    }
-
     public static from({
         id,
         name,

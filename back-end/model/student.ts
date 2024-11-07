@@ -3,10 +3,7 @@ import { User } from './user';
 import { PrismaStudent } from '../types/prismaTypesExtension';
 import { Course as PrismaCourse } from '@prisma/client';
 export class Student extends User {
-    private readonly _nationality: string;
-    private readonly _passedCourses: Course[];
     public readonly nationality: string;
-    public readonly startYear: number;
     public readonly passedCourses: Course[];
 
     constructor(student: {
@@ -24,10 +21,7 @@ export class Student extends User {
             password: student.password,
         });
         this.validates(student);
-        this._nationality = student.nationality;
-        this._passedCourses = student.passedCourses || [];
         this.nationality = student.nationality;
-        this.startYear = student.startYear;
         this.passedCourses = student.passedCourses || [];
     }
 
@@ -35,15 +29,6 @@ export class Student extends User {
         if (!student.nationality || student.nationality.length=== 0){
             throw new Error("Nationality is required.")
         }
-    }
-
-    get nationality(): string {
-        return this._nationality;
-    }
-
-
-    get passedCourses(): Course[] {
-        return this._passedCourses;
     }
 
 
