@@ -3,8 +3,8 @@ import { Course } from "@/types";
 
 type Props = {
   course: Course;
-  redactorCourse: (courseId: number) => void;
-  toggleCourseDetails: (courseId: number) => void;
+  redactorCourse: (courseId: number) => Promise<void>;
+  toggleCourseDetails: (courseId: number) => Promise<void>;
   isActive: boolean;
 };
 
@@ -16,11 +16,17 @@ const CourseDetailedEditableItem: React.FC<Props> = ({
 }: Props) => {
   const year = Math.ceil(course.phase / 2);
   const semester = course.phase % 2 === 0 ? 2 : 1;
-  let arrowDown: boolean = true;
 
-  const toggleArrow = () => {
-    arrowDown = !arrowDown;
-    toggleCourseDetails(course.id);
+  const handleToggleCourseDetails = async () => {
+    if (isActive) {
+      await toggleCourseDetails(course.id);
+    }
+  };
+
+  const handleRedactorCourse = async () => {
+    if (isActive) {
+      await redactorCourse(course.id);
+    }
   };
 
   return (
@@ -37,14 +43,14 @@ const CourseDetailedEditableItem: React.FC<Props> = ({
             <article>
               <button
                 className={`p-1 w-4 h-4 arrow-up border-gray-300`}
-                onClick={() => isActive && toggleCourseDetails(course.id)}
+                onClick={handleToggleCourseDetails}
                 disabled={!isActive}
               ></button>
               <button
                 className={`p-1 shadow-regular  bg-danger rounded ${
                   isActive ? "hover:shadow-success" : ""
                 }`}
-                onClick={() => isActive && redactorCourse(course.id)}
+                onClick={handleRedactorCourse}
                 disabled={!isActive}
               >
                 Edit

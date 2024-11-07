@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 type Props = {
   course: Course | null;
   onClose: () => void;
-  onUpdate: (updatedCourse: Course) => void;
-  onDelete: (id: number) => void;
+  onUpdate: (updatedCourse: Course) => Promise<void>;
+  onDelete: (id: number) => Promise<void>;
 };
 
 const UpdateCourseForm: React.FC<Props> = ({
@@ -34,7 +34,6 @@ const UpdateCourseForm: React.FC<Props> = ({
     if (formData.credits <= 0)
       newErrors.credits = "Credits must be a positive number.";
     
-
     setErrors(newErrors);
 
     return Object.keys(newErrors).length === 0;
@@ -55,12 +54,16 @@ const UpdateCourseForm: React.FC<Props> = ({
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleDelete = async () => {
+    return onDelete(formData?.id || -1);
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData || !validate()) {
       return;
     }
-    onUpdate(formData);
+    await onUpdate(formData);
   };
 
   return (
@@ -153,7 +156,7 @@ const UpdateCourseForm: React.FC<Props> = ({
               </button>
               <button
                 type="button"
-                onClick={() => onDelete(formData.id)}
+                onClick={handleDelete}
                 className="flex-1 bg-danger hover:shadow-success font-semibold py-2 rounded shadow-regular"
               >
                 Delete

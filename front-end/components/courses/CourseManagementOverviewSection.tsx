@@ -7,9 +7,9 @@ type Props = {
   courses: Array<CourseShort>;
   isActive: boolean;
   detailedCourses: { [key: number]: Course };
-  redactorCourse: (courseId: number) => void;
+  redactorCourse: (courseId: number) => Promise<void>;
+  toggleCourseDetails: (courseId: number) => Promise<void>;
   setCreatingCourse: (course: Course) => void;
-  toggleCourseDetails: (courseId: number) => void;
 };
 
 const CourseManagementOverviewTab: React.FC<Props> = ({
@@ -20,6 +20,21 @@ const CourseManagementOverviewTab: React.FC<Props> = ({
   setCreatingCourse,
   toggleCourseDetails,
 }: Props) => {
+
+  const handleCreatingCourse = async () => {
+    const course: Course = {
+      id: -1,
+      name: "",
+      description: "",
+      phase: 1,
+      credits: 1,
+      lecturers: [],
+      isElective: false,
+      requiredPassedCourses: [],
+    };
+    setCreatingCourse(course);
+  };
+
   return (
     <>
       <div className={`${isActive ? "" : "opacity-50"}`}>
@@ -53,18 +68,7 @@ const CourseManagementOverviewTab: React.FC<Props> = ({
         <div className="fixed bottom-4 right-4">
           <button
             className="bg-safe hover:shadow-success p-2 rounded shadow-regular"
-            onClick={() =>
-              setCreatingCourse({
-                id: 0,
-                name: "",
-                description: "",
-                phase: 1,
-                credits: 1,
-                lecturers: [],
-                isElective: false,
-                requiredPassedCourses: [],
-              })
-            }
+            onClick={handleCreatingCourse}
           >
             Create
           </button>

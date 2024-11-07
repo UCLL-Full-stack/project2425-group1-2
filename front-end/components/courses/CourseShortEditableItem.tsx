@@ -3,8 +3,8 @@ import { CourseShort } from "@/types";
 
 type Props = {
   course: CourseShort;
-  redactorCourse: (courseId: number) => void;
-  toggleCourseDetails: (courseId: number) => void;
+  redactorCourse: (courseId: number) => Promise<void>;
+  toggleCourseDetails: (courseId: number) => Promise<void>;
   isActive: boolean;
 };
 
@@ -17,10 +17,22 @@ const CourseShortEditableItem: React.FC<Props> = ({
   const year = Math.ceil(course.phase / 2);
   const semester = course.phase % 2 === 0 ? 2 : 1;
 
+  const handleToggleCourseDetails = async () => {
+    if (isActive) {
+      await toggleCourseDetails(course.id);
+    }
+  };
+
+  const handleRedactorCourse = async () => {
+    if (isActive) {
+      await redactorCourse(course.id);
+    }
+  };
+
   return (
     <>
       {course && (
-        <section className={`bg-primary shadow-regular mb-3`}>
+        <section className="bg-primary shadow-regular mb-3">
           <div className="flex flex-row justify-between p-2">
             <article className="flex flex-row gap-2 items-center">
               <p>{course.name}</p>
@@ -31,14 +43,14 @@ const CourseShortEditableItem: React.FC<Props> = ({
             <article>
               <button
                 className={`p-1 w-4 h-4 arrow-down border-gray-300`}
-                onClick={() => isActive && toggleCourseDetails(course.id)}
+                onClick={handleToggleCourseDetails}
                 disabled={!isActive}
               ></button>
               <button
                 className={`p-1 shadow-regular  bg-danger rounded ${
                   isActive ? "hover:shadow-success" : ""
                 }`}
-                onClick={() => isActive && redactorCourse(course.id)}
+                onClick={handleRedactorCourse}
                 disabled={!isActive}
               >
                 Edit
