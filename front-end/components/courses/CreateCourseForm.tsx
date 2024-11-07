@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 type Props = {
   course: Course | null;
   onClose: () => void;
-  onCreate: (updatedCourse: Course) => void;
+  onCreate: (updatedCourse: Course) => Promise<void>;
 };
 
 const CreateCourseForm: React.FC<Props> = ({ course, onClose, onCreate }) => {
@@ -48,12 +48,12 @@ const CreateCourseForm: React.FC<Props> = ({ course, onClose, onCreate }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData || !validate()) {
       return;
     }
-    onCreate(formData);
+    await onCreate(formData);
   };
 
   return (
