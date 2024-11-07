@@ -17,7 +17,7 @@ const CourseOverviewItem: React.FC<Props> = ({
   return (
     <>
       {course && (
-        <div
+        <article
           className={`bg-primary shadow-regular mb-3`}
         >
           <div className="flex flex-row justify-between p-2">
@@ -38,7 +38,7 @@ const CourseOverviewItem: React.FC<Props> = ({
               Edit
             </button>
           </div>
-        </div>
+        </article>
       )}
     </>
   );
