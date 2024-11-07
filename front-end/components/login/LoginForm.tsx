@@ -1,12 +1,12 @@
 import React from "react";
 
 const LoginForm: React.FC = () => {
-  const textInputClass = `p-1 pl-4 rounded shadow-regular text-gray-800`;
+  const textInputClass = `p-1 pl-4 rounded shadow-regular text-gray-800 text-xs`;
   return (
     <>
-      <section className="m-auto w-96 bg-primary shadow-regular rounded mt-10">
-        <h1 className="text-center pt-4">Welcome!</h1>
-        <form className="flex flex-col gap-3 p-4">
+      <section className="m-auto w-96 bg-primary shadow-regular rounded mt-10 text-xs">
+        <h2 className="text-center pt-4">Welcome!</h2>
+        <form className="flex flex-col gap-3 pb-12 px-12 h-1/3">
           <label htmlFor="username"></label>
           <input
             type="text"

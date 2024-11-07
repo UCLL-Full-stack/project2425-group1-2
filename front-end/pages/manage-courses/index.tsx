@@ -13,6 +13,7 @@ export default function CourseManagement() {
   const [courses, setCourses] = useState<CourseShort[]>([]);
   const [updatingCourse, setUpdatingCourse] = useState<Course | null>(null);
   const [creatingCourse, setCreatingCourse] = useState<Course | null>(null);
+  const [detailedCourses, setDetailedCourses] = useState<{ [key: number]: Course }>({});
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const getCourses = async () => {
@@ -50,7 +51,7 @@ export default function CourseManagement() {
   };
 
   const deleteCourse = async (id: number) => {
-    const data = await CourseService.deleteCourses([id]);
+    const data = await CourseService.deleteCourses([id])
     if (!data.ok) {
       const error = await data.json();
       handleError(error);
@@ -58,6 +59,18 @@ export default function CourseManagement() {
     setUpdatingCourse(null);
     getCourses();
   };
+  
+  const toggleCourseDetails = async (courseId: number) => {
+    if (detailedCourses[courseId]) {
+      const newCourses = { ...detailedCourses };
+      delete newCourses[courseId];
+      setDetailedCourses(newCourses);
+    } else {
+      const data = await CourseService.getCourseById(courseId);
+      const course = await data.json();
+      setDetailedCourses({ ...detailedCourses, [courseId]: course });
+    }
+  }
 
   const handleError = (error: {}) => {
     const newErrors: { [key: string]: string } = {};
@@ -80,9 +93,11 @@ export default function CourseManagement() {
       </Head>
       <CourseManagementOverviewTab
         courses={courses}
-        redactorCourse={redactorCourse}
         isActive={updatingCourse == null && Object.keys(errors).length === 0}
+        detailedCourses={detailedCourses}
+        redactorCourse={redactorCourse}
         setCreatingCourse={setCreatingCourse}
+        toggleCourseDetails={toggleCourseDetails}
       />
       <UpdateCourseForm
         course={updatingCourse}
