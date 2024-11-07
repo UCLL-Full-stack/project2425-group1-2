@@ -1,13 +1,11 @@
-import Head from "next/head";
-import Header from "@/components/header/Header";
-import { useEffect, useState } from "react";
-import CourseService from "@/services/CourseService";
-import { Course, CourseShort, convertCourseToUpdateView } from "@/types";
-import CourseManagementOverviewTab from "@/components/courses/CourseManagementOverviewTab";
+import CourseManagementOverviewTab from "@/components/courses/CourseManagementOverviewSection";
+import CreateCourseForm from "@/components/courses/CreateCourseForm";
 import UpdateCourseForm from "@/components/courses/UpdateCourseForm";
 import ErrorDialog from "@/components/ErrorDialog";
-import CreateCourseForm from "@/components/courses/CreateCourseForm";
-import DefaultHead from "@/components/DefaultHead";
+import CourseService from "@/services/CourseService";
+import { Course, CourseShort, convertCourseToUpdateView } from "@/types";
+import Head from "next/head";
+import { useEffect, useState } from "react";
 
 const TITLE = "Course Management";
 
