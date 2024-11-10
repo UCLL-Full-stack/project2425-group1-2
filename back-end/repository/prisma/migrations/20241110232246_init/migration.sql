@@ -135,4 +135,3 @@ ALTER TABLE "CourseAddedISP" ADD CONSTRAINT "CourseAddedISP_courseId_fkey" FOREI
 
 -- AddForeignKey
 ALTER TABLE "CourseAddedISP" ADD CONSTRAINT "CourseAddedISP_ispId_fkey" FOREIGN KEY ("ispId") REFERENCES "Isp"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
