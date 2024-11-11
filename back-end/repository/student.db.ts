@@ -12,7 +12,9 @@ const findAllByPassedCourseId = tryCatcher((id: number): Student[] => {
 
 const getAllStudents = async(): Promise<Student[]> => {
     try{
-        const studentsPrisma = await prisma.user.findMany();
+        const studentsPrisma = await prisma.user.findMany({
+            where:{userType: UserTypes.STUDENT}
+        });
 
         return studentsPrisma.map((studentPrisma) => Student.from(studentPrisma))
     } catch (error) {
