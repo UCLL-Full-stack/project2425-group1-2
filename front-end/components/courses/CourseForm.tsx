@@ -7,7 +7,7 @@ type Props = {
   onSubmit: (course: Course) => Promise<void>;
 };
 
-const CourseForm: React.FC<Props> = ({ children, course, onSubmit}) => {
+const CourseForm: React.FC<Props> = ({ children, course, onSubmit }) => {
   const [formData, setFormData] = useState(course);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
@@ -37,8 +37,19 @@ const CourseForm: React.FC<Props> = ({ children, course, onSubmit}) => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
+    let { name, value, type } = e.target;
     if (!formData) {
+      return;
+    }
+    if (type === "checkbox" && name === "isElective") {
+      setFormData({ ...formData, isElective: !formData.isElective });
+      return;
+    }
+    if (name === "lecturers") {
+      setFormData({
+        ...formData,
+        lecturers: value.split(", ").map((l) => l.trim()),
+      });
       return;
     }
     setFormData({ ...formData, [name]: value });
@@ -54,10 +65,13 @@ const CourseForm: React.FC<Props> = ({ children, course, onSubmit}) => {
 
   return (
     formData && (
-      <div className="fixed inset-0 flex items-center justify-center z-50">
-        <div className="bg-primary p-6 rounded-lg w-11/12 max-w-lg shadow-regular relative">
-          <h2 className="text-2xl mb-4 text-center">Update Course</h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="fixed inset-0 flex items-center justify-center z-50 mt-10">
+        <div className="bg-primary pl-4 rounded-lg w-11/12 max-w-lg shadow-regular relative">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4 overflow-y-auto h-112 pr-4 pb-6"
+          >
+            <h2 className="text-2xl mb-4 text-center mt-4">Update Course</h2>
             <div className="flex flex-col">
               <label htmlFor="name" className="text-sm mb-1">
                 Course Name
@@ -123,6 +137,57 @@ const CourseForm: React.FC<Props> = ({ children, course, onSubmit}) => {
               />
               {errors.credits && (
                 <p className="text-red-500 text-xs mt-1">{errors.credits}</p>
+              )}
+            </div>
+            <div className="flex-1 flex flex-col">
+            <label htmlFor="lecturers" className="text-sm mb-1">
+                Lectureres
+              </label>
+              <input
+                type="text"
+                name="lecturers"
+                id="lecturers"
+                value={formData.lecturers.join(", ")}
+                onChange={handleChange}
+                className="p-2 rounded bg-gray-700"
+              />
+              {errors.lecturers && (
+                <p className="text-red-500 text-xs mt-1">{errors.lecturers}</p>
+              )}
+            </div>
+            <div className="flex-1 flex flex-row gap-2">
+              <label htmlFor="isElective" className="text-sm mb-1">
+                Elective
+              </label>
+              <input
+                type="checkbox"
+                name="isElective"
+                id="isElective"
+                onChange={handleChange}
+                className="p-2 rounded bg-gray-700 checked:bg-success text-alter  focus:ring-offset-0 focus:ring-0"
+              />
+              {errors.isElective && (
+                <p className="text-red-500 text-xs mt-1">{errors.isElective}</p>
+              )}
+            </div>
+            <div className="flex-1 flex flex-col">
+              <label htmlFor="requiredPassedCourses" className="text-sm mb-1">
+                Required Courses
+              </label>
+              <input
+                type="requiredPassedCourses"
+                name="requiredPassedCourses"
+                id="requiredPassedCourses"
+                value={formData.requiredPassedCourses
+                  .map((c) => c.name)
+                  .join(", ")}
+                onChange={handleChange}
+                className="p-2 rounded bg-gray-700"
+              />
+              {errors.requiredPassedCourses && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.requiredPassedCourses}
+                </p>
               )}
             </div>
             {children}

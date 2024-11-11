@@ -23,6 +23,9 @@ module.exports = {
         regular: "1px 2px 2px rgba(0, 0, 0, 0.8)",
         button_pressed: "inset 1px 2px 4px rgba(0, 0, 0, 0.8)"
       },
+      spacing: {
+        112: "28rem",
+      },
     },
   },
   plugins: [require("@tailwindcss/forms")],
