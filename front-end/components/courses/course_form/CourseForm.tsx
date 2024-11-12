@@ -8,6 +8,7 @@ import CourseCreditsInput from "./CourseCreditsInput";
 import CourseLecturersInput from "./CourseLecturersInput";
 import CourseRequiredCoursesInput from "./CourseRequiredCoursesInput";
 import CourseFormButtons from "./CourseFormButtons";
+import CourseElectiveInput from "./CourseElectiveInput";
 
 type Props = {
   course: Course | null;
@@ -175,6 +176,10 @@ const CourseForm: React.FC<Props> = ({
               onRemove={removeLecturer}
               onChange={handleLecturerChange}
               error={errors.lecturers}
+            />
+            <CourseElectiveInput
+              isElective={formData.isElective}
+              onChange={toggleElective}
             />
             <CourseRequiredCoursesInput
               requiredPassedCourses={formData.requiredPassedCourses}
