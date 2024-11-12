@@ -6,9 +6,11 @@ const TabsOverviewSection: React.FC = () => {
   return (
     <>
       <section className="ml-4 mr-4 mt-4 flex flex-row flex-wrap">
-        {tabs.map((tab: Tab) =>
-          TabItem({ tab })
-        )}
+        {tabs.map((tab: Tab, index: number) => (
+          <div key={index}>
+            <TabItem tab={tab}/>
+          </div>
+        ))}
       </section>
     </>
   );

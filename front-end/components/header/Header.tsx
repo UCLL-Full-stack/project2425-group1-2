@@ -12,7 +12,7 @@ const Header: React.FC = () => {
   const loginButtonStatus = pathname === '/login' ? ButtonStatus.CurrentPage : ButtonStatus.Active;
 
   return (
-    <header className="flex flex-row justify-between p-2 px-4 bg-primary shadow-[0_3px_4px_rgba(0,0,0,0.8)]">
+    <header className="h-20 flex flex-row justify-between p-4 px-4 bg-primary shadow-[0_3px_4px_rgba(0,0,0,0.8)]">
       <div className="flex items-center">
         <Image priority className="mr-1 w-auto h-auto" src="/images/Brand.svg" alt="ucll" width={IMAGE_WIDTH} height={IMAGE_HEIGHT}/>
         <h1>ISP submission system</h1>

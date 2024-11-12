@@ -20,11 +20,14 @@ module.exports = {
         alter: "#C251DE",
       },
       boxShadow: {
-        regular: "1px 2px 2px rgba(0, 0, 0, 0.8)",
-        button_pressed: "inset 1px 2px 4px rgba(0, 0, 0, 0.8)"
+        regular: "2px 4px 4px rgba(0, 0, 0, 0.8)",
+        button_pressed: "inset 2px 4px 8px rgba(0, 0, 0, 0.8)"
       },
       spacing: {
         112: "28rem",
+        160: "40rem",
+        192: "48rem",
+        200: "50rem",
       },
     },
   },

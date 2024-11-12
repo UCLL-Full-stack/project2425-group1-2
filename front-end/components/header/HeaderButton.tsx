@@ -17,7 +17,7 @@ interface HeaderButtonProps {
     buttonStatus: ButtonStatus;
 }
 
-const sharedClassOptions = 'p-1 rounded';
+const sharedClassOptions = 'p-2 rounded';
 
     const typeOptions = {
         home: {

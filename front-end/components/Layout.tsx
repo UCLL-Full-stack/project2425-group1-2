@@ -12,7 +12,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <>
       <DefaultHead />
-      <div className="font-poppins text-white font-bold text-sm bg-secondary">
+      <div className="font-poppins text-white font-bold text-2xl bg-secondary">
         <Header />
         <main className="min-h-screen">{children}</main>
       </div>

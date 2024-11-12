@@ -40,7 +40,7 @@ const CourseManagementOverviewTab: React.FC<Props> = ({
       <div className={`${isActive ? "" : "opacity-50"}`}>
         <h1 className="text-center mt-5">Manage courses</h1>
         {courses && (
-          <section className="ml-4 mr-44 mt-4 flex flex-col">
+          <section className="ml-4 mr-64 mt-4 flex flex-col">
             {courses.map((course) => {
               if (!detailedCoursesDictionary[course.id]) {
                 return (

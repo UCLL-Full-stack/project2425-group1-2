@@ -7,7 +7,7 @@ type Props = {
 };
 
 const TabItem: React.FC<Props> = ({ tab }: Props) => {
-  const buttonClass = `p-1 rounded shadow-regular bg-primary hover:shadow-success align-top text-left w-40 h-32`;
+  const buttonClass = `p-1 rounded shadow-regular bg-primary hover:shadow-success align-top text-left w-80 h-64`;
   const buttonAttributes = {};
   const buttonHref = tab.href;
   const buttonName = tab.name;

@@ -1,6 +1,5 @@
+import CourseForm from "@/components/courses/course_form/CourseForm";
 import CourseManagementOverviewTab from "@/components/courses/CourseManagementOverviewSection";
-import CreateCourseForm from "@/components/courses/CreateCourseForm";
-import UpdateCourseForm from "@/components/courses/UpdateCourseForm";
 import ErrorDialog from "@/components/ErrorDialog";
 import CourseService from "@/services/CourseService";
 import { Course, CourseShort, convertCourseToUpdateView } from "@/types";
@@ -13,7 +12,9 @@ export default function CourseManagement() {
   const [courses, setCourses] = useState<CourseShort[]>([]);
   const [updatingCourse, setUpdatingCourse] = useState<Course | null>(null);
   const [creatingCourse, setCreatingCourse] = useState<Course | null>(null);
-  const [detailedCourses, setDetailedCourses] = useState<{ [key: number]: Course }>({});
+  const [detailedCourses, setDetailedCourses] = useState<{
+    [key: number]: Course;
+  }>({});
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const getCourses = async () => {
@@ -51,7 +52,7 @@ export default function CourseManagement() {
   };
 
   const deleteCourse = async (id: number) => {
-    const data = await CourseService.deleteCourses([id])
+    const data = await CourseService.deleteCourses([id]);
     if (!data.ok) {
       const error = await data.json();
       handleError(error);
@@ -59,7 +60,7 @@ export default function CourseManagement() {
     setUpdatingCourse(null);
     getCourses();
   };
-  
+
   const toggleCourseDetails = async (courseId: number) => {
     if (detailedCourses[courseId]) {
       const newCourses = { ...detailedCourses };
@@ -70,7 +71,20 @@ export default function CourseManagement() {
       const course = await data.json();
       setDetailedCourses({ ...detailedCourses, [courseId]: course });
     }
-  }
+  };
+
+  const getPossibleRequiredPassedCourses = (
+    course: Course
+  ): { id: number; name: string }[] => {
+    return courses
+      .filter(
+        (c) =>
+          c.id !== course.id &&
+          c.phase < course.phase &&
+          course.requiredPassedCourses.findIndex((r) => r.id === c.id) === -1
+      )
+      .map((c) => ({ id: c.id, name: c.name }));
+  };
 
   const handleError = (error: {}) => {
     const newErrors: { [key: string]: string } = {};
@@ -81,6 +95,11 @@ export default function CourseManagement() {
     }
     setErrors(newErrors);
   };
+
+  const overviewTabIsActive =
+    updatingCourse == null &&
+    creatingCourse == null &&
+    Object.keys(errors).length === 0;
 
   useEffect(() => {
     getCourses();
@@ -93,22 +112,22 @@ export default function CourseManagement() {
       </Head>
       <CourseManagementOverviewTab
         courses={courses}
-        isActive={updatingCourse == null && Object.keys(errors).length === 0}
+        isActive={overviewTabIsActive}
         detailedCourses={detailedCourses}
         redactorCourse={redactorCourse}
         setCreatingCourse={setCreatingCourse}
         toggleCourseDetails={toggleCourseDetails}
       />
-      <UpdateCourseForm
-        course={updatingCourse}
-        onUpdate={updateCourse}
-        onDelete={deleteCourse}
-        onClose={() => setUpdatingCourse(null)}
-      />
-      <CreateCourseForm
-        course={creatingCourse}
-        onCreate={createCourse}
-        onClose={() => setCreatingCourse(null)}
+      <CourseForm
+        course={updatingCourse || creatingCourse}
+        getPossibleRequiredCourses={getPossibleRequiredPassedCourses}
+        onSubmit={updatingCourse ? updateCourse : createCourse}
+        onCancel={
+          updatingCourse
+            ? () => setUpdatingCourse(null)
+            : () => setCreatingCourse(null)
+        }
+        onDelete={updatingCourse ? deleteCourse : undefined}
       />
       {errors && Object.keys(errors).length > 0 && (
         <ErrorDialog errors={errors} setErrors={setErrors} />
