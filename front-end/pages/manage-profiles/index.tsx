@@ -2,73 +2,46 @@ import CourseForm from "@/components/courses/course_form/CourseForm";
 import CourseManagementOverviewTab from "@/components/courses/CourseManagementOverviewSection";
 import ErrorDialog from "@/components/ErrorDialog";
 import CourseService from "@/services/CourseService";
-import { Course, CourseShort, convertCourseToUpdateView } from "@/types";
+import { Course, CourseShort, Student, StudentShort, convertCourseToUpdateView, convertStudentToUpdateView } from "@/types";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
 const TITLE = "Manage Profiles";
 
 export default function ProfileManagement() {
-  const [courses, setCourses] = useState<CourseShort[]>([]);
-  const [updatingCourse, setUpdatingCourse] = useState<Course | null>(null);
-  const [creatingCourse, setCreatingCourse] = useState<Course | null>(null);
-  const [detailedCourses, setDetailedCourses] = useState<{
-    [key: number]: Course;
-  }>({});
+  const [students, setStudents] = useState<StudentShort[]>([]);
+  const [updatingStudent, setUpdatingStudent] = useState<Student | null>(null);
+  const [creatingStudent, setCreatingStudent] = useState<Student | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const getCourses = async () => {
-    const courses: CourseShort[] = await CourseService.getAllShortCourses(handleError);
-    setCourses(courses);
+  const getStudents = async () => {
+    const students: StudentShort[] = await StudentService.getAllShortStudents(handleError);
+    setStudents(students);
   };
 
-  const redactorCourse = async (id: number) => {
-    const course: Course = await CourseService.getCourseById(id, handleError);
-    setUpdatingCourse(course);
+  const redactorStudent = async (id: number) => {
+    const student: Student = await StudentService.getStudentById(id, handleError);
+    setUpdatingStudent(student);
   };
 
-  const updateCourse = async (course: Course) => {
-    const updateCourseView = convertCourseToUpdateView(course);
-    await CourseService.updateCourse(course.id, updateCourseView, handleError);
-    setUpdatingCourse(null);
-    getCourses();
+  const updateStudent = async (student: Student) => {
+    const updateStudentView = convertStudentToUpdateView(student);
+    await StudentService.updateStudent(student.id, updateStudentView, handleError);
+    setUpdatingStudent(null);
+    getStudents();
   };
 
-  const createCourse = async (course: Course) => {
-    const updateCourseView = convertCourseToUpdateView(course);
-    await CourseService.createCourse(updateCourseView, handleError);
-    setCreatingCourse(null);
-    getCourses();
+  const createStudent = async (student: Student) => {
+    const updateStudentView = convertStudentToUpdateView(student);
+    await StudentService.createStudent(updateStudentView, handleError);
+    setCreatingStudent(null);
+    getStudents();
   };
 
-  const deleteCourse = async (id: number) => {
-    await CourseService.deleteCourses([id], handleError);
-    setUpdatingCourse(null);
-    getCourses();
-  };
-
-  const toggleCourseDetails = async (courseId: number) => {
-    if (detailedCourses[courseId]) {
-      const newCourses = { ...detailedCourses };
-      delete newCourses[courseId];
-      setDetailedCourses(newCourses);
-    } else {
-      const course: Course = await CourseService.getCourseById(courseId, handleError);
-      setDetailedCourses({ ...detailedCourses, [courseId]: course });
-    }
-  };
-
-  const getPossibleRequiredPassedCourses = (
-    course: Course
-  ): { id: number; name: string }[] => {
-    return courses
-      .filter(
-        (c) =>
-          c.id !== course.id &&
-          c.phase < course.phase &&
-          course.requiredPassedCourses.findIndex((r) => r.id === c.id) === -1
-      )
-      .map((c) => ({ id: c.id, name: c.name }));
+  const deleteStudent = async (id: number) => {
+    await StudentService.deleteStudents([id], handleError);
+    setUpdatingStudent(null);
+    getStudents();
   };
 
   const handleError = (error: {}) => {
