@@ -3,23 +3,23 @@ import { Course, CourseShort } from "@/types";
 import CourseShortEditableItem from "./CourseShortEditableItem";
 import CourseDetailedEditableItem from "./CourseDetailedEditableItem";
 
-type Props = {
+interface ManageCourseOverviewSectionProps {
   courses: Array<CourseShort>;
   isActive: boolean;
   detailedCourses: { [key: number]: Course };
   redactorCourse: (courseId: number) => Promise<void>;
   toggleCourseDetails: (courseId: number) => Promise<void>;
   setCreatingCourse: (course: Course) => void;
-};
+}
 
-const ManageCourseOverviewSection = ({
+const ManageCourseOverviewSection = React.memo(({
   courses,
   isActive,
   detailedCourses: detailedCoursesDictionary,
   redactorCourse,
   setCreatingCourse,
   toggleCourseDetails,
-}: Props) => {
+}: ManageCourseOverviewSectionProps) => {
   const handleCreatingCourse = async () => {
     const course: Course = {
       id: -1,
@@ -75,6 +75,6 @@ const ManageCourseOverviewSection = ({
       </div>
     </>
   );
-};
+});
 
 export default ManageCourseOverviewSection;

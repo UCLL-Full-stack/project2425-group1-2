@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React from "react";
 
-const DefaultHead: React.FC = () => {
+const DefaultHead = React.memo(() => {
   return (
     <>
       <Head>
@@ -11,6 +11,6 @@ const DefaultHead: React.FC = () => {
       </Head>
     </>
   );
-};
+});
 
 export default DefaultHead;

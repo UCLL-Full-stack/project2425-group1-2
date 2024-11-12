@@ -1,11 +1,12 @@
 import { HeaderButton, ButtonStatus, ButtonType } from './HeaderButton';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import React from 'react';
 
 const IMAGE_WIDTH = 103;
 const IMAGE_HEIGHT = 32.25;
 
-const Header: React.FC = () => {
+const Header = React.memo(() => {
 
   const { pathname } = useRouter();
   const homeButtonStatus = pathname === '/' ? ButtonStatus.CurrentPage : ButtonStatus.Active;
@@ -23,6 +24,6 @@ const Header: React.FC = () => {
       </nav>
     </header>
   );
-};
+});
 
 export default Header;

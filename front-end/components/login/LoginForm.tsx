@@ -1,6 +1,6 @@
 import React from "react";
 
-const LoginForm: React.FC = () => {
+const LoginForm = React.memo(() => {
   const textInputClass = `p-1 pl-4 rounded shadow-regular text-gray-800 text-xs`;
   return (
     <>
@@ -32,6 +32,6 @@ const LoginForm: React.FC = () => {
       </section>
     </>
   );
-};
+});
 
 export default LoginForm;

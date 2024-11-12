@@ -5,17 +5,15 @@ import CourseFormInput from "../../forms/FormInput";
 import CourseLecturersInput from "./CourseLecturersInput";
 import CourseRequiredCoursesInput from "./CourseRequiredCoursesInput";
 
-type Props = {
+interface CourseFormProps {
   course: Course | null;
-  getPossibleRequiredCourses: (
-    course: Course
-  ) => CourseItem[];
+  getPossibleRequiredCourses: (course: Course) => CourseItem[];
   onSubmit: (course: Course) => Promise<void>;
   onCancel: () => void;
   onDelete?: (id: number) => Promise<void>;
-};
+}
 
-const CourseForm: React.FC<Props> = ({
+const CourseForm: React.FC<CourseFormProps> = ({
   course,
   getPossibleRequiredCourses,
   onSubmit,

@@ -2,7 +2,7 @@ import React from "react";
 import { Student, StudentShort } from "@/types";
 import StudentEditableItem from "./StudentEditableItem";
 
-type Props = {
+interface ManageStudentsOverviewSectionProps {
   students: Array<StudentShort>;
   isActive: boolean;
   redactorStudent: (studentId: number) => Promise<void>;
@@ -14,7 +14,7 @@ const ManageStudentsOverviewSection = ({
   isActive,
   redactorStudent,
   setCreatingStudent,
-}: Props) => {
+}: ManageStudentsOverviewSectionProps) => {
 
   const handleCreatingStudent = async () => {
     const student: Student = {

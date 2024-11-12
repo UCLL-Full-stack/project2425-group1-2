@@ -3,12 +3,11 @@ import React, { ReactNode } from "react";
 import DefaultHead from "./DefaultHead";
 import Header from "./header/Header";
 
-
 interface LayoutProps {
   children: ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC<LayoutProps> = React.memo(({ children }) => {
   return (
     <>
       <DefaultHead />
@@ -18,6 +17,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </div>
     </>
   );
-};
+});
 
 export default Layout;

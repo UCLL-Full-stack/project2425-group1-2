@@ -2,11 +2,11 @@ import { Tab } from "@/types/tab";
 import Link from "next/link";
 import React from "react";
 
-type Props = {
+interface TabItemProps {
   tab: Tab;
 };
 
-const TabItem: React.FC<Props> = ({ tab }: Props) => {
+const TabItem = React.memo(({ tab }: TabItemProps) => {
   const buttonClass = `p-1 rounded shadow-regular bg-primary hover:shadow-success align-top text-left w-80 h-64`;
   const buttonAttributes = {};
   const buttonHref = tab.href;
@@ -22,6 +22,6 @@ const TabItem: React.FC<Props> = ({ tab }: Props) => {
       )}
     </>
   );
-};
+});
 
 export default TabItem;

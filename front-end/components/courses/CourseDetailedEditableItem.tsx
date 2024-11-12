@@ -1,19 +1,19 @@
 import React from "react";
 import { Course } from "@/types";
 
-type Props = {
+interface CourseDetailedEditableItemProps {
   course: Course;
   redactorCourse: (courseId: number) => Promise<void>;
   toggleCourseDetails: (courseId: number) => Promise<void>;
   isActive: boolean;
-};
+}
 
-const CourseDetailedEditableItem = ({
+const CourseDetailedEditableItem = React.memo(({
   course,
   redactorCourse,
   toggleCourseDetails,
   isActive,
-}: Props) => {
+}: CourseDetailedEditableItemProps) => {
   const year = Math.ceil(course.phase / 2);
   const semester = course.phase % 2 === 0 ? 2 : 1;
 
@@ -79,6 +79,6 @@ const CourseDetailedEditableItem = ({
       )}
     </>
   );
-};
+});
 
 export default CourseDetailedEditableItem;

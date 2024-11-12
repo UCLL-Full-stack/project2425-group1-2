@@ -1,18 +1,18 @@
 import React from "react";
 
-type Props = {
+interface StringsArrayFormItemProps {
   stringValue: string;
   keyValue: number;
   handleChange: (index: number, value: string) => void;
   onDelete: (index: number) => void;
-};
+}
 
-const StringsArrayFormItem: React.FC<Props> = ({
+const StringsArrayFormItem = React.memo(({
   stringValue,
   keyValue,
   handleChange,
   onDelete,
-}) => {
+}: StringsArrayFormItemProps) => {
   const inputSize = stringValue ? stringValue.length : 3;
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +37,6 @@ const StringsArrayFormItem: React.FC<Props> = ({
       </button>
     </div>
   );
-};
+});
 
 export default StringsArrayFormItem;

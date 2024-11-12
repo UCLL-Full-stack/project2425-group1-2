@@ -1,7 +1,7 @@
 import React from "react";
 import { StudentShort } from "@/types";
 
-type Props = {
+interface StudentEditableItemProps {
   student: StudentShort;
   redactorStudent: (studentId: number) => Promise<void>;
   isActive: boolean;
@@ -10,7 +10,7 @@ const StudentEditableItem = ({
   student,
   redactorStudent,
   isActive,
-}: Props) => {
+}: StudentEditableItemProps) => {
   const handleRedactorStudent = async () => {
     if (isActive) {
       await redactorStudent(student.id);

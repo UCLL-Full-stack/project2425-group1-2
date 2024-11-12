@@ -1,11 +1,11 @@
 import React from "react";
 // You should ensure that errors are not null and more than 0 before rendering the ErrorDialog component.
-type Props = {
+type ErrorDialogProps = {
   errors: { [key: string]: string };
   setErrors: (errors: { [key: string]: string }) => void;
 };
 
-const ErrorDialog: React.FC<Props> = ({ errors, setErrors }: Props) => {
+const ErrorDialog = React.memo(({ errors, setErrors }: ErrorDialogProps) => {
   return (
     <>
       <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -26,6 +26,6 @@ const ErrorDialog: React.FC<Props> = ({ errors, setErrors }: Props) => {
       </div>
     </>
   );
-};
+});
 
 export default ErrorDialog;

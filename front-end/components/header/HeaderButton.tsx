@@ -55,7 +55,7 @@ const sharedClassOptions = 'p-2 rounded';
         },
     };
 
-const HeaderButton: React.FC<HeaderButtonProps> = ({ buttonType, buttonStatus }) => {
+const HeaderButton = ({ buttonType, buttonStatus }: HeaderButtonProps) => {
     const buttonClass = `${sharedClassOptions} ${statusOptions[buttonStatus].class} ${typeOptions[buttonType].class}`;
     const buttonAttributes = statusOptions[buttonStatus].attributes;
     const buttonHref = typeOptions[buttonType].href;
