@@ -1,34 +1,34 @@
-import FormButtons from "@/components/forms/FormButtons";
-import { Course } from "@/types";
+import { Student } from "@/types";
 import React, { useEffect, useState } from "react";
-import CourseFormInput from "../../forms/FormInput";
-import CourseLecturersInput from "./CourseLecturersInput";
-import CourseRequiredCoursesInput from "./CourseRequiredCoursesInput";
+import StudentFormButtons from "../../forms/FormButtons";
+import StudentFormInput from "./StudentFormInput";
+import StudentLecturersInput from "./StudentLecturersInput";
+import StudentRequiredStudentsInput from "./StudentRequiredStudentsInput";
 
-type Props = {
-  course: Course | null;
-  getPossibleRequiredCourses: (
-    course: Course
+interface StudentFormProps {
+  student: Student | null;
+  getPossibleRequiredStudents: (
+    student: Student
   ) => { id: number; name: string }[];
-  onSubmit: (course: Course) => Promise<void>;
+  onSubmit: (student: Student) => Promise<void>;
   onCancel: () => void;
   onDelete?: (id: number) => Promise<void>;
 };
 
-const CourseForm: React.FC<Props> = ({
-  course,
-  getPossibleRequiredCourses,
+const StudentForm = ({
+  student,
+  getPossibleRequiredStudents,
   onSubmit,
   onCancel,
   onDelete,
-}) => {
-  const [formData, setFormData] = useState(course);
+}: StudentFormProps) => {
+  const [formData, setFormData] = useState(student);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     setErrors({});
-    setFormData(course);
-  }, [course]);
+    setFormData(student);
+  }, [student]);
 
   if (!formData) {
     return null;
@@ -36,7 +36,7 @@ const CourseForm: React.FC<Props> = ({
 
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
-    if (!formData.name) newErrors.name = "Course name is required.";
+    if (!formData.name) newErrors.name = "Student name is required.";
     if (!formData.description)
       newErrors.description = "Description is required.";
     if (formData.phase <= 0)
@@ -46,10 +46,10 @@ const CourseForm: React.FC<Props> = ({
     if (formData.lecturers && formData.lecturers.some((l) => l === ""))
       newErrors.lecturers = "Lecturers must be filled.";
     if (
-      formData.requiredPassedCourses &&
-      formData.requiredPassedCourses.some((c) => c.id === -1)
+      formData.requiredPassedStudents &&
+      formData.requiredPassedStudents.some((c) => c.id === -1)
     )
-      newErrors.requiredPassedCourses = "Required courses must be chosen.";
+      newErrors.requiredPassedStudents = "Required students must be chosen.";
 
     setErrors(newErrors);
 
@@ -57,8 +57,8 @@ const CourseForm: React.FC<Props> = ({
   };
 
   const handleDelete = async () => {
-    if (course && onDelete) {
-      await onDelete(course.id);
+    if (student && onDelete) {
+      await onDelete(student.id);
     }
   };
 
@@ -72,7 +72,7 @@ const CourseForm: React.FC<Props> = ({
   const handlePhaseChange = (value: number) => {
     let newFormData = { ...formData, phase: value };
     if (value < formData.phase) {
-      newFormData.requiredPassedCourses = [];
+      newFormData.requiredPassedStudents = [];
     }
     setFormData(newFormData);
   };
@@ -96,35 +96,35 @@ const CourseForm: React.FC<Props> = ({
     setFormData({ ...formData, lecturers: newLecturers });
   };
 
-  const handleRequiredPassedCourseChange = (
+  const handleRequiredPassedStudentChange = (
     index: number,
     value: { id: number; name: string }
   ) => {
-    const newRequiredPassedCourses = [...formData.requiredPassedCourses];
-    newRequiredPassedCourses[index] = value;
+    const newRequiredPassedStudents = [...formData.requiredPassedStudents];
+    newRequiredPassedStudents[index] = value;
     setFormData({
       ...formData,
-      requiredPassedCourses: newRequiredPassedCourses,
+      requiredPassedStudents: newRequiredPassedStudents,
     });
   };
 
-  const addEmptyRequiredPassedCourse = () => {
+  const addEmptyRequiredPassedStudent = () => {
     setFormData({
       ...formData,
-      requiredPassedCourses: [
-        ...formData.requiredPassedCourses,
+      requiredPassedStudents: [
+        ...formData.requiredPassedStudents,
         { id: -1, name: "" },
       ],
     });
   };
 
-  const removeRequiredPassedCourse = (index: number) => {
-    const newRequiredPassedCourses = formData.requiredPassedCourses.filter(
+  const removeRequiredPassedStudent = (index: number) => {
+    const newRequiredPassedStudents = formData.requiredPassedStudents.filter(
       (_, i) => i !== index
     );
     setFormData({
       ...formData,
-      requiredPassedCourses: newRequiredPassedCourses,
+      requiredPassedStudents: newRequiredPassedStudents,
     });
   };
 
@@ -144,16 +144,16 @@ const CourseForm: React.FC<Props> = ({
             onSubmit={handleSubmit}
             className="space-y-4 overflow-y-auto max-h-full pr-4 pb-6"
           >
-            <h2 className="text-2xl mb-4 text-center mt-4">Update Course</h2>
-            <CourseFormInput
+            <h2 className="text-2xl mb-4 text-center mt-4">Update Student</h2>
+            <StudentFormInput
               name="name"
-              labelText="Course Name"
+              labelText="Student Name"
               inputType="text"
               value={formData.name}
               onChange={handleChange}
               error={errors.name}
             />
-            <CourseFormInput
+            <StudentFormInput
               name="description"
               labelText="Description"
               inputType="textarea"
@@ -161,7 +161,7 @@ const CourseForm: React.FC<Props> = ({
               onChange={handleChange}
               error={errors.description}
             />
-            <CourseFormInput
+            <StudentFormInput
               name="phase"
               labelText="Phase"
               inputType="number"
@@ -169,7 +169,7 @@ const CourseForm: React.FC<Props> = ({
               onChange={(e) => handlePhaseChange(parseInt(e.target.value))}
               error={errors.phase}
             />
-            <CourseFormInput
+            <StudentFormInput
               name="credits"
               labelText="Credits"
               inputType="number"
@@ -177,30 +177,30 @@ const CourseForm: React.FC<Props> = ({
               onChange={handleChange}
               error={errors.credits}
             />
-            <CourseLecturersInput
+            <StudentLecturersInput
               lecturers={formData.lecturers}
               onAdd={addEmptyLecturer}
               onRemove={removeLecturer}
               onChange={handleLecturerChange}
               error={errors.lecturers}
             />
-            <CourseFormInput
+            <StudentFormInput
               name="isElective"
               labelText="Elective"
               inputType="checkbox"
               checked={formData.isElective}
               onChange={toggleElective}
             />
-            <CourseRequiredCoursesInput
-              requiredPassedCourses={formData.requiredPassedCourses}
-              onAdd={addEmptyRequiredPassedCourse}
-              onRemove={removeRequiredPassedCourse}
-              onChange={handleRequiredPassedCourseChange}
-              getPossibleRequiredCourses={getPossibleRequiredCourses}
+            <StudentRequiredStudentsInput
+              requiredPassedStudents={formData.requiredPassedStudents}
+              onAdd={addEmptyRequiredPassedStudent}
+              onRemove={removeRequiredPassedStudent}
+              onChange={handleRequiredPassedStudentChange}
+              getPossibleRequiredStudents={getPossibleRequiredStudents}
               formData={formData}
-              error={errors.requiredPassedCourses}
+              error={errors.requiredPassedStudents}
             />
-            <FormButtons onCancel={onCancel} onDelete={handleDelete} />
+            <StudentFormButtons onCancel={onCancel} onDelete={handleDelete} />
           </form>
         </div>
       </div>
@@ -208,4 +208,4 @@ const CourseForm: React.FC<Props> = ({
   );
 };
 
-export default CourseForm;
+export default StudentForm;
