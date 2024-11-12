@@ -1,5 +1,5 @@
 import FormButtons from "@/components/forms/FormButtons";
-import { Course } from "@/types";
+import { Course, CourseItem } from "@/types";
 import React, { useEffect, useState } from "react";
 import CourseFormInput from "../../forms/FormInput";
 import CourseLecturersInput from "./CourseLecturersInput";
@@ -9,7 +9,7 @@ type Props = {
   course: Course | null;
   getPossibleRequiredCourses: (
     course: Course
-  ) => { id: number; name: string }[];
+  ) => CourseItem[];
   onSubmit: (course: Course) => Promise<void>;
   onCancel: () => void;
   onDelete?: (id: number) => Promise<void>;

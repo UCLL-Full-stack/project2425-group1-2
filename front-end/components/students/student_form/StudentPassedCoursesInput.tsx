@@ -1,36 +1,35 @@
-import { Course } from "@/types";
+import { Course, CourseItem, Student } from "@/types";
 import React from "react";
 
-interface CourseRequiredCoursesInputProps {
-  requiredPassedCourses: { id: number; name: string }[];
+interface StudentPassedCoursesInputProps {
+  passedCourses: CourseItem[];
   onAdd: () => void;
   onRemove: (index: number) => void;
-  onChange: (index: number, course: { id: number; name: string }) => void;
-  getPossibleRequiredCourses: (
-    formData: Course
-  ) => { id: number; name: string }[];
-  formData: Course;
+  onChange: (index: number, course: CourseItem) => void;
+  getPossiblePassedCourses: () => CourseItem[]; // Invokes a lot of times
   error?: string;
 }
 
-const CourseRequiredCoursesInput = React.memo(
+const StudentPassedCoursesInput = React.memo(
   ({
-    requiredPassedCourses,
+    passedCourses,
     onAdd,
     onRemove,
     onChange,
-    getPossibleRequiredCourses,
-    formData,
+    getPossiblePassedCourses,
     error,
-  }: CourseRequiredCoursesInputProps) => (
+  }: StudentPassedCoursesInputProps) => {
+    const canAddNewCourse = !passedCourses.some(c => c.id === -1);
+
+    return (
     <div className="flex-1 flex flex-col">
       <label htmlFor="requiredPassedCourses" className="mb-1">
-        Required Courses
+        Passed Courses
       </label>
       <div className="flex items-center gap-2 flex-wrap">
-        {requiredPassedCourses.map((course, index) => (
+        {passedCourses.map((course, index) => (
           <div
-            key={course.id}
+            key={index}
             className="relative flex items-center rounded-full"
           >
             <select
@@ -45,7 +44,7 @@ const CourseRequiredCoursesInput = React.memo(
               <option value={course.id}>
                 {course.name || "Select a course"}
               </option>
-              {getPossibleRequiredCourses(formData).map((courseOption) => (
+              {getPossiblePassedCourses().map((courseOption) => (
                 <option key={courseOption.id} value={courseOption.id}>
                   {courseOption.name}
                 </option>
@@ -59,17 +58,19 @@ const CourseRequiredCoursesInput = React.memo(
             </button>
           </div>
         ))}
-        <button
-          type="button"
-          onClick={onAdd}
-          className="bg-safe rounded-full h-8 w-8 shadow-regular hover:shadow-success"
-        >
-          +
-        </button>
+        { canAddNewCourse && (
+          <button
+            type="button"
+            onClick={onAdd}
+            className="bg-safe rounded-full h-8 w-8 shadow-regular hover:shadow-success"
+          >
+            +
+          </button>
+        )}
       </div>
       {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
-  )
-);
+  );
+});
 
-export default CourseRequiredCoursesInput;
+export default StudentPassedCoursesInput;

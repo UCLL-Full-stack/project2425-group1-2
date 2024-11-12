@@ -16,6 +16,11 @@ export type CourseShort = {
   credits: number;
 };
 
+export type CourseItem = {
+  id: number;
+  name: string;
+};
+
 export type CourseUpdateView = {
   name: string;
   description: string;
@@ -45,7 +50,7 @@ export type Student = {
   name: string;
   email: string;
   password: string;
-  nationality: string;
+  nationality?: string;
   passedCourses: { id: number, name: string }[];
 };
 
@@ -58,7 +63,7 @@ export type StudentUpdateView = {
   name: string;
   email: string;
   password: string;
-  nationality: string;
+  nationality?: string;
   passedCourses: number[];
 };
 

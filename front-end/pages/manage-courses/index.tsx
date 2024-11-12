@@ -1,8 +1,8 @@
 import CourseForm from "@/components/courses/course_form/CourseForm";
-import CourseManagementOverviewTab from "@/components/courses/CourseManagementOverviewSection";
+import ManageCourseOverviewSection from "@/components/courses/ManageCourseOverviewSection";
 import ErrorDialog from "@/components/ErrorDialog";
 import CourseService from "@/services/CourseService";
-import { Course, CourseShort, convertCourseToUpdateView } from "@/types";
+import { Course, CourseItem, CourseShort, convertCourseToUpdateView } from "@/types";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
@@ -60,7 +60,7 @@ export default function CourseManagement() {
 
   const getPossibleRequiredPassedCourses = (
     course: Course
-  ): { id: number; name: string }[] => {
+  ): CourseItem[] => {
     return courses
       .filter(
         (c) =>
@@ -95,7 +95,7 @@ export default function CourseManagement() {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <CourseManagementOverviewTab
+      <ManageCourseOverviewSection
         courses={courses}
         isActive={overviewTabIsActive}
         detailedCourses={detailedCourses}

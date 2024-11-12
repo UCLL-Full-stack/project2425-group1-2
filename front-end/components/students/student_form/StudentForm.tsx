@@ -1,23 +1,23 @@
-import { Student } from "@/types";
+import { CourseItem, Student } from "@/types";
 import React, { useEffect, useState } from "react";
 import StudentFormButtons from "../../forms/FormButtons";
-import StudentFormInput from "./StudentFormInput";
-import StudentLecturersInput from "./StudentLecturersInput";
-import StudentRequiredStudentsInput from "./StudentRequiredStudentsInput";
+import FormInput from "../../forms/FormInput";
+import StudentPassedCoursesInput from "./StudentPassedCoursesInput";
+import StudentNationalityInput from "./StudentNationalityInput";
 
 interface StudentFormProps {
   student: Student | null;
-  getPossibleRequiredStudents: (
+  getPossiblePassedCourses: (
     student: Student
-  ) => { id: number; name: string }[];
+  ) => CourseItem[];
   onSubmit: (student: Student) => Promise<void>;
   onCancel: () => void;
   onDelete?: (id: number) => Promise<void>;
-};
+}
 
 const StudentForm = ({
   student,
-  getPossibleRequiredStudents,
+  getPossiblePassedCourses,
   onSubmit,
   onCancel,
   onDelete,
@@ -37,19 +37,13 @@ const StudentForm = ({
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
     if (!formData.name) newErrors.name = "Student name is required.";
-    if (!formData.description)
-      newErrors.description = "Description is required.";
-    if (formData.phase <= 0)
-      newErrors.phase = "Phase must be a positive number.";
-    if (formData.credits <= 0)
-      newErrors.credits = "Credits must be a positive number.";
-    if (formData.lecturers && formData.lecturers.some((l) => l === ""))
-      newErrors.lecturers = "Lecturers must be filled.";
+    if (!formData.email) newErrors.email = "Email is required.";
+    if (!formData.password) newErrors.password = "Password is required.";
     if (
-      formData.requiredPassedStudents &&
-      formData.requiredPassedStudents.some((c) => c.id === -1)
+      formData.passedCourses &&
+      formData.passedCourses.some((c) => c.id === -1)
     )
-      newErrors.requiredPassedStudents = "Required students must be chosen.";
+      newErrors.passedCourses = "Passed courses must be chosen.";
 
     setErrors(newErrors);
 
@@ -63,68 +57,38 @@ const StudentForm = ({
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     let { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handlePhaseChange = (value: number) => {
-    let newFormData = { ...formData, phase: value };
-    if (value < formData.phase) {
-      newFormData.requiredPassedStudents = [];
-    }
-    setFormData(newFormData);
-  };
-
-  const toggleElective = () => {
-    setFormData({ ...formData, isElective: !formData.isElective });
-  };
-
-  const handleLecturerChange = (index: number, value: string) => {
-    const newLecturers = [...formData.lecturers];
-    newLecturers[index] = value;
-    setFormData({ ...formData, lecturers: newLecturers });
-  };
-
-  const addEmptyLecturer = () => {
-    setFormData({ ...formData, lecturers: [...formData.lecturers, ""] });
-  };
-
-  const removeLecturer = (index: number) => {
-    const newLecturers = formData.lecturers.filter((_, i) => i !== index);
-    setFormData({ ...formData, lecturers: newLecturers });
-  };
-
-  const handleRequiredPassedStudentChange = (
+  const handlePassedCourseChange = (
     index: number,
-    value: { id: number; name: string }
+    value: CourseItem
   ) => {
-    const newRequiredPassedStudents = [...formData.requiredPassedStudents];
-    newRequiredPassedStudents[index] = value;
+    const newPassedCourses = [...formData.passedCourses];
+    newPassedCourses[index] = value;
     setFormData({
       ...formData,
-      requiredPassedStudents: newRequiredPassedStudents,
+      passedCourses: newPassedCourses,
     });
   };
 
-  const addEmptyRequiredPassedStudent = () => {
+  const addEmptyPassedCourse = () => {
     setFormData({
       ...formData,
-      requiredPassedStudents: [
-        ...formData.requiredPassedStudents,
-        { id: -1, name: "" },
-      ],
+      passedCourses: [...formData.passedCourses, { id: -1, name: "" }],
     });
   };
 
-  const removeRequiredPassedStudent = (index: number) => {
-    const newRequiredPassedStudents = formData.requiredPassedStudents.filter(
+  const removePassedCourse = (index: number) => {
+    const newPassedCourses = formData.passedCourses.filter(
       (_, i) => i !== index
     );
     setFormData({
       ...formData,
-      requiredPassedStudents: newRequiredPassedStudents,
+      passedCourses: newPassedCourses,
     });
   };
 
@@ -139,13 +103,13 @@ const StudentForm = ({
   return (
     formData && (
       <div className="fixed inset-0 flex items-center justify-center z-50 mt-28">
-        <div className="bg-primary pl-4 rounded-lg min-w-160 w-2/5 h-85% shadow-regular mb-10 relative">
+        <div className="bg-primary pl-4 rounded-lg min-w-160 w-2/5 h-5/6 shadow-regular mb-10 relative">
           <form
             onSubmit={handleSubmit}
             className="space-y-4 overflow-y-auto max-h-full pr-4 pb-6"
           >
             <h2 className="text-2xl mb-4 text-center mt-4">Update Student</h2>
-            <StudentFormInput
+            <FormInput
               name="name"
               labelText="Student Name"
               inputType="text"
@@ -153,52 +117,34 @@ const StudentForm = ({
               onChange={handleChange}
               error={errors.name}
             />
-            <StudentFormInput
-              name="description"
-              labelText="Description"
-              inputType="textarea"
-              value={formData.description}
+            <FormInput
+              name="email"
+              labelText="Email"
+              inputType="email"
+              value={formData.email}
               onChange={handleChange}
-              error={errors.description}
+              error={errors.email}
             />
-            <StudentFormInput
-              name="phase"
-              labelText="Phase"
-              inputType="number"
-              value={formData.phase}
-              onChange={(e) => handlePhaseChange(parseInt(e.target.value))}
-              error={errors.phase}
-            />
-            <StudentFormInput
-              name="credits"
-              labelText="Credits"
-              inputType="number"
-              value={formData.credits}
+            <FormInput
+              name="password"
+              labelText="Password"
+              inputType="text"
+              value={formData.password}
               onChange={handleChange}
-              error={errors.credits}
+              error={errors.password}
             />
-            <StudentLecturersInput
-              lecturers={formData.lecturers}
-              onAdd={addEmptyLecturer}
-              onRemove={removeLecturer}
-              onChange={handleLecturerChange}
-              error={errors.lecturers}
+            <StudentNationalityInput
+              nationality={formData.nationality}
+              onChange={handleChange}
+              error={errors.nationality}
             />
-            <StudentFormInput
-              name="isElective"
-              labelText="Elective"
-              inputType="checkbox"
-              checked={formData.isElective}
-              onChange={toggleElective}
-            />
-            <StudentRequiredStudentsInput
-              requiredPassedStudents={formData.requiredPassedStudents}
-              onAdd={addEmptyRequiredPassedStudent}
-              onRemove={removeRequiredPassedStudent}
-              onChange={handleRequiredPassedStudentChange}
-              getPossibleRequiredStudents={getPossibleRequiredStudents}
-              formData={formData}
-              error={errors.requiredPassedStudents}
+            <StudentPassedCoursesInput
+              passedCourses={formData.passedCourses}
+              onAdd={addEmptyPassedCourse}
+              onRemove={removePassedCourse}
+              onChange={handlePassedCourseChange}
+              getPossiblePassedCourses={() => getPossiblePassedCourses(formData)}
+              error={errors.passedCourses}
             />
             <StudentFormButtons onCancel={onCancel} onDelete={handleDelete} />
           </form>
