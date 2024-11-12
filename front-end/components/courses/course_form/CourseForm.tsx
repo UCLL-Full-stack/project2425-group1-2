@@ -1,14 +1,9 @@
 import { Course } from "@/types";
 import React, { useEffect, useState } from "react";
-import StringsArrayFormItem from "../StringsArrayFormItem";
-import CourseNameInput from "./CourseNameInput";
-import CourseDescriptionInput from "./CourseDescriptionInput";
-import CoursePhaseInput from "./CoursePhaseInput";
-import CourseCreditsInput from "./CourseCreditsInput";
+import CourseFormButtons from "./CourseFormButtons";
+import CourseFormInput from "./CourseFormInput";
 import CourseLecturersInput from "./CourseLecturersInput";
 import CourseRequiredCoursesInput from "./CourseRequiredCoursesInput";
-import CourseFormButtons from "./CourseFormButtons";
-import CourseElectiveInput from "./CourseElectiveInput";
 
 type Props = {
   course: Course | null;
@@ -150,23 +145,35 @@ const CourseForm: React.FC<Props> = ({
             className="space-y-4 overflow-y-auto max-h-full pr-4 pb-6"
           >
             <h2 className="text-2xl mb-4 text-center mt-4">Update Course</h2>
-            <CourseNameInput
-              name={formData.name}
+            <CourseFormInput
+              name="name"
+              labelText="Course Name"
+              inputType="text"
+              value={formData.name}
               onChange={handleChange}
               error={errors.name}
             />
-            <CourseDescriptionInput
-              description={formData.description}
+            <CourseFormInput
+              name="description"
+              labelText="Description"
+              inputType="textarea"
+              value={formData.description}
               onChange={handleChange}
               error={errors.description}
             />
-            <CoursePhaseInput
-              phase={formData.phase}
+            <CourseFormInput
+              name="phase"
+              labelText="Phase"
+              inputType="number"
+              value={formData.phase}
               onChange={(e) => handlePhaseChange(parseInt(e.target.value))}
               error={errors.phase}
             />
-            <CourseCreditsInput
-              credits={formData.credits}
+            <CourseFormInput  
+              name="credits"
+              labelText="Credits"
+              inputType="number"
+              value={formData.credits}
               onChange={handleChange}
               error={errors.credits}
             />
@@ -177,8 +184,11 @@ const CourseForm: React.FC<Props> = ({
               onChange={handleLecturerChange}
               error={errors.lecturers}
             />
-            <CourseElectiveInput
-              isElective={formData.isElective}
+            <CourseFormInput
+              name="isElective"
+              labelText="Elective"
+              inputType="checkbox"
+              checked={formData.isElective}
               onChange={toggleElective}
             />
             <CourseRequiredCoursesInput
