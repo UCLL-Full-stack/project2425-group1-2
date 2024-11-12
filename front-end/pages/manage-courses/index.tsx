@@ -18,45 +18,31 @@ export default function CourseManagement() {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const getCourses = async () => {
-    const data = await CourseService.getAllShortCourses();
-    const courses = await data.json();
+    const courses: CourseShort[] = await CourseService.getAllShortCourses(handleError);
     setCourses(courses);
   };
 
   const redactorCourse = async (id: number) => {
-    const data = await CourseService.getCourseById(id);
-    const course = await data.json();
+    const course: Course = await CourseService.getCourseById(id, handleError);
     setUpdatingCourse(course);
   };
 
   const updateCourse = async (course: Course) => {
     const updateCourseView = convertCourseToUpdateView(course);
-    const data = await CourseService.updateCourse(course.id, updateCourseView);
-    if (!data.ok) {
-      const error = await data.json();
-      handleError(error);
-    }
+    await CourseService.updateCourse(course.id, updateCourseView, handleError);
     setUpdatingCourse(null);
     getCourses();
   };
 
   const createCourse = async (course: Course) => {
     const updateCourseView = convertCourseToUpdateView(course);
-    const data = await CourseService.createCourse(updateCourseView);
-    if (!data.ok) {
-      const error = await data.json();
-      handleError(error);
-    }
+    await CourseService.createCourse(updateCourseView, handleError);
     setCreatingCourse(null);
     getCourses();
   };
 
   const deleteCourse = async (id: number) => {
-    const data = await CourseService.deleteCourses([id]);
-    if (!data.ok) {
-      const error = await data.json();
-      handleError(error);
-    }
+    await CourseService.deleteCourses([id], handleError);
     setUpdatingCourse(null);
     getCourses();
   };
@@ -67,8 +53,7 @@ export default function CourseManagement() {
       delete newCourses[courseId];
       setDetailedCourses(newCourses);
     } else {
-      const data = await CourseService.getCourseById(courseId);
-      const course = await data.json();
+      const course: Course = await CourseService.getCourseById(courseId, handleError);
       setDetailedCourses({ ...detailedCourses, [courseId]: course });
     }
   };
