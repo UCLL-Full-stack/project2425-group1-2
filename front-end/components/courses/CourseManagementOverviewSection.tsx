@@ -65,9 +65,9 @@ const CourseManagementOverviewTab: React.FC<Props> = ({
             })}
           </section>
         )}
-        <div className="fixed bottom-4 right-4">
+        <div className="fixed bottom-8 right-8">
           <button
-            className="bg-safe hover:shadow-success p-2 rounded shadow-regular"
+            className="bg-safe hover:shadow-success p-3 rounded shadow-regular"
             onClick={handleCreatingCourse}
           >
             Create
