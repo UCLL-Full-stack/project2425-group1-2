@@ -1,36 +1,38 @@
-import React from 'react';
+import React from "react";
 
 interface CourseFormButtonsProps {
-    onCancel: () => void;
-    onDelete?: () => void;
-    handleDelete?: () => void;
+  onCancel: () => void;
+  onDelete?: () => void;
+  handleDelete?: () => void;
 }
 
-const CourseFormButtons = React.memo(({ onCancel, onDelete, handleDelete }: CourseFormButtonsProps) => (
+const CourseFormButtons = React.memo(
+  ({ onCancel, onDelete, handleDelete }: CourseFormButtonsProps) => (
     <div className="flex items-center space-x-2 mt-4">
+      <button
+        type="submit"
+        className="flex-1 bg-safe hover:shadow-success font-semibold py-2 rounded shadow-regular"
+      >
+        Save
+      </button>
+      <button
+        type="button"
+        onClick={onCancel}
+        className="flex-1 bg-alter hover:shadow-success font-semibold py-2 rounded shadow-regular"
+      >
+        Cancel
+      </button>
+      {onDelete && (
         <button
-            type="submit"
-            className="flex-1 bg-safe hover:shadow-success font-semibold py-2 rounded shadow-regular"
+          type="button"
+          onClick={handleDelete}
+          className="flex-1 bg-danger hover:shadow-success font-semibold py-2 rounded shadow-regular"
         >
-            Save
+          Delete
         </button>
-        <button
-            type="button"
-            onClick={onCancel}
-            className="flex-1 bg-alter hover:shadow-success font-semibold py-2 rounded shadow-regular"
-        >
-            Cancel
-        </button>
-        {onDelete && (
-            <button
-                type="button"
-                onClick={handleDelete}
-                className="flex-1 bg-danger hover:shadow-success font-semibold py-2 rounded shadow-regular"
-            >
-                Delete
-            </button>
-        )}
+      )}
     </div>
-));
+  )
+);
 
 export default CourseFormButtons;

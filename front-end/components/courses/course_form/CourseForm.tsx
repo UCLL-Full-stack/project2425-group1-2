@@ -169,7 +169,7 @@ const CourseForm: React.FC<Props> = ({
               onChange={(e) => handlePhaseChange(parseInt(e.target.value))}
               error={errors.phase}
             />
-            <CourseFormInput  
+            <CourseFormInput
               name="credits"
               labelText="Credits"
               inputType="number"

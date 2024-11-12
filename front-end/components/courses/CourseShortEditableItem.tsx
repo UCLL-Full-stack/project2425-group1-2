@@ -8,7 +8,7 @@ type Props = {
   isActive: boolean;
 };
 
-const CourseShortEditableItem: React.FC<Props> = ({
+const CourseShortEditableItem = ({
   course,
   redactorCourse,
   toggleCourseDetails,

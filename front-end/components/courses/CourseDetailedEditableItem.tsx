@@ -8,7 +8,7 @@ type Props = {
   isActive: boolean;
 };
 
-const CourseDetailedEditableItem: React.FC<Props> = ({
+const CourseDetailedEditableItem = ({
   course,
   redactorCourse,
   toggleCourseDetails,
@@ -61,12 +61,16 @@ const CourseDetailedEditableItem: React.FC<Props> = ({
             <p>{course.description}</p>
             <p>
               Taught by:{" "}
-              {course.lecturers.length > 0 ? course.lecturers.join(", ") : "No lecturers"}
+              {course.lecturers.length > 0
+                ? course.lecturers.join(", ")
+                : "No lecturers"}
             </p>
             {course.requiredPassedCourses.length > 0 && (
               <p>
                 Required Courses:{" "}
-                {course.requiredPassedCourses.map((course) => course.name).join(", ")}
+                {course.requiredPassedCourses
+                  .map((course) => course.name)
+                  .join(", ")}
               </p>
             )}
             {course.isElective && <p>Elective</p>}
