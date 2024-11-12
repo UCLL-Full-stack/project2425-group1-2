@@ -38,3 +38,36 @@ export function convertCourseToUpdateView(course: Course): CourseUpdateView {
     requiredPassedCourses: course.requiredPassedCourses.map(c => c.id),
   };
 }
+
+
+export type Student = {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+  nationality: string;
+  passedCourses: { id: number, name: string }[];
+};
+
+export type StudentShort = {
+  id: number;
+  name: string;
+};
+
+export type StudentUpdateView = {
+  name: string;
+  email: string;
+  password: string;
+  nationality: string;
+  passedCourses: number[];
+};
+
+export function convertStudentToUpdateView(student: Student): StudentUpdateView {
+  return {
+    name: student.name,
+    email: student.email,
+    password: student.password,
+    nationality: student.nationality,
+    passedCourses: student.passedCourses.map(c => c.id),
+  };
+}

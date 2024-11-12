@@ -6,9 +6,9 @@ import { Course, CourseShort, convertCourseToUpdateView } from "@/types";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
-const TITLE = "Manage Courses";
+const TITLE = "Manage Profiles";
 
-export default function CourseManagement() {
+export default function ProfileManagement() {
   const [courses, setCourses] = useState<CourseShort[]>([]);
   const [updatingCourse, setUpdatingCourse] = useState<Course | null>(null);
   const [creatingCourse, setCreatingCourse] = useState<Course | null>(null);
