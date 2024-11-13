@@ -1,29 +1,23 @@
 import ErrorDialog from "@/components/ErrorDialog";
 import ManageStudentsOverviewSection from "@/components/students/ManageStudentsOverviewSection";
 import StudentForm from "@/components/students/student_form/StudentForm";
-import CourseService from "@/services/CourseService";
 import StudentService from "@/services/DummyStudentService";
-import { CourseItem, CourseShort, Student, StudentShort } from "@/types";
+import { CourseItem, Student } from "@/types";
+import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { useStudentsShortGetter } from "@/utils/hooks/useStudentsShortGetter";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const TITLE = "Manage Profiles";
 
 export default function ProfileManagement() {
   const [updatingStudent, setUpdatingStudent] = useState<Student | null>(null);
   const [creatingStudent, setCreatingStudent] = useState<Student | null>(null);
-  const [courses, setCourses] = useState<CourseShort[]>([]);
   const { errors, setErrors, handleError } = useErrorHandler();
-  const { students } = useStudentsShortGetter(handleError);
+  const { students, getStudents } = useStudentsShortGetter(handleError);
+  const { courses } = useCoursesShortGetter(handleError);
 
-  const getCourses = async () => {
-    const courses: CourseShort[] = await CourseService.getAllShortCourses(
-      handleError
-    );
-    setCourses(courses);
-  };
 
   const redactorStudent = async (id: number) => {
     const student: Student | undefined = await StudentService.getStudentById(
@@ -39,17 +33,20 @@ export default function ProfileManagement() {
     // const updateStudentView = convertStudentToUpdateView(student);
     await StudentService.updateStudent(student.id, student, handleError);
     setUpdatingStudent(null);
+    await getStudents();
   };
 
   const createStudent = async (student: Student) => {
     // const updateStudentView = convertStudentToUpdateView(student);
     await StudentService.createStudent(student, handleError);
     setCreatingStudent(null);
+    await getStudents();
   };
 
   const deleteStudent = async (id: number) => {
     await StudentService.deleteStudent(id, handleError);
     setUpdatingStudent(null);
+    await getStudents();
   };
 
   const getPossiblePassedCourses = (student: Student): CourseItem[] => {
@@ -66,10 +63,6 @@ export default function ProfileManagement() {
     updatingStudent == null &&
     creatingStudent == null &&
     Object.keys(errors).length === 0;
-
-  useEffect(() => {
-    getCourses();
-  }, []);
 
   return (
     <>

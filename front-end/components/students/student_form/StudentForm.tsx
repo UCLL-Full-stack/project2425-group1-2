@@ -28,6 +28,7 @@ const StudentForm = React.memo(({
 
   useEffect(() => {
     setErrors({});
+    setFormData(student);
   }, [student]);
 
   if (!formData) {

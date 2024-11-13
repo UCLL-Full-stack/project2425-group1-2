@@ -3,11 +3,10 @@ import React from "react";
 interface FormButtonsProps {
   onCancel: () => void;
   onDelete?: () => void;
-  handleDelete?: () => void;
 }
 
 const FormButtons = React.memo(
-  ({ onCancel, onDelete, handleDelete }: FormButtonsProps) => (
+  ({ onCancel, onDelete }: FormButtonsProps) => (
     <div className="flex items-center space-x-2 mt-4">
       <button
         type="submit"
@@ -25,7 +24,7 @@ const FormButtons = React.memo(
       {onDelete && (
         <button
           type="button"
-          onClick={handleDelete}
+          onClick={onDelete}
           className="flex-1 bg-danger hover:shadow-success font-semibold py-2 rounded shadow-regular"
         >
           Delete

@@ -5,30 +5,23 @@ import CourseService from "@/services/CourseService";
 import {
   Course,
   CourseItem,
-  CourseShort,
-  convertCourseToUpdateView,
+  convertCourseToUpdateView
 } from "@/types";
+import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const TITLE = "Manage Courses";
 
 export default function CourseManagement() {
-  const [courses, setCourses] = useState<CourseShort[]>([]);
   const [updatingCourse, setUpdatingCourse] = useState<Course | null>(null);
   const [creatingCourse, setCreatingCourse] = useState<Course | null>(null);
   const [detailedCourses, setDetailedCourses] = useState<{
     [key: number]: Course;
   }>({});
   const { errors, setErrors, handleError } = useErrorHandler();
-
-  const getCourses = async () => {
-    const courses: CourseShort[] = await CourseService.getAllShortCourses(
-      handleError
-    );
-    setCourses(courses);
-  };
+  const { courses, getCourses } = useCoursesShortGetter(handleError);
 
   const redactorCourse = async (id: number) => {
     const course: Course = await CourseService.getCourseById(id, handleError);
@@ -39,20 +32,20 @@ export default function CourseManagement() {
     const updateCourseView = convertCourseToUpdateView(course);
     await CourseService.updateCourse(course.id, updateCourseView, handleError);
     setUpdatingCourse(null);
-    getCourses();
+    await getCourses();
   };
 
   const createCourse = async (course: Course) => {
     const updateCourseView = convertCourseToUpdateView(course);
     await CourseService.createCourse(updateCourseView, handleError);
     setCreatingCourse(null);
-    getCourses();
+    await getCourses();
   };
 
   const deleteCourse = async (id: number) => {
     await CourseService.deleteCourses([id], handleError);
     setUpdatingCourse(null);
-    getCourses();
+    await getCourses();
   };
 
   const toggleCourseDetails = async (courseId: number) => {
@@ -84,10 +77,6 @@ export default function CourseManagement() {
     updatingCourse == null &&
     creatingCourse == null &&
     Object.keys(errors).length === 0;
-
-  useEffect(() => {
-    getCourses();
-  }, []);
 
   return (
     <>
