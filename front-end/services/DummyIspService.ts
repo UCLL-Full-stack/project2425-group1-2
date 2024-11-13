@@ -1,6 +1,12 @@
 import { ErrorState } from "@/types/errorState";
 import { students } from "./DummyStudentService";
-import { CourseShort, CreateISPView, ISP, UpdateISPView, ISPStatus } from "../types/index";
+import {
+  CourseShort,
+  CreateISPView,
+  ISP,
+  UpdateISPView,
+  ISPStatus,
+} from "../types/index";
 import CourseService from "./CourseService";
 
 let isps: ISP[] = [
@@ -43,7 +49,7 @@ let isps: ISP[] = [
     startYear: 2024,
     courses: [],
     student: { id: students[4].id, name: students[4].name },
-  }
+  },
 ];
 
 const getAllISPShort = async (errorCallback?: (error: ErrorState) => void) => {
@@ -52,7 +58,7 @@ const getAllISPShort = async (errorCallback?: (error: ErrorState) => void) => {
     status: isp.status,
     totalCredits: isp.totalCredits,
     startYear: isp.startYear,
-    studentId: { id: isp.student.id, name: isp.student.name },
+    student: { id: isp.student.id, name: isp.student.name },
   }));
 };
 
@@ -73,7 +79,10 @@ const getISPShortByStudentId = async (
   return studentISPs;
 };
 
-const getISPById = async (id: number, errorCallback?: (error: ErrorState) => void) => {
+const getISPById = async (
+  id: number,
+  errorCallback?: (error: ErrorState) => void
+) => {
   const isp = isps.find((isp) => isp.id === id);
   if (!isp) {
     if (errorCallback) {
@@ -91,7 +100,9 @@ const createISP = async (
   errorCallback?: (error: ErrorState) => void
 ) => {
   const exists = isps.some(
-    (isp) => isp.startYear === ispData.startYear && isp.student.id === ispData.studentId
+    (isp) =>
+      isp.startYear === ispData.startYear &&
+      isp.student.id === ispData.studentId
   );
   if (exists) {
     if (errorCallback) {
@@ -108,7 +119,10 @@ const createISP = async (
     totalCredits: ispData.totalCredits,
     startYear: ispData.startYear,
     courses: [],
-    student: { id: ispData.studentId, name: students[ispData.studentId - 1].name },
+    student: {
+      id: ispData.studentId,
+      name: students[ispData.studentId - 1].name,
+    },
   };
   isps.push(newISP);
   return newISP;
@@ -128,14 +142,21 @@ const updateISP = async (
   isp.status = ispData.status;
 
   let totalCourseCredits = 0;
-  let courses = await Promise.all(ispData.courses.map(async (courseId) => {
-    const course = await CourseService.getCourseById(courseId, errorCallback);
-    if (!course) {
-      return null;
-    }
-    totalCourseCredits += course.credits;
-    return { id: courseId, name: course.name, phase: course.phase, credits: course.credits };
-  }));
+  let courses = await Promise.all(
+    ispData.courses.map(async (courseId) => {
+      const course = await CourseService.getCourseById(courseId, errorCallback);
+      if (!course) {
+        return null;
+      }
+      totalCourseCredits += course.credits;
+      return {
+        id: courseId,
+        name: course.name,
+        phase: course.phase,
+        credits: course.credits,
+      };
+    })
+  );
 
   if (totalCourseCredits > isp.totalCredits) {
     if (errorCallback) {
@@ -147,7 +168,7 @@ const updateISP = async (
     return null;
   }
 
-  isp.courses = courses.filter(course => course !== null) as CourseShort[];
+  isp.courses = courses.filter((course) => course !== null) as CourseShort[];
   isp.status = ispData.status;
   return isp;
 };
@@ -179,14 +200,21 @@ const updateISPByStudentId = async (
   }
 
   let totalCourseCredits = 0;
-  let courses = await Promise.all(ispData.courses.map(async (courseId) => {
-    const course = await CourseService.getCourseById(courseId, errorCallback);
-    if (!course) {
-      return null;
-    }
-    totalCourseCredits += course.credits;
-    return { id: courseId, name: course.name, phase: course.phase, credits: course.credits };
-  }));
+  let courses = await Promise.all(
+    ispData.courses.map(async (courseId) => {
+      const course = await CourseService.getCourseById(courseId, errorCallback);
+      if (!course) {
+        return null;
+      }
+      totalCourseCredits += course.credits;
+      return {
+        id: courseId,
+        name: course.name,
+        phase: course.phase,
+        credits: course.credits,
+      };
+    })
+  );
 
   if (totalCourseCredits > isp.totalCredits) {
     if (errorCallback) {
@@ -198,12 +226,15 @@ const updateISPByStudentId = async (
     return null;
   }
 
-  isp.courses = courses.filter(course => course !== null) as CourseShort[];
+  isp.courses = courses.filter((course) => course !== null) as CourseShort[];
   isp.status = ispData.status;
   return isp;
 };
 
-const deleteISP = async (id: number, errorCallback?: (error: ErrorState) => void) => {
+const deleteISP = async (
+  id: number,
+  errorCallback?: (error: ErrorState) => void
+) => {
   const index = isps.findIndex((isp) => isp.id === id);
   if (index === -1) {
     if (errorCallback) {
@@ -215,4 +246,14 @@ const deleteISP = async (id: number, errorCallback?: (error: ErrorState) => void
     return null;
   }
   return isps.splice(index, 1)[0];
+};
+
+export default {
+  getAllISPShort,
+  getISPShortByStudentId,
+  getISPById,
+  createISP,
+  updateISP,
+  updateISPByStudentId,
+  deleteISP,
 };

@@ -2,6 +2,7 @@ import React from "react";
 import { Course, CourseShort } from "@/types";
 import CourseShortEditableItem from "./CourseShortEditableItem";
 import CourseDetailedEditableItem from "./CourseDetailedEditableItem";
+import { getDefaultCourse } from "@/utils/defaultTypes";
 
 interface ManageCourseOverviewSectionProps {
   courses: Array<CourseShort>;
@@ -20,17 +21,9 @@ const ManageCourseOverviewSection = React.memo(({
   setCreatingCourse,
   toggleCourseDetails,
 }: ManageCourseOverviewSectionProps) => {
-  const handleCreatingCourse = async () => {
-    const course: Course = {
-      id: -1,
-      name: "",
-      description: "",
-      phase: 1,
-      credits: 1,
-      lecturers: [],
-      isElective: false,
-      requiredPassedCourses: [],
-    };
+
+  const handleCreatingCourse = () => {
+    const course: Course = getDefaultCourse();
     setCreatingCourse(course);
   };
 

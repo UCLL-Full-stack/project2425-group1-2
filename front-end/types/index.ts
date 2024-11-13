@@ -6,7 +6,7 @@ export type Course = {
   credits: number;
   lecturers: string[];
   isElective: boolean;
-  requiredPassedCourses: { id: number, name: string }[];
+  requiredPassedCourses: { id: number; name: string }[];
 };
 
 export type CourseShort = {
@@ -31,7 +31,6 @@ export type CourseUpdateView = {
   requiredPassedCourses: number[];
 };
 
-
 export function convertCourseToUpdateView(course: Course): CourseUpdateView {
   return {
     name: course.name,
@@ -40,10 +39,9 @@ export function convertCourseToUpdateView(course: Course): CourseUpdateView {
     credits: course.credits,
     lecturers: course.lecturers,
     isElective: course.isElective,
-    requiredPassedCourses: course.requiredPassedCourses.map(c => c.id),
+    requiredPassedCourses: course.requiredPassedCourses.map((c) => c.id),
   };
 }
-
 
 export type Student = {
   id: number;
@@ -51,7 +49,7 @@ export type Student = {
   email: string;
   password: string;
   nationality?: string;
-  passedCourses: { id: number, name: string }[];
+  passedCourses: { id: number; name: string }[];
 };
 
 export type UserShort = {
@@ -67,19 +65,21 @@ export type StudentUpdateView = {
   passedCourses: number[];
 };
 
-export function convertStudentToUpdateView(student: Student): StudentUpdateView {
+export function convertStudentToUpdateView(
+  student: Student
+): StudentUpdateView {
   return {
     name: student.name,
     email: student.email,
     password: student.password,
     nationality: student.nationality,
-    passedCourses: student.passedCourses.map(c => c.id),
+    passedCourses: student.passedCourses.map((c) => c.id),
   };
 }
 
 export enum ISPStatus {
   SUBMITTED = "SUBMITTED",
-  NOTSUBMITTED = "NOTSUBMITTED"
+  NOTSUBMITTED = "NOTSUBMITTED",
 }
 
 export type ISP = {
@@ -96,7 +96,7 @@ export type ISPShort = {
   status: ISPStatus;
   totalCredits: number;
   startYear: number;
-  studentId: { id: number, name: string };
+  student: { id: number; name: string };
 };
 
 export type CreateISPView = {
@@ -119,7 +119,7 @@ export function convertISPToUpdateView(isp: ISP): UpdateISPView {
     totalCredits: isp.totalCredits,
     startYear: isp.startYear,
     status: isp.status,
-    courses: isp.courses.map(course => course.id),
+    courses: isp.courses.map((course) => course.id),
   };
 }
 
@@ -129,6 +129,6 @@ export function convertISPToCreateView(isp: ISP): CreateISPView {
     startYear: isp.startYear,
     studentId: isp.student.id,
     status: isp.status,
-    courses: isp.courses.map(course => course.id),
+    courses: isp.courses.map((course) => course.id),
   };
 }

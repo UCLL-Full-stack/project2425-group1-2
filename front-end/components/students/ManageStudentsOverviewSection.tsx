@@ -1,9 +1,10 @@
 import React from "react";
-import { Student, StudentShort } from "@/types";
+import { Student, UserShort } from "@/types";
 import StudentEditableItem from "./StudentEditableItem";
+import { getDefaultStudent } from "@/utils/defaultTypes";
 
 interface ManageStudentsOverviewSectionProps {
-  students: StudentShort[];
+  students: UserShort[];
   isActive: boolean;
   redactorStudent: (studentId: number) => Promise<void>;
   setCreatingStudent: (student: Student) => void;
@@ -16,14 +17,8 @@ const ManageStudentsOverviewSection = ({
   setCreatingStudent,
 }: ManageStudentsOverviewSectionProps) => {
 
-  const handleCreatingStudent = async () => {
-    const student: Student = {
-      id: -1,
-      name: "",
-      email: "",
-      password: "",
-      passedCourses: [],
-    };
+  const handleCreatingStudent = () => {
+    const student: Student = getDefaultStudent();
     setCreatingStudent(student);
   };
 

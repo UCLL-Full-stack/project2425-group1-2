@@ -1,10 +1,10 @@
 import React from "react";
-import { Student, StudentShort } from "@/types";
+import { Student, UserShort } from "@/types";
 import StudentEditableItem from "./StudentEditableItem";
 import StudentLinkItem from "./StudentLinkItem";
 
 interface StudentsOverviewSectionProps {
-  students: Array<StudentShort>;
+  students: Array<UserShort>;
   isActive: boolean;
   url: string;
 };

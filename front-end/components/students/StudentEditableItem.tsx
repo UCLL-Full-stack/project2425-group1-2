@@ -1,8 +1,8 @@
 import React from "react";
-import { StudentShort } from "@/types";
+import { UserShort } from "@/types";
 
 interface StudentEditableItemProps {
-  student: StudentShort;
+  student: UserShort;
   redactorStudent: (studentId: number) => Promise<void>;
   isActive: boolean;
 };

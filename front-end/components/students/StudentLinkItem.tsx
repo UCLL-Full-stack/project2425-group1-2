@@ -1,9 +1,9 @@
 import React from "react";
-import { StudentShort } from "@/types";
+import { UserShort } from "@/types";
 import Link from "next/link";
 
 interface StudentLinkItemProps {
-  student: StudentShort;
+  student: UserShort;
   href: string;
   isActive: boolean;
 }
