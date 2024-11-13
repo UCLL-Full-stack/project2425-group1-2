@@ -1,12 +1,12 @@
 import { ErrorState } from "@/types/errorState";
 import { students } from "./DummyStudentService";
-import { CourseShort, CreateISPView, ISP, UpdateISPView } from "../types/index";
+import { CourseShort, CreateISPView, ISP, UpdateISPView, ISPStatus } from "../types/index";
 import CourseService from "./CourseService";
 
 let isps: ISP[] = [
   {
     id: 1,
-    status: "SUBMITTED",
+    status: ISPStatus.SUBMITTED,
     totalCredits: 30,
     startYear: 2024,
     courses: [],
@@ -14,7 +14,7 @@ let isps: ISP[] = [
   },
   {
     id: 2,
-    status: "NOTSUBMITTED",
+    status: ISPStatus.NOTSUBMITTED,
     totalCredits: 20,
     startYear: 2024,
     courses: [],
@@ -22,7 +22,7 @@ let isps: ISP[] = [
   },
   {
     id: 3,
-    status: "SUBMITTED",
+    status: ISPStatus.SUBMITTED,
     totalCredits: 25,
     startYear: 2024,
     courses: [],
@@ -30,7 +30,7 @@ let isps: ISP[] = [
   },
   {
     id: 4,
-    status: "NOTSUBMITTED",
+    status: ISPStatus.NOTSUBMITTED,
     totalCredits: 35,
     startYear: 2024,
     courses: [],
@@ -38,7 +38,7 @@ let isps: ISP[] = [
   },
   {
     id: 5,
-    status: "SUBMITTED",
+    status: ISPStatus.SUBMITTED,
     totalCredits: 40,
     startYear: 2024,
     courses: [],
@@ -46,13 +46,13 @@ let isps: ISP[] = [
   }
 ];
 
-const getISPShorts = async (errorCallback?: (error: ErrorState) => void) => {
+const getAllISPShort = async (errorCallback?: (error: ErrorState) => void) => {
   return isps.map((isp) => ({
     id: isp.id,
     status: isp.status,
     totalCredits: isp.totalCredits,
     startYear: isp.startYear,
-    studentId: isp.student.id,
+    studentId: { id: isp.student.id, name: isp.student.name },
   }));
 };
 
@@ -86,7 +86,6 @@ const getISPById = async (id: number, errorCallback?: (error: ErrorState) => voi
   }
   return isp;
 };
-
 const createISP = async (
   ispData: CreateISPView,
   errorCallback?: (error: ErrorState) => void
@@ -103,9 +102,9 @@ const createISP = async (
     }
     return null;
   }
-  const newISP = {
+  const newISP: ISP = {
     id: isps.length + 1,
-    status: "NOTSUBMITTED",
+    status: ISPStatus.NOTSUBMITTED,
     totalCredits: ispData.totalCredits,
     startYear: ispData.startYear,
     courses: [],
@@ -128,21 +127,35 @@ const updateISP = async (
   isp.totalCredits = ispData.totalCredits;
   isp.status = ispData.status;
 
+  let totalCourseCredits = 0;
   let courses = await Promise.all(ispData.courses.map(async (courseId) => {
     const course = await CourseService.getCourseById(courseId, errorCallback);
     if (!course) {
       return null;
     }
+    totalCourseCredits += course.credits;
     return { id: courseId, name: course.name, phase: course.phase, credits: course.credits };
   }));
+
+  if (totalCourseCredits > isp.totalCredits) {
+    if (errorCallback) {
+      errorCallback({
+        status: "application error",
+        message: `Total course credits exceed the ISP's total credits.`,
+      });
+    }
+    return null;
+  }
+
   isp.courses = courses.filter(course => course !== null) as CourseShort[];
+  isp.status = ispData.status;
   return isp;
 };
 
 const updateISPByStudentId = async (
   studentId: number,
   id: number,
-  ispData: { status: string; courses: number[] },
+  ispData: { status: ISPStatus; courses: number[] },
   errorCallback?: (error: ErrorState) => void
 ) => {
   const isp = isps.find((isp) => isp.id === id && isp.student.id === studentId);
@@ -155,7 +168,7 @@ const updateISPByStudentId = async (
     }
     return null;
   }
-  if (isp.status === "SUBMITTED") {
+  if (isp.status === ISPStatus.SUBMITTED) {
     if (errorCallback) {
       errorCallback({
         status: "application error",
@@ -164,7 +177,29 @@ const updateISPByStudentId = async (
     }
     return null;
   }
-  Object.assign(isp, ispData);
+
+  let totalCourseCredits = 0;
+  let courses = await Promise.all(ispData.courses.map(async (courseId) => {
+    const course = await CourseService.getCourseById(courseId, errorCallback);
+    if (!course) {
+      return null;
+    }
+    totalCourseCredits += course.credits;
+    return { id: courseId, name: course.name, phase: course.phase, credits: course.credits };
+  }));
+
+  if (totalCourseCredits > isp.totalCredits) {
+    if (errorCallback) {
+      errorCallback({
+        status: "application error",
+        message: `Total course credits exceed the ISP's total credits.`,
+      });
+    }
+    return null;
+  }
+
+  isp.courses = courses.filter(course => course !== null) as CourseShort[];
+  isp.status = ispData.status;
   return isp;
 };
 
@@ -181,15 +216,3 @@ const deleteISP = async (id: number, errorCallback?: (error: ErrorState) => void
   }
   return isps.splice(index, 1)[0];
 };
-
-const ISPService = {
-  getISPShorts,
-  getISPShortByStudentId,
-  getISPById,
-  createISP,
-  updateISP,
-  updateISPByStudentId,
-  deleteISP,
-};
-
-export default ISPService;

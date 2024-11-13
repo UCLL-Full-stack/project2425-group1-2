@@ -54,7 +54,7 @@ export type Student = {
   passedCourses: { id: number, name: string }[];
 };
 
-export type StudentShort = {
+export type UserShort = {
   id: number;
   name: string;
 };
@@ -77,9 +77,14 @@ export function convertStudentToUpdateView(student: Student): StudentUpdateView 
   };
 }
 
+export enum ISPStatus {
+  SUBMITTED = "SUBMITTED",
+  NOTSUBMITTED = "NOTSUBMITTED"
+}
+
 export type ISP = {
   id: number;
-  status: string;
+  status: ISPStatus;
   totalCredits: number;
   startYear: number;
   courses: CourseShort[];
@@ -88,7 +93,7 @@ export type ISP = {
 
 export type ISPShort = {
   id: number;
-  status: string;
+  status: ISPStatus;
   totalCredits: number;
   startYear: number;
   studentId: { id: number, name: string };
@@ -98,12 +103,14 @@ export type CreateISPView = {
   totalCredits: number;
   startYear: number;
   studentId: number;
+  status: ISPStatus;
+  courses: number[];
 };
 
 export type UpdateISPView = {
   totalCredits: number;
   startYear: number;
-  status: string;
+  status: ISPStatus;
   courses: number[];
 };
 
@@ -121,5 +128,7 @@ export function convertISPToCreateView(isp: ISP): CreateISPView {
     totalCredits: isp.totalCredits,
     startYear: isp.startYear,
     studentId: isp.student.id,
+    status: isp.status,
+    courses: isp.courses.map(course => course.id),
   };
 }
