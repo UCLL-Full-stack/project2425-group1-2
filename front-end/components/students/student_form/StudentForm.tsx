@@ -4,6 +4,7 @@ import StudentFormButtons from "../../forms/FormButtons";
 import FormInput from "../../forms/FormInput";
 import StudentPassedCoursesInput from "./StudentPassedCoursesInput";
 import StudentNationalityInput from "./StudentNationalityInput";
+import { ErrorState } from "@/types/errorState";
 
 interface StudentFormProps {
   student: Student | null;
@@ -23,7 +24,7 @@ const StudentForm = ({
   onDelete,
 }: StudentFormProps) => {
   const [formData, setFormData] = useState(student);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [errors, setErrors] = useState<ErrorState>({});
 
   useEffect(() => {
     setErrors({});
@@ -35,7 +36,7 @@ const StudentForm = ({
   }
 
   const validate = () => {
-    const newErrors: { [key: string]: string } = {};
+    const newErrors: ErrorState = {};
     if (!formData.name) newErrors.name = "Student name is required.";
     if (!formData.email) newErrors.email = "Email is required.";
     if (!formData.password) newErrors.password = "Password is required.";

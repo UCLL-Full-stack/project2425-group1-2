@@ -1,3 +1,4 @@
+import { ErrorState } from "@/types/errorState";
 import { Student } from "../types/index";
 
 let students: Student[] = [
@@ -43,17 +44,17 @@ let students: Student[] = [
   },
 ];
 
-const getAllStudents = async (errorCallback?: (error: any) => void) => {
+const getAllStudents = async (errorCallback?: (error: ErrorState) => void) => {
   return students;
 };
 
-const getAllShortStudents = async (errorCallback?: (error: any) => void) => {
+const getAllShortStudents = async (errorCallback?: (error: ErrorState) => void) => {
   return students.map((student) => ({ id: student.id, name: student.name }));
 };
 
 const getStudentById = async (
   id: number,
-  errorCallback?: (error: any) => void
+  errorCallback?: (error: ErrorState) => void
 ) => {
   const student = students.find((student) => student.id === id);
   if (!student && errorCallback) {
@@ -67,7 +68,7 @@ const getStudentById = async (
 
 const createStudent = async (
   student: Student,
-  errorCallback?: (error: any) => void
+  errorCallback?: (error: ErrorState) => void
 ) => {
   const newStudent = { ...student, id: students.length + 1 };
   students.push(newStudent as Student);
@@ -77,7 +78,7 @@ const createStudent = async (
 const updateStudent = async (
   id: number,
   student: Student,
-  errorCallback?: (error: any) => void
+  errorCallback?: (error: ErrorState) => void
 ) => {
   const index = students.findIndex((s) => s.id === id);
   if (index === -1) {
@@ -95,7 +96,7 @@ const updateStudent = async (
 
 const deleteStudent = async (
   id: number,
-  errorCallback?: (error: any) => void
+  errorCallback?: (error: ErrorState) => void
 ) => {
   const index = students.findIndex((student) => student.id === id);
   if (index === -1) {

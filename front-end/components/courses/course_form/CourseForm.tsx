@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import CourseFormInput from "../../forms/FormInput";
 import CourseLecturersInput from "./CourseLecturersInput";
 import CourseRequiredCoursesInput from "./CourseRequiredCoursesInput";
+import { ErrorState } from "@/types/errorState";
 
 interface CourseFormProps {
   course: Course | null;
@@ -21,7 +22,7 @@ const CourseForm: React.FC<CourseFormProps> = ({
   onDelete,
 }) => {
   const [formData, setFormData] = useState(course);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [errors, setErrors] = useState<ErrorState>({});
 
   useEffect(() => {
     setErrors({});
@@ -33,7 +34,7 @@ const CourseForm: React.FC<CourseFormProps> = ({
   }
 
   const validate = () => {
-    const newErrors: { [key: string]: string } = {};
+    const newErrors: ErrorState = {};
     if (!formData.name) newErrors.name = "Course name is required.";
     if (!formData.description)
       newErrors.description = "Description is required.";

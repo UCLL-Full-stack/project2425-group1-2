@@ -1,9 +1,10 @@
 import { BACKEND_APP_URL } from "@/utils/urls";
 import { StudentUpdateView } from "../types/index";
+import { ErrorState } from "@/types/errorState";
 
 const URL = BACKEND_APP_URL + "/students";
 
-const handleResponse = async (response: Response, errorCallback?: (error: any) => void) => {
+const handleResponse = async (response: Response, errorCallback?: (error: ErrorState) => void) => {
   const data = await response.json();
   if (!response.ok) {
     if (errorCallback) {
@@ -13,22 +14,22 @@ const handleResponse = async (response: Response, errorCallback?: (error: any) =
   return data;
 };
 
-const getAllStudents = async (errorCallback?: (error: any) => void) => {
+const getAllStudents = async (errorCallback?: (error: ErrorState) => void) => {
   const response = await fetch(URL);
   return handleResponse(response, errorCallback);
 };
 
-const getAllShortStudents = async (errorCallback?: (error: any) => void) => {
+const getAllShortStudents = async (errorCallback?: (error: ErrorState) => void) => {
   const response = await fetch(`${URL}/shortform`);
   return handleResponse(response, errorCallback);
 };
 
-const getStudentById = async (id: number, errorCallback?: (error: any) => void) => {
+const getStudentById = async (id: number, errorCallback?: (error: ErrorState) => void) => {
   const response = await fetch(`${URL}/${id}`);
   return handleResponse(response, errorCallback);
 };
 
-const createStudent = async (student: StudentUpdateView, errorCallback?: (error: any) => void) => {
+const createStudent = async (student: StudentUpdateView, errorCallback?: (error: ErrorState) => void) => {
   const response = await fetch(URL, {
     method: "POST",
     headers: {
@@ -39,7 +40,7 @@ const createStudent = async (student: StudentUpdateView, errorCallback?: (error:
   return handleResponse(response, errorCallback);
 };
 
-const updateStudent = async (id: number, student: StudentUpdateView, errorCallback?: (error: any) => void) => {
+const updateStudent = async (id: number, student: StudentUpdateView, errorCallback?: (error: ErrorState) => void) => {
   const response = await fetch(`${URL}/${id}`, {
     method: "PUT",
     headers: {
@@ -50,7 +51,7 @@ const updateStudent = async (id: number, student: StudentUpdateView, errorCallba
   return handleResponse(response, errorCallback);
 };
 
-const deleteStudent = async (id: number, errorCallback?: (error: any) => void) => {
+const deleteStudent = async (id: number, errorCallback?: (error: ErrorState) => void) => {
   const response = await fetch(`${URL}/${id}`, {
     method: "DELETE",
     headers: {

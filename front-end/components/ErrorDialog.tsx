@@ -1,8 +1,9 @@
+import { ErrorState } from "@/types/errorState";
 import React from "react";
 // You should ensure that errors are not null and more than 0 before rendering the ErrorDialog component.
 type ErrorDialogProps = {
-  errors: { [key: string]: string };
-  setErrors: (errors: { [key: string]: string }) => void;
+  errors: ErrorState;
+  setErrors: (errors: ErrorState) => void;
 };
 
 const ErrorDialog = React.memo(({ errors, setErrors }: ErrorDialogProps) => {
