@@ -1,7 +1,7 @@
 import { ErrorState } from "@/types/errorState";
 import { Student } from "../types/index";
 
-let students: Student[] = [
+export let students: Student[] = [
   {
     id: 1,
     name: "Alice Johnson",

@@ -76,3 +76,50 @@ export function convertStudentToUpdateView(student: Student): StudentUpdateView 
     passedCourses: student.passedCourses.map(c => c.id),
   };
 }
+
+export type ISP = {
+  id: number;
+  status: string;
+  totalCredits: number;
+  startYear: number;
+  courses: CourseShort[];
+  student: { id: number; name: string };
+};
+
+export type ISPShort = {
+  id: number;
+  status: string;
+  totalCredits: number;
+  startYear: number;
+  studentId: { id: number, name: string };
+};
+
+export type CreateISPView = {
+  totalCredits: number;
+  startYear: number;
+  studentId: number;
+};
+
+export type UpdateISPView = {
+  totalCredits: number;
+  startYear: number;
+  status: string;
+  courses: number[];
+};
+
+export function convertISPToUpdateView(isp: ISP): UpdateISPView {
+  return {
+    totalCredits: isp.totalCredits,
+    startYear: isp.startYear,
+    status: isp.status,
+    courses: isp.courses.map(course => course.id),
+  };
+}
+
+export function convertISPToCreateView(isp: ISP): CreateISPView {
+  return {
+    totalCredits: isp.totalCredits,
+    startYear: isp.startYear,
+    studentId: isp.student.id,
+  };
+}
