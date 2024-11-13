@@ -2,7 +2,13 @@ import CourseForm from "@/components/courses/course_form/CourseForm";
 import ManageCourseOverviewSection from "@/components/courses/ManageCourseOverviewSection";
 import ErrorDialog from "@/components/ErrorDialog";
 import CourseService from "@/services/CourseService";
-import { Course, CourseItem, CourseShort, convertCourseToUpdateView } from "@/types";
+import {
+  Course,
+  CourseItem,
+  CourseShort,
+  convertCourseToUpdateView,
+} from "@/types";
+import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
@@ -15,10 +21,12 @@ export default function CourseManagement() {
   const [detailedCourses, setDetailedCourses] = useState<{
     [key: number]: Course;
   }>({});
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const { errors, setErrors, handleError } = useErrorHandler();
 
   const getCourses = async () => {
-    const courses: CourseShort[] = await CourseService.getAllShortCourses(handleError);
+    const courses: CourseShort[] = await CourseService.getAllShortCourses(
+      handleError
+    );
     setCourses(courses);
   };
 
@@ -53,14 +61,15 @@ export default function CourseManagement() {
       delete newCourses[courseId];
       setDetailedCourses(newCourses);
     } else {
-      const course: Course = await CourseService.getCourseById(courseId, handleError);
+      const course: Course = await CourseService.getCourseById(
+        courseId,
+        handleError
+      );
       setDetailedCourses({ ...detailedCourses, [courseId]: course });
     }
   };
 
-  const getPossibleRequiredPassedCourses = (
-    course: Course
-  ): CourseItem[] => {
+  const getPossibleRequiredPassedCourses = (course: Course): CourseItem[] => {
     return courses
       .filter(
         (c) =>
@@ -69,16 +78,6 @@ export default function CourseManagement() {
           course.requiredPassedCourses.findIndex((r) => r.id === c.id) === -1
       )
       .map((c) => ({ id: c.id, name: c.name }));
-  };
-
-  const handleError = (error: {}) => {
-    const newErrors: { [key: string]: string } = {};
-    if (error) {
-      Object.entries(error).forEach(([key, value]) => {
-        newErrors[key] = value as string;
-      });
-    }
-    setErrors(newErrors);
   };
 
   const overviewTabIsActive =

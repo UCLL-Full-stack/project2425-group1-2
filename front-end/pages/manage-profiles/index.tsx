@@ -4,6 +4,7 @@ import StudentForm from "@/components/students/student_form/StudentForm";
 import CourseService from "@/services/CourseService";
 import StudentService from "@/services/DummyStudentService";
 import { CourseItem, CourseShort, Student, StudentShort } from "@/types";
+import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
@@ -14,7 +15,7 @@ export default function ProfileManagement() {
   const [updatingStudent, setUpdatingStudent] = useState<Student | null>(null);
   const [creatingStudent, setCreatingStudent] = useState<Student | null>(null);
   const [courses, setCourses] = useState<CourseShort[]>([]);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const {errors, setErrors, handleError} = useErrorHandler();
 
   const getCourses = async () => {
     const courses: CourseShort[] = await CourseService.getAllShortCourses(handleError);
@@ -59,16 +60,6 @@ export default function ProfileManagement() {
     return courses
       .filter((course) => !passedCourseIds.has(course.id))
       .map((course) => ({ id: course.id, name: course.name }));
-  };
-
-  const handleError = (error: {}) => {
-    const newErrors: { [key: string]: string } = {};
-    if (error) {
-      Object.entries(error).forEach(([key, value]) => {
-        newErrors[key] = value as string;
-      });
-    }
-    setErrors(newErrors);
   };
   
   const overviewTabIsActive =
