@@ -1,4 +1,4 @@
-import { MANAGE_ISP_URL, PAYMENTS_URL, MANAGE_COURSES_URL, MANAGE_PROFILES_URL } from "@/utils/urls";
+import { MANAGE_ISP_URL, PAYMENTS_URL, MANAGE_COURSES_URL, MANAGE_PROFILES_URL, MY_ISP_URL } from "@/utils/urls";
 
 export type Tab = {
     name: string;
@@ -6,8 +6,9 @@ export type Tab = {
 };
 
 export const tabs: Tab[] = [
-    { name: "Manage ISP", href: MANAGE_ISP_URL },
+    { name: "My ISP", href: MY_ISP_URL },
     { name: "Payments", href: PAYMENTS_URL },
+    { name: "Manage ISP", href: MANAGE_ISP_URL },
     { name: "Manage Profiles", href: MANAGE_PROFILES_URL },
     { name: "Manage Courses", href: MANAGE_COURSES_URL },
 ];
