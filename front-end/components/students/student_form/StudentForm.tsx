@@ -16,7 +16,7 @@ interface StudentFormProps {
   onDelete?: (id: number) => Promise<void>;
 }
 
-const StudentForm = ({
+const StudentForm = React.memo(({
   student,
   getPossiblePassedCourses,
   onSubmit,
@@ -28,7 +28,6 @@ const StudentForm = ({
 
   useEffect(() => {
     setErrors({});
-    setFormData(student);
   }, [student]);
 
   if (!formData) {
@@ -153,6 +152,6 @@ const StudentForm = ({
       </div>
     )
   );
-};
+});
 
 export default StudentForm;

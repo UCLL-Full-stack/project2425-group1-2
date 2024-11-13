@@ -5,30 +5,31 @@ import CourseService from "@/services/CourseService";
 import StudentService from "@/services/DummyStudentService";
 import { CourseItem, CourseShort, Student, StudentShort } from "@/types";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
+import { useStudentsShortGetter } from "@/utils/hooks/useStudentsShortGetter";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
 const TITLE = "Manage Profiles";
 
 export default function ProfileManagement() {
-  const [students, setStudents] = useState<StudentShort[]>([]);
   const [updatingStudent, setUpdatingStudent] = useState<Student | null>(null);
   const [creatingStudent, setCreatingStudent] = useState<Student | null>(null);
   const [courses, setCourses] = useState<CourseShort[]>([]);
-  const {errors, setErrors, handleError} = useErrorHandler();
+  const { errors, setErrors, handleError } = useErrorHandler();
+  const { students } = useStudentsShortGetter(handleError);
 
   const getCourses = async () => {
-    const courses: CourseShort[] = await CourseService.getAllShortCourses(handleError);
+    const courses: CourseShort[] = await CourseService.getAllShortCourses(
+      handleError
+    );
     setCourses(courses);
-  }
-
-  const getStudents = async () => {
-    const students: StudentShort[] = await StudentService.getAllShortStudents(handleError);
-    setStudents(students);
   };
 
   const redactorStudent = async (id: number) => {
-    const student: Student | undefined = await StudentService.getStudentById(id, handleError);
+    const student: Student | undefined = await StudentService.getStudentById(
+      id,
+      handleError
+    );
     if (student) {
       setUpdatingStudent(student);
     }
@@ -38,37 +39,35 @@ export default function ProfileManagement() {
     // const updateStudentView = convertStudentToUpdateView(student);
     await StudentService.updateStudent(student.id, student, handleError);
     setUpdatingStudent(null);
-    getStudents();
   };
 
   const createStudent = async (student: Student) => {
     // const updateStudentView = convertStudentToUpdateView(student);
     await StudentService.createStudent(student, handleError);
     setCreatingStudent(null);
-    getStudents();
   };
 
   const deleteStudent = async (id: number) => {
     await StudentService.deleteStudent(id, handleError);
     setUpdatingStudent(null);
-    getStudents();
   };
 
   const getPossiblePassedCourses = (student: Student): CourseItem[] => {
-    const passedCourseIds = new Set(student.passedCourses.map((course) => course.id));
-  
+    const passedCourseIds = new Set(
+      student.passedCourses.map((course) => course.id)
+    );
+
     return courses
       .filter((course) => !passedCourseIds.has(course.id))
       .map((course) => ({ id: course.id, name: course.name }));
   };
-  
+
   const overviewTabIsActive =
     updatingStudent == null &&
     creatingStudent == null &&
     Object.keys(errors).length === 0;
 
   useEffect(() => {
-    getStudents();
     getCourses();
   }, []);
 

@@ -14,7 +14,7 @@ interface CourseFormProps {
   onDelete?: (id: number) => Promise<void>;
 }
 
-const CourseForm: React.FC<CourseFormProps> = ({
+const CourseForm: React.FC<CourseFormProps> = React.memo(({
   course,
   getPossibleRequiredCourses,
   onSubmit,
@@ -205,6 +205,6 @@ const CourseForm: React.FC<CourseFormProps> = ({
       </div>
     )
   );
-};
+});
 
 export default CourseForm;

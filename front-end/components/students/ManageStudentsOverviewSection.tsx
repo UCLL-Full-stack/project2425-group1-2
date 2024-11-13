@@ -3,7 +3,7 @@ import { Student, StudentShort } from "@/types";
 import StudentEditableItem from "./StudentEditableItem";
 
 interface ManageStudentsOverviewSectionProps {
-  students: Array<StudentShort>;
+  students: StudentShort[];
   isActive: boolean;
   redactorStudent: (studentId: number) => Promise<void>;
   setCreatingStudent: (student: Student) => void;
