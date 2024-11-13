@@ -1,16 +1,17 @@
-import { CourseItem, Student } from "@/types";
+import { EntityItem, Student } from "@/types";
 import React, { useEffect, useState } from "react";
 import StudentFormButtons from "../../forms/FormButtons";
 import FormInput from "../../forms/FormInput";
 import StudentPassedCoursesInput from "./StudentPassedCoursesInput";
 import StudentNationalityInput from "./StudentNationalityInput";
 import { ErrorState } from "@/types/errorState";
+import { validateStudent } from "@/utils/validators";
 
 interface StudentFormProps {
   student: Student | null;
   getPossiblePassedCourses: (
     student: Student
-  ) => CourseItem[];
+  ) => EntityItem[];
   onSubmit: (student: Student) => Promise<void>;
   onCancel: () => void;
   onDelete?: (id: number) => Promise<void>;
@@ -35,22 +36,6 @@ const StudentForm = React.memo(({
     return null;
   }
 
-  const validate = () => {
-    const newErrors: ErrorState = {};
-    if (!formData.name) newErrors.name = "Student name is required.";
-    if (!formData.email) newErrors.email = "Email is required.";
-    if (!formData.password) newErrors.password = "Password is required.";
-    if (
-      formData.passedCourses &&
-      formData.passedCourses.some((c) => c.id === -1)
-    )
-      newErrors.passedCourses = "Passed courses must be chosen.";
-
-    setErrors(newErrors);
-
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleDelete = async () => {
     if (student && onDelete) {
       await onDelete(student.id);
@@ -66,7 +51,7 @@ const StudentForm = React.memo(({
 
   const handlePassedCourseChange = (
     index: number,
-    value: CourseItem
+    value: EntityItem
   ) => {
     const newPassedCourses = [...formData.passedCourses];
     newPassedCourses[index] = value;
@@ -95,7 +80,7 @@ const StudentForm = React.memo(({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) {
+    if (!validateStudent(formData, setErrors)) {
       return;
     }
     await onSubmit(formData);

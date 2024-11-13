@@ -5,6 +5,7 @@ import FormInput from "../../forms/FormInput";
 import CourseLecturersInput from "./CourseLecturersInput";
 import EntityItemsInput from "../../forms/EntityItemsInput";
 import { ErrorState } from "@/types/errorState";
+import { validateCourse } from "@/utils/validators";
 
 interface CourseFormProps {
   course: Course | null;
@@ -14,13 +15,13 @@ interface CourseFormProps {
   onDelete?: (id: number) => Promise<void>;
 }
 
-const CourseForm: React.FC<CourseFormProps> = React.memo(({
+const CourseForm = React.memo(({
   course,
   getPossibleRequiredCourses,
   onSubmit,
   onCancel,
   onDelete,
-}) => {
+}: CourseFormProps) => {
   const [formData, setFormData] = useState(course);
   const [errors, setErrors] = useState<ErrorState>({});
 
@@ -32,28 +33,6 @@ const CourseForm: React.FC<CourseFormProps> = React.memo(({
   if (!formData) {
     return null;
   }
-
-  const validate = () => {
-    const newErrors: ErrorState = {};
-    if (!formData.name) newErrors.name = "Course name is required.";
-    if (!formData.description)
-      newErrors.description = "Description is required.";
-    if (formData.phase <= 0)
-      newErrors.phase = "Phase must be a positive number.";
-    if (formData.credits <= 0)
-      newErrors.credits = "Credits must be a positive number.";
-    if (formData.lecturers && formData.lecturers.some((l) => l === ""))
-      newErrors.lecturers = "Lecturers must be filled.";
-    if (
-      formData.requiredPassedCourses &&
-      formData.requiredPassedCourses.some((c) => c.id === -1)
-    )
-      newErrors.requiredPassedCourses = "Required courses must be chosen.";
-
-    setErrors(newErrors);
-
-    return Object.keys(newErrors).length === 0;
-  };
 
   const handleDelete = async () => {
     if (course && onDelete) {
@@ -129,7 +108,7 @@ const CourseForm: React.FC<CourseFormProps> = React.memo(({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) {
+    if (!validateCourse(formData, setErrors)) {
       return;
     }
     await onSubmit(formData);
