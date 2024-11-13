@@ -16,11 +16,6 @@ export type CourseShort = {
   credits: number;
 };
 
-export type CourseItem = {
-  id: number;
-  name: string;
-};
-
 export type CourseUpdateView = {
   name: string;
   description: string;
@@ -132,3 +127,8 @@ export function convertISPToCreateView(isp: ISP): CreateISPView {
     courses: isp.courses.map((course) => course.id),
   };
 }
+
+export type EntityItem = {
+  id: number;
+  name: string;
+};

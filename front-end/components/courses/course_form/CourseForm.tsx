@@ -1,14 +1,14 @@
 import FormButtons from "@/components/forms/FormButtons";
-import { Course, CourseItem } from "@/types";
+import { Course, EntityItem } from "@/types";
 import React, { useEffect, useState } from "react";
-import CourseFormInput from "../../forms/FormInput";
+import FormInput from "../../forms/FormInput";
 import CourseLecturersInput from "./CourseLecturersInput";
-import CourseRequiredCoursesInput from "./CourseRequiredCoursesInput";
+import EntityItemsInput from "../../forms/EntityItemsInput";
 import { ErrorState } from "@/types/errorState";
 
 interface CourseFormProps {
   course: Course | null;
-  getPossibleRequiredCourses: (course: Course) => CourseItem[];
+  getPossibleRequiredCourses: (course: Course) => EntityItem[];
   onSubmit: (course: Course) => Promise<void>;
   onCancel: () => void;
   onDelete?: (id: number) => Promise<void>;
@@ -144,7 +144,7 @@ const CourseForm: React.FC<CourseFormProps> = React.memo(({
             className="space-y-4 overflow-y-auto max-h-full pr-4 pb-6"
           >
             <h2 className="text-2xl mb-4 text-center mt-4">Update Course</h2>
-            <CourseFormInput
+            <FormInput
               name="name"
               labelText="Course Name"
               inputType="text"
@@ -152,7 +152,7 @@ const CourseForm: React.FC<CourseFormProps> = React.memo(({
               onChange={handleChange}
               error={errors.name}
             />
-            <CourseFormInput
+            <FormInput
               name="description"
               labelText="Description"
               inputType="textarea"
@@ -160,7 +160,7 @@ const CourseForm: React.FC<CourseFormProps> = React.memo(({
               onChange={handleChange}
               error={errors.description}
             />
-            <CourseFormInput
+            <FormInput
               name="phase"
               labelText="Phase"
               inputType="number"
@@ -168,7 +168,7 @@ const CourseForm: React.FC<CourseFormProps> = React.memo(({
               onChange={(e) => handlePhaseChange(parseInt(e.target.value))}
               error={errors.phase}
             />
-            <CourseFormInput
+            <FormInput
               name="credits"
               labelText="Credits"
               inputType="number"
@@ -183,20 +183,21 @@ const CourseForm: React.FC<CourseFormProps> = React.memo(({
               onChange={handleLecturerChange}
               error={errors.lecturers}
             />
-            <CourseFormInput
+            <FormInput
               name="isElective"
               labelText="Elective"
               inputType="checkbox"
               checked={formData.isElective}
               onChange={toggleElective}
             />
-            <CourseRequiredCoursesInput
-              requiredPassedCourses={formData.requiredPassedCourses}
+            <EntityItemsInput
+              entityItems={formData.requiredPassedCourses}
+              name="requiredPassedCourses"
+              labelText="Required Courses to Pass"
               onAdd={addEmptyRequiredPassedCourse}
               onRemove={removeRequiredPassedCourse}
               onChange={handleRequiredPassedCourseChange}
-              getPossibleRequiredCourses={getPossibleRequiredCourses}
-              formData={formData}
+              getAvailableEntities={() => getPossibleRequiredCourses(formData)}
               error={errors.requiredPassedCourses}
             />
             <FormButtons onCancel={onCancel} onDelete={handleDelete} />
