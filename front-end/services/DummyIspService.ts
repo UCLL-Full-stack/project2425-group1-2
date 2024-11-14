@@ -6,6 +6,7 @@ import {
   ISP,
   UpdateISPView,
   ISPStatus,
+  ISPShort,
 } from "../types/index";
 import CourseService from "./CourseService";
 
@@ -65,7 +66,7 @@ const getAllISPShort = async (errorCallback?: (error: ErrorState) => void) => {
 const getISPShortByStudentId = async (
   studentId: number,
   errorCallback?: (error: ErrorState) => void
-) => {
+): Promise<ISPShort[] | null> => {
   const studentISPs = isps.filter((isp) => isp.student.id === studentId);
   if (studentISPs.length === 0) {
     if (errorCallback) {
