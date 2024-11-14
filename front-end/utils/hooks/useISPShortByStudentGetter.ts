@@ -20,7 +20,7 @@ export const useISPShortByStudentGetter = (
 
   useEffect(() => {
     getISPs();
-  }, []);
+  }, [studentId]);
 
-  return { isps, setISP: setISPs, getISPs };
+  return { isps, setISPs, getISPs };
 };
