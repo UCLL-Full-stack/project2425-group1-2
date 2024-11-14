@@ -1,43 +1,39 @@
 import { Course, CourseShort } from "@/types";
-import { getDefaultCourse } from "@/utils/defaultTypes";
 import React from "react";
-import CourseEditableItem from "./CourseEditableItem";
+import CourseSelectableItem from "./CourseSelectableItem";
 
-interface ManageCourseOverviewSectionProps {
-  courses: Array<CourseShort>;
+interface SelectCourseSectionProps {
+  courses: CourseShort[];
   isActive: boolean;
   detailedCourses: { [key: number]: Course };
-  redactorCourse: (courseId: number) => Promise<void>;
+  isSelected: (courseId: number) => boolean;
   toggleCourseDetails: (courseId: number) => Promise<void>;
-  setCreatingCourse: (course: Course) => void;
+  toggleSelectCourse: (course: CourseShort) => void;
 }
 
-const ManageCourseOverviewSection = React.memo(
+const SelectCourseSection = React.memo(
   ({
     courses,
     isActive,
-    detailedCourses: detailedCoursesDictionary,
-    redactorCourse,
-    setCreatingCourse,
+    detailedCourses,
+    isSelected,
+    toggleSelectCourse,
     toggleCourseDetails,
-  }: ManageCourseOverviewSectionProps) => {
-    const handleCreatingCourse = () => {
-      const course: Course = getDefaultCourse();
-      setCreatingCourse(course);
-    };
-
+  }: SelectCourseSectionProps) => {
+    console.log("SelectCourseSection");
     return (
       <>
         <div className={`${isActive ? "" : "opacity-50"}`}>
-          <h1 className="text-center mt-5">Manage courses</h1>
+          <h1 className="text-center mt-5">Select Courses</h1>
           {courses && (
             <section className="ml-4 mr-64 mt-4 flex flex-col">
               {courses.map((course) => {
                 return (
-                  <CourseEditableItem
+                  <CourseSelectableItem
                     course={course}
-                    details={detailedCoursesDictionary[course.id]}
-                    redactorCourse={redactorCourse}
+                    details={detailedCourses[course.id]}
+                    selected={isSelected(course.id)}
+                    toggleSelectCourse={() => toggleSelectCourse(course)}
                     toggleCourseDetails={toggleCourseDetails}
                     isActive={isActive}
                   />
@@ -48,9 +44,9 @@ const ManageCourseOverviewSection = React.memo(
           <div className="fixed bottom-8 right-8">
             <button
               className="bg-safe hover:shadow-success p-3 rounded shadow-regular"
-              onClick={handleCreatingCourse}
+              onClick={() => {}}
             >
-              Create
+              Submit
             </button>
           </div>
         </div>
@@ -59,4 +55,4 @@ const ManageCourseOverviewSection = React.memo(
   }
 );
 
-export default ManageCourseOverviewSection;
+export default SelectCourseSection;

@@ -6,7 +6,7 @@ export type Course = {
   credits: number;
   lecturers: string[];
   isElective: boolean;
-  requiredPassedCourses: { id: number; name: string }[];
+  requiredPassedCourses: EntityItem[];
 };
 
 export type CourseShort = {
