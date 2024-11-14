@@ -23,11 +23,13 @@ const StudentsOverviewSection = ({
           <section className="ml-4 mr-64 mt-4 flex flex-row flex-wrap gap-8">
             {students.map((student) => {
               return (
+                <div key={student.id} className="flex">
                 <StudentLinkItem
                 student={student}
                 href={`${url}/${student.id}`}
                 isActive={isActive}
               />
+              </div>
               );
             })}
           </section>

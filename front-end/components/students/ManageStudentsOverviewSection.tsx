@@ -1,14 +1,13 @@
-import React from "react";
 import { Student, UserShort } from "@/types";
-import StudentEditableItem from "./StudentEditableItem";
 import { getDefaultStudent } from "@/utils/defaultTypes";
+import StudentEditableItem from "./StudentEditableItem";
 
 interface ManageStudentsOverviewSectionProps {
   students: UserShort[];
   isActive: boolean;
   redactorStudent: (studentId: number) => Promise<void>;
   setCreatingStudent: (student: Student) => void;
-};
+}
 
 const ManageStudentsOverviewSection = ({
   students,
@@ -16,7 +15,6 @@ const ManageStudentsOverviewSection = ({
   redactorStudent,
   setCreatingStudent,
 }: ManageStudentsOverviewSectionProps) => {
-
   const handleCreatingStudent = () => {
     const student: Student = getDefaultStudent();
     setCreatingStudent(student);
@@ -30,12 +28,13 @@ const ManageStudentsOverviewSection = ({
           <section className="ml-4 mr-64 mt-4 flex flex-row flex-wrap gap-8">
             {students.map((student) => {
               return (
-                <StudentEditableItem
-                student={student}
-                redactorStudent={redactorStudent}
-                isActive={isActive}
-                key={student.id}
-              />
+                <div key={student.id} className="flex">
+                  <StudentEditableItem
+                    student={student}
+                    redactorStudent={redactorStudent}
+                    isActive={isActive}
+                  />
+                </div>
               );
             })}
           </section>

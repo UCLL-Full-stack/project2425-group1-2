@@ -16,7 +16,7 @@ const StudentLinkItem = ({ student, href, isActive }: StudentLinkItemProps) => {
           className={`p-1 rounded shadow-regular bg-primary ${
             isActive
               ? "hover:shadow-success"
-              : "opcaity-50 cursor-not-allowed"
+              : "opacity-50 cursor-not-allowed"
           } align-top text-left w-64 h-64`}
           onClick={(e) => !isActive && e.preventDefault()}
         >
