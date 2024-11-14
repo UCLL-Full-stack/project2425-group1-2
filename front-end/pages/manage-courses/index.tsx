@@ -4,8 +4,12 @@ import ErrorDialog from "@/components/ErrorDialog";
 import CourseService from "@/services/CourseService";
 import { Course, EntityItem } from "@/types";
 import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
+import { useDetailedCoursesToggle } from "@/utils/hooks/useDetailedCoursesToggle";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
-import { mapCourseShortToEntityItem, mapCourseToUpdateView } from "@/utils/mappers";
+import {
+  mapCourseShortToEntityItem,
+  mapCourseToUpdateView,
+} from "@/utils/mappers";
 import Head from "next/head";
 import { useState } from "react";
 
@@ -14,11 +18,10 @@ const TITLE = "Manage Courses";
 export default function CourseManagement() {
   const [updatingCourse, setUpdatingCourse] = useState<Course | null>(null);
   const [creatingCourse, setCreatingCourse] = useState<Course | null>(null);
-  const [detailedCourses, setDetailedCourses] = useState<{
-    [key: number]: Course;
-  }>({});
   const { errors, setErrors, handleError } = useErrorHandler();
   const { courses, getCourses } = useCoursesShortGetter(handleError);
+  const { detailedCourses, toggleCourseDetails } =
+    useDetailedCoursesToggle(handleError);
 
   const redactorCourse = async (id: number) => {
     const course: Course = await CourseService.getCourseById(id, handleError);
@@ -43,20 +46,6 @@ export default function CourseManagement() {
     await CourseService.deleteCourses([id], handleError);
     setUpdatingCourse(null);
     await getCourses();
-  };
-
-  const toggleCourseDetails = async (courseId: number) => {
-    if (detailedCourses[courseId]) {
-      const newCourses = { ...detailedCourses };
-      delete newCourses[courseId];
-      setDetailedCourses(newCourses);
-    } else {
-      const course: Course = await CourseService.getCourseById(
-        courseId,
-        handleError
-      );
-      setDetailedCourses({ ...detailedCourses, [courseId]: course });
-    }
   };
 
   const getPossibleRequiredPassedCourses = (course: Course): EntityItem[] => {

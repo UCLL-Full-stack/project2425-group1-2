@@ -4,7 +4,7 @@ import SelectableItem from "../SelectableItem";
 import CourseShortView from "./CourseShortView";
 import CourseDetailsView from "./CourseDetailsView";
 
-interface CourseShortSelectableItemProps {
+interface CourseSelectableItemProps {
   course: CourseShort;
   selected: boolean;
   details?: {
@@ -18,7 +18,7 @@ interface CourseShortSelectableItemProps {
   isActive: boolean;
 }
 
-const CourseShortSelectableItem = React.memo(
+const CourseSelectableItem = React.memo(
   ({
     course,
     selected,
@@ -26,7 +26,7 @@ const CourseShortSelectableItem = React.memo(
     toggleSelectCourse,
     toggleCourseDetails,
     isActive,
-  }: CourseShortSelectableItemProps) => {
+  }: CourseSelectableItemProps) => {
     const handleToggleCourseDetails = async () => {
       if (isActive) {
         await toggleCourseDetails(course.id);
@@ -55,4 +55,4 @@ const CourseShortSelectableItem = React.memo(
   }
 );
 
-export default CourseShortSelectableItem;
+export default CourseSelectableItem;
