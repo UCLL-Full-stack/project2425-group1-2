@@ -2,12 +2,12 @@ import ErrorDialog from "@/components/ErrorDialog";
 import StudentsOverviewSection from "@/components/students/StudentsOverviewSection";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { useStudentsShortGetter } from "@/utils/hooks/useStudentsShortGetter";
-import { PAYMENTS_URL } from "@/utils/urls";
+import { MY_ISP_URL } from "@/utils/urls";
 import Head from "next/head";
 
-const TITLE = "Manage ISP";
+const TITLE = "My ISP";
 
-export default function ProfileManagement() {
+export default function MyISP() {
   const { errors, setErrors, handleError } = useErrorHandler();
   const { students } = useStudentsShortGetter(handleError);
 
@@ -21,7 +21,7 @@ export default function ProfileManagement() {
       <StudentsOverviewSection
         students={students}
         isActive={tabIsActive}
-        url={PAYMENTS_URL}
+        url={MY_ISP_URL}
       />
       {errors && Object.keys(errors).length > 0 && (
         <ErrorDialog errors={errors} setErrors={setErrors} />
