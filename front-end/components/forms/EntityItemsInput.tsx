@@ -7,7 +7,7 @@ interface EntityItemsInputProps {
   labelText: string;
   onAdd: () => void;
   onRemove: (index: number) => void;
-  onChange: (index: number, course: EntityItem) => void;
+  onChange: (index: number, entity: EntityItem) => void;
   getAvailableEntities: () => EntityItem[];
   error?: string;
 }
@@ -39,6 +39,7 @@ const EntityItemsInput = React.memo(
               <select
                 name={name}
                 id={name}
+                value={entity.id}
                 onChange={(e) =>
                   onChange(index, {
                     id: parseInt(e.target.value),
@@ -47,9 +48,11 @@ const EntityItemsInput = React.memo(
                 }
                 className="rounded-full h-full bg-inherit text-lg bg-gray-500 border-2 border-gray-700 focus:bg-gray-700 min-w-16"
               >
-                <option value={entity.id}>
-                  {entity.name || "Select a course"}
-                </option>
+                <option value="">{"Select a course"}</option>
+                {entity.id !== -1 && (
+                  <option value={entity.id}>{entity.name}</option>
+                )}{" "}
+                // get available entities filters out the selected entity
                 {getAvailableEntities().map((courseOption) => (
                   <option key={courseOption.id} value={courseOption.id}>
                     {courseOption.name}

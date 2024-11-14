@@ -26,18 +26,6 @@ export type CourseUpdateView = {
   requiredPassedCourses: number[];
 };
 
-export function convertCourseToUpdateView(course: Course): CourseUpdateView {
-  return {
-    name: course.name,
-    description: course.description,
-    phase: course.phase,
-    credits: course.credits,
-    lecturers: course.lecturers,
-    isElective: course.isElective,
-    requiredPassedCourses: course.requiredPassedCourses.map((c) => c.id),
-  };
-}
-
 export type Student = {
   id: number;
   name: string;
@@ -60,21 +48,9 @@ export type StudentUpdateView = {
   passedCourses: number[];
 };
 
-export function convertStudentToUpdateView(
-  student: Student
-): StudentUpdateView {
-  return {
-    name: student.name,
-    email: student.email,
-    password: student.password,
-    nationality: student.nationality,
-    passedCourses: student.passedCourses.map((c) => c.id),
-  };
-}
-
 export enum ISPStatus {
-  SUBMITTED = "SUBMITTED",
-  NOTSUBMITTED = "NOTSUBMITTED",
+  SUBMITTED = "Submitted",
+  NOTSUBMITTED = "Not submitted",
 }
 
 export type ISP = {
@@ -105,28 +81,10 @@ export type CreateISPView = {
 export type UpdateISPView = {
   totalCredits: number;
   startYear: number;
+  studentId: number;
   status: ISPStatus;
   courses: number[];
 };
-
-export function convertISPToUpdateView(isp: ISP): UpdateISPView {
-  return {
-    totalCredits: isp.totalCredits,
-    startYear: isp.startYear,
-    status: isp.status,
-    courses: isp.courses.map((course) => course.id),
-  };
-}
-
-export function convertISPToCreateView(isp: ISP): CreateISPView {
-  return {
-    totalCredits: isp.totalCredits,
-    startYear: isp.startYear,
-    studentId: isp.student.id,
-    status: isp.status,
-    courses: isp.courses.map((course) => course.id),
-  };
-}
 
 export type EntityItem = {
   id: number;

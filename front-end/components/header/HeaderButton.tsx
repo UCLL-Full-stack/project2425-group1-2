@@ -38,7 +38,7 @@ const sharedClassOptions = 'p-2 rounded';
             attributes: {},
         },
         inactive: {
-            class: 'shadow-button_pressed bg-secondary pointer-events-none',
+            class: 'shadow-activated bg-secondary pointer-events-none',
             attributes: {
                 disabled: true,
                 tabIndex: -1,
@@ -46,7 +46,7 @@ const sharedClassOptions = 'p-2 rounded';
             },
         },
         currentPage: {
-            class: 'shadow-button_pressed bg-success pointer-events-none',
+            class: 'shadow-activated bg-success pointer-events-none',
             attributes: {
                 disabled: true,
                 tabIndex: -1,

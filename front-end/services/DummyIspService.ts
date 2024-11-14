@@ -140,6 +140,7 @@ const updateISP = async (
   isp.startYear = ispData.startYear;
   isp.totalCredits = ispData.totalCredits;
   isp.status = ispData.status;
+  isp.student = { id: ispData.studentId, name: students[ispData.studentId - 1].name };
 
   let totalCourseCredits = 0;
   let courses = await Promise.all(

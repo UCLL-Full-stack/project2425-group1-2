@@ -1,12 +1,12 @@
-import { Course, CourseItem, Student } from "@/types";
+import { Course, EntityItem, Student } from "@/types";
 import React from "react";
 
 interface StudentPassedCoursesInputProps {
-  passedCourses: CourseItem[];
+  passedCourses: EntityItem[];
   onAdd: () => void;
   onRemove: (index: number) => void;
-  onChange: (index: number, course: CourseItem) => void;
-  getPossiblePassedCourses: () => CourseItem[]; // Invokes a lot of times
+  onChange: (index: number, course: EntityItem) => void;
+  getPossiblePassedCourses: () => EntityItem[]; // Invokes a lot of times
   error?: string;
 }
 

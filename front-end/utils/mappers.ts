@@ -36,6 +36,7 @@ export function mapISPToUpdateView(isp: ISP): UpdateISPView {
   return {
     totalCredits: isp.totalCredits,
     startYear: isp.startYear,
+    studentId: isp.student.id,
     status: isp.status,
     courses: isp.courses.map((course) => course.id),
   };

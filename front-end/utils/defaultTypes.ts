@@ -25,7 +25,7 @@ export const getDefaultCourse = (): Course => ({
     name: '',
     description: '',
     phase: 1,
-    credits: 1,
+    credits: 0,
     lecturers: [],
     isElective: false,
     requiredPassedCourses: []

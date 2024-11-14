@@ -2,13 +2,10 @@ import CourseForm from "@/components/courses/course_form/CourseForm";
 import ManageCourseOverviewSection from "@/components/courses/ManageCourseOverviewSection";
 import ErrorDialog from "@/components/ErrorDialog";
 import CourseService from "@/services/CourseService";
-import {
-  Course,
-  CourseItem,
-  convertCourseToUpdateView
-} from "@/types";
+import { Course, EntityItem } from "@/types";
 import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
+import { mapCourseShortToEntityItem, mapCourseToUpdateView } from "@/utils/mappers";
 import Head from "next/head";
 import { useState } from "react";
 
@@ -29,14 +26,14 @@ export default function CourseManagement() {
   };
 
   const updateCourse = async (course: Course) => {
-    const updateCourseView = convertCourseToUpdateView(course);
+    const updateCourseView = mapCourseToUpdateView(course);
     await CourseService.updateCourse(course.id, updateCourseView, handleError);
     setUpdatingCourse(null);
     await getCourses();
   };
 
   const createCourse = async (course: Course) => {
-    const updateCourseView = convertCourseToUpdateView(course);
+    const updateCourseView = mapCourseToUpdateView(course);
     await CourseService.createCourse(updateCourseView, handleError);
     setCreatingCourse(null);
     await getCourses();
@@ -62,7 +59,7 @@ export default function CourseManagement() {
     }
   };
 
-  const getPossibleRequiredPassedCourses = (course: Course): CourseItem[] => {
+  const getPossibleRequiredPassedCourses = (course: Course): EntityItem[] => {
     return courses
       .filter(
         (c) =>
@@ -70,7 +67,7 @@ export default function CourseManagement() {
           c.phase < course.phase &&
           course.requiredPassedCourses.findIndex((r) => r.id === c.id) === -1
       )
-      .map((c) => ({ id: c.id, name: c.name }));
+      .map(mapCourseShortToEntityItem);
   };
 
   const overviewTabIsActive =
@@ -93,6 +90,7 @@ export default function CourseManagement() {
       />
       <CourseForm
         course={updatingCourse || creatingCourse}
+        formName={updatingCourse ? "Update Course" : "Create Course"}
         getPossibleRequiredCourses={getPossibleRequiredPassedCourses}
         onSubmit={updatingCourse ? updateCourse : createCourse}
         onCancel={

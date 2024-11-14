@@ -2,7 +2,7 @@ import ErrorDialog from "@/components/ErrorDialog";
 import ManageStudentsOverviewSection from "@/components/students/ManageStudentsOverviewSection";
 import StudentForm from "@/components/students/student_form/StudentForm";
 import StudentService from "@/services/DummyStudentService";
-import { CourseItem, Student } from "@/types";
+import { EntityItem, Student } from "@/types";
 import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { useStudentsShortGetter } from "@/utils/hooks/useStudentsShortGetter";
@@ -49,7 +49,7 @@ export default function ProfileManagement() {
     await getStudents();
   };
 
-  const getPossiblePassedCourses = (student: Student): CourseItem[] => {
+  const getPossiblePassedCourses = (student: Student): EntityItem[] => {
     const passedCourseIds = new Set(
       student.passedCourses.map((course) => course.id)
     );
@@ -77,6 +77,7 @@ export default function ProfileManagement() {
       />
       <StudentForm
         student={updatingStudent || creatingStudent}
+        formName={updatingStudent ? "Update Student" : "Create Student"}
         getPossiblePassedCourses={getPossiblePassedCourses}
         onSubmit={updatingStudent ? updateStudent : createStudent}
         onCancel={

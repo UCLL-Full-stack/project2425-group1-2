@@ -1,5 +1,7 @@
 import React from "react";
 import { ISP, ISPShort } from "@/types";
+import { getDefaultISP } from "@/utils/defaultTypes";
+import ISPEditableItem from "./ISPEditableItem";
 
 interface ManageISPOverviewSectionProps {
   isps: Array<ISPShort>;
@@ -11,22 +13,12 @@ interface ManageISPOverviewSectionProps {
 const ManageISPOverviewSection = React.memo(({
   isps,
   isActive,
-  detailedISPs: detailedISPsDictionary,
   redactorISP,
   setCreatingISP,
-  toggleISPDetails,
 }: ManageISPOverviewSectionProps) => {
-  const handleCreatingISP = async () => {
-    const isp: ISP = {
-      id: -1,
-      name: "",
-      description: "",
-      phase: 1,
-      credits: 1,
-      lecturers: [],
-      isElective: false,
-      requiredPassedISPs: [],
-    };
+
+  const handleCreatingISP = () => {
+    const isp: ISP = getDefaultISP();
     setCreatingISP(isp);
   };
 
@@ -35,24 +27,12 @@ const ManageISPOverviewSection = React.memo(({
       <div className={`${isActive ? "" : "opacity-50"}`}>
         <h1 className="text-center mt-5">Manage isps</h1>
         {isps && (
-          <section className="ml-4 mr-64 mt-4 flex flex-col">
+          <section className="ml-4 mr-80 mt-4 flex flex-col">
             {isps.map((isp) => {
-              if (!detailedISPsDictionary[isp.id]) {
-                return (
-                  <ISPShortEditableItem
-                    isp={isp}
-                    redactorISP={redactorISP}
-                    toggleISPDetails={toggleISPDetails}
-                    isActive={isActive}
-                    key={isp.id}
-                  />
-                );
-              }
               return (
-                <ISPDetailedEditableItem
-                  isp={detailedISPsDictionary[isp.id]}
+                <ISPEditableItem
+                  isp={isp}
                   redactorISP={redactorISP}
-                  toggleISPDetails={toggleISPDetails}
                   isActive={isActive}
                   key={isp.id}
                 />
