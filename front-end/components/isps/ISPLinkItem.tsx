@@ -23,7 +23,7 @@ const ISPLinkItem = React.memo(({
     <>
       {isp && (
         <section className={`${sectionClass} w-full`}>
-          <div className="flex flex-row justify-between p-2">
+          <div className="flex flex-row justify-between p-4">
             <ISPShortView isp={isp} />
             <article className="flex flex-col gap-4 m-2">
               <Link

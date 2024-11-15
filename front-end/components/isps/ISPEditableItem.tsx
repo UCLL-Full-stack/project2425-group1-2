@@ -25,7 +25,7 @@ const ISPEditableItem = React.memo(
       <>
         {isp && (
           <section className={sectionClass}>
-            <div className="flex flex-row justify-between p-2">
+            <div className="flex flex-row justify-between p-4">
               <ISPShortView isp={isp} />
               <article className="ml-8">
                 <button
