@@ -10,7 +10,7 @@ const CourseShortView = React.memo(({ course }: CourseShortViewProps) => {
   const semester = course.phase % 2 === 0 ? 2 : 1;
 
   return (
-    <article className="flex flex-row gap-2 items-center">
+    <article className="flex flex-row gap-2">
       <p>{course.name}</p>
       <p>{year} Year</p>
       <p>{semester} Semester</p>

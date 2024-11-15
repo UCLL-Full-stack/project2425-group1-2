@@ -94,6 +94,7 @@ const getISPById = async (
     }
     return null;
   }
+  console.log(isp);
   return isp;
 };
 const createISP = async (
@@ -176,26 +177,16 @@ const updateISP = async (
 };
 
 const updateISPByStudentId = async (
-  studentId: number,
   id: number,
   ispData: { status: ISPStatus; courses: number[] },
   errorCallback?: (error: ErrorState) => void
 ) => {
-  const isp = isps.find((isp) => isp.id === id && isp.student.id === studentId);
+  const isp = isps.find((isp) => isp.id === id);
   if (!isp) {
     if (errorCallback) {
       errorCallback({
         status: "application error",
         message: `ISP with ID ${id} does not exist.`,
-      });
-    }
-    return null;
-  }
-  if (isp.status === ISPStatus.SUBMITTED) {
-    if (errorCallback) {
-      errorCallback({
-        status: "application error",
-        message: `ISP with ID ${id} has already been submitted.`,
       });
     }
     return null;

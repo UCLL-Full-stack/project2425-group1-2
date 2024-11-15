@@ -3,6 +3,7 @@ import React from "react";
 import SelectableItem from "../SelectableItem";
 import CourseShortView from "./CourseShortView";
 import CourseDetailsView from "./CourseDetailsView";
+import CourseItemLayout from "./CourseItemLayout";
 
 interface CourseSelectableItemProps {
   course: CourseShort;
@@ -27,30 +28,20 @@ const CourseSelectableItem = React.memo(
     toggleCourseDetails,
     isActive,
   }: CourseSelectableItemProps) => {
-    const handleToggleCourseDetails = async () => {
-      if (isActive) {
-        await toggleCourseDetails(course.id);
-      }
-    };
-
     return (
-      <section className="bg-primary shadow-regular mb-3">
+      <CourseItemLayout
+        course={course}
+        details={details}
+        toggleCourseDetails={toggleCourseDetails}
+        isActive={isActive}
+      >
         <SelectableItem
           toggleSelect={toggleSelectCourse}
           isActive={isActive}
           selected={selected}
-        >
-          <CourseShortView course={course} />
-          <article>
-            <button
-              className={`p-1 w-4 h-4 arrow-down border-gray-300`}
-              onClick={handleToggleCourseDetails}
-              disabled={!isActive}
-            ></button>
-          </article>
-        </SelectableItem>
-        {details && <CourseDetailsView details={details} />}
-      </section>
+        />
+        <CourseShortView course={course} />
+      </CourseItemLayout>
     );
   }
 );

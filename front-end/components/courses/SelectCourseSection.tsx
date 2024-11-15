@@ -20,7 +20,6 @@ const SelectCourseSection = React.memo(
     toggleSelectCourse,
     toggleCourseDetails,
   }: SelectCourseSectionProps) => {
-    console.log("SelectCourseSection");
     return (
       <>
         <div className={`${isActive ? "" : "opacity-50"}`}>
@@ -29,26 +28,20 @@ const SelectCourseSection = React.memo(
             <section className="ml-4 mr-64 mt-4 flex flex-col">
               {courses.map((course) => {
                 return (
-                  <CourseSelectableItem
-                    course={course}
-                    details={detailedCourses[course.id]}
-                    selected={isSelected(course.id)}
-                    toggleSelectCourse={() => toggleSelectCourse(course)}
-                    toggleCourseDetails={toggleCourseDetails}
-                    isActive={isActive}
-                  />
+                  <div key={course.id} className="flex flex-col">
+                    <CourseSelectableItem
+                      course={course}
+                      details={detailedCourses[course.id]}
+                      selected={isSelected(course.id)}
+                      toggleSelectCourse={() => toggleSelectCourse(course)}
+                      toggleCourseDetails={toggleCourseDetails}
+                      isActive={isActive}
+                    />
+                  </div>
                 );
               })}
             </section>
           )}
-          <div className="fixed bottom-8 right-8">
-            <button
-              className="bg-safe hover:shadow-success p-3 rounded shadow-regular"
-              onClick={() => {}}
-            >
-              Submit
-            </button>
-          </div>
         </div>
       </>
     );

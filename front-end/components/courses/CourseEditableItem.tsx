@@ -3,6 +3,7 @@ import React from "react";
 import EditableItem from "../EditableItem";
 import CourseShortView from "./CourseShortView";
 import CourseDetailsView from "./CourseDetailsView";
+import CourseItemLayout from "./CourseItemLayout";
 
 interface CourseEditableItemProps {
   course: CourseShort;
@@ -36,17 +37,15 @@ const CourseEditableItem = React.memo(
     };
 
     return (
-      <section className="bg-primary shadow-regular mb-3">
-        <EditableItem handleEdit={handleRedactorCourse} isActive={isActive}>
-          <CourseShortView course={course} />
-          <button
-            className={`p-1 w-4 h-4 arrow-down border-gray-300`}
-            onClick={handleToggleCourseDetails}
-            disabled={!isActive}
-          ></button>
-        </EditableItem>
-        {details && <CourseDetailsView details={details} />}
-      </section>
+      <CourseItemLayout
+        course={course}
+        details={details}
+        toggleCourseDetails={toggleCourseDetails}
+        isActive={isActive}
+      >
+        <EditableItem handleEdit={handleRedactorCourse} isActive={isActive} />
+        <CourseShortView course={course} />
+      </CourseItemLayout>
     );
   }
 );

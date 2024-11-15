@@ -21,7 +21,8 @@ module.exports = {
       },
       boxShadow: {
         regular: "2px 4px 4px rgba(0, 0, 0, 0.8)",
-        activated: "inset 2px 4px 8px rgba(0, 0, 0, 0.8)"
+        activated: "inset 2px 4px 8px rgba(0, 0, 0, 0.8)",
+        innerGlow: "inset 0 0 15px rgba(255, 255, 255, 0.8)"
       },
       spacing: {
         112: "28rem",

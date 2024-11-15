@@ -11,9 +11,9 @@ const TITLE = "your ISP";
 
 export default function StudentISP() {
   const router = useRouter();
-
   const { studentId } = router.query;
   const id = parseInt(studentId as string);
+  
   const { errors, setErrors } = useErrorHandler();
   const { isps } = useISPShortByStudentGetter(id);
 

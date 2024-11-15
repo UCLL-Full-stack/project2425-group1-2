@@ -2,22 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components{
+@layer components {
   .arrow-up {
     margin-right: 1rem;
     margin-left: 1rem;
-    border-width: 0 3px 3px 0;
+    border-width: 0 4px 4px 0;
     display: inline-block;
     padding: 3px;
-    transform: rotate(-135deg) ;
+    transform: rotate(-135deg);
   }
   .arrow-down {
     margin-right: 1rem;
     margin-left: 1rem;
-    border-width: 0 3px 3px 0;
+    border-width: 0 4px 4px 0;
     display: inline-block;
     padding: 3px;
     transform: rotate(45deg) translateY(-33%) translateX(-33%);
+  }
+  .check-box-clean {
+    @apply bg-transparent border-none text-transparent focus:ring-0 focus:ring-offset-0 checked:bg-none;
   }
 }
 
@@ -35,11 +38,11 @@
 
   --primary-glow: conic-gradient(
     from 180deg at 50% 50%,
-    #16abff33 0deg,
+    #14abff33 0deg,
     #0885ff33 55deg,
-    #54d6ff33 120deg,
-    #0071ff33 160deg,
-    transparent 360deg
+    #54d4ff33 120deg,
+    #0071ff33 140deg,
+    transparent 340deg
   );
   --secondary-glow: radial-gradient(
     rgba(255, 255, 255, 1),
@@ -59,7 +62,7 @@
   );
 
   --callout-rgb: 238, 240, 241;
-  --callout-border-rgb: 172, 175, 176;
+  --callout-border-rgb: 172, 175, 174;
   --card-rgb: 180, 185, 188;
   --card-border-rgb: 131, 134, 135;
 }
@@ -70,15 +73,15 @@
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
 
-    --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
+    --primary-glow: radial-gradient(rgba(1, 45, 255, 0.4), rgba(1, 45, 255, 0));
     --secondary-glow: linear-gradient(
       to bottom right,
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0.3)
+      rgba(1, 45, 255, 0),
+      rgba(1, 45, 255, 0),
+      rgba(1, 45, 255, 0.3)
     );
 
-    --tile-start-rgb: 2, 13, 46;
+    --tile-start-rgb: 2, 13, 44;
     --tile-end-rgb: 2, 5, 19;
     --tile-border: conic-gradient(
       #ffffff80,
