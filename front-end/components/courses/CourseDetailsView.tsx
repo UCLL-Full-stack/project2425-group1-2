@@ -12,7 +12,7 @@ interface CourseDetailsViewProps {
 
 const CourseDetailsView = React.memo(({ details }: CourseDetailsViewProps) => {
   return (
-    <section className="flex flex-col gap-2 p-2">
+    <section className="flex flex-col gap-4 p-4">
       <p>{details.description}</p>
       <p>
         Taught by:{" "}

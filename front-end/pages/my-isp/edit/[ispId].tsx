@@ -9,9 +9,11 @@ import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
 import { useDetailedCoursesToggle } from "@/utils/hooks/useDetailedCoursesToggle";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { useIspByIdGetter } from "@/utils/hooks/useIspByIdGetter";
+import { MY_ISP_URL } from "@/utils/urls";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 const TITLE = "Compose ISP";
 
@@ -168,6 +170,17 @@ export default function ComposeISP() {
             Submit
           </button>
         </section>
+      </section>
+
+      <section className="fixed bottom-10 left-8  ">
+        <Link
+          href={MY_ISP_URL + `/${isp.student.id}`}
+          className={
+            "hover:shadow-success rounded shadow-regular bg-indigo-950 p-3"
+          }
+        >
+          My ISP
+        </Link>
       </section>
 
       {errors && Object.keys(errors).length > 0 && (

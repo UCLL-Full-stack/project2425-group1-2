@@ -13,7 +13,7 @@ const FormLayout = React.memo(
         <div className="bg-primary pl-4 rounded-lg min-w-160 w-2/5 h-fit shadow-regular mb-10 relative">
           <form
             onSubmit={onSubmit}
-            className="space-y-4 overflow-y-auto max-h-85% h-auto pr-4 pb-6"
+            className="space-y-4 overflow-y-auto max-h-85%h h-auto pr-4 pb-6"
           >
             <h2 className="text-2xl mb-4 text-center mt-4">{formName}</h2>
             {children}

@@ -19,6 +19,15 @@
     padding: 3px;
     transform: rotate(45deg) translateY(-33%) translateX(-33%);
   }
+
+  .arrow-left {
+    margin-right: 1rem;
+    margin-left: 1rem;
+    border-width: 0 4px 4px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(135deg) translateY(17%) translateX(17%);
+  }
   .check-box-clean {
     @apply bg-transparent border-none text-transparent focus:ring-0 focus:ring-offset-0 checked:bg-none;
   }

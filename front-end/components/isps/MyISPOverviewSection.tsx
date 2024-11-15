@@ -12,10 +12,10 @@ const MyISPOverviewSection = React.memo(
   ({ isps, isActive }: MyISPOverviewSectionProps) => {
     return (
       <>
-        <div className={`${isActive ? "" : "opacity-50"}`}>
-          <h1 className="text-center mt-5">Manage isps</h1>
+        <div className={`  ${isActive ? "" : "opacity-50"}`}>
+          <h1 className="text-center mt-5">My ISP</h1>
           {isps && (
-            <section className="ml-4 mr-80 mt-4 flex flex-col">
+            <section className="m-8 h-auto w-fit max-w-75%w flex flex-col">
               {isps.map((isp) => {
                 return (
                   <div key={isp.id} className="flex">

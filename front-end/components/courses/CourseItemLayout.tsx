@@ -33,7 +33,7 @@ const CourseItemLayout = React.memo(
       <section className="bg-primary shadow-regular mb-3">
         <section className="flex flex-row justify-between p-4">
           <article className="flex flex-row gap-4">{children}</article>
-          <article className="flexjustify-self-end">
+          <article className="ml-8">
             <button
               className={`p-1 w-8 h-8 ${
                 details ? "arrow-up" : "arrow-down"

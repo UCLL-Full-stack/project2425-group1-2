@@ -1,6 +1,7 @@
 import React from "react";
 import { ISPShort, ISPStatus } from "@/types";
 import Link from "next/link";
+import ISPShortView from "./ISPShortView";
 
 interface ISPLinkItemProps {
   isp: ISPShort;
@@ -21,19 +22,9 @@ const ISPLinkItem = React.memo(({
   return (
     <>
       {isp && (
-        <section className={sectionClass}>
+        <section className={`${sectionClass} w-full`}>
           <div className="flex flex-row justify-between p-2">
-            <article className="flex flex-col gap-2 ml-4">
-                <div className="flex flex-row gap-2">
-                <p>ISP</p>
-                <p>{`${isp.startYear}-${isp.startYear+1}`},</p>
-                <p>{isp.totalCredits} credits</p>
-                </div>
-                <div className="flex flex-row gap-2">
-                <p>Status:</p>
-                <p>{isp.status}</p>
-                </div>
-            </article>
+            <ISPShortView isp={isp} />
             <article className="flex flex-col gap-4 m-2">
               <Link
                 className={`p-1 rounded shadow-regular bg-danger ${

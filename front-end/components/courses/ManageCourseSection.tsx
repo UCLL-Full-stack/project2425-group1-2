@@ -3,7 +3,7 @@ import { getDefaultCourse } from "@/utils/defaultTypes";
 import React from "react";
 import CourseEditableItem from "./CourseEditableItem";
 
-interface ManageCourseOverviewSectionProps {
+interface ManageCourseSectionProps {
   courses: Array<CourseShort>;
   isActive: boolean;
   detailedCourses: { [key: number]: Course };
@@ -12,7 +12,7 @@ interface ManageCourseOverviewSectionProps {
   setCreatingCourse: (course: Course) => void;
 }
 
-const ManageCourseOverviewSection = React.memo(
+const ManageCourseSection = React.memo(
   ({
     courses,
     isActive,
@@ -20,7 +20,7 @@ const ManageCourseOverviewSection = React.memo(
     redactorCourse,
     setCreatingCourse,
     toggleCourseDetails,
-  }: ManageCourseOverviewSectionProps) => {
+  }: ManageCourseSectionProps) => {
     const handleCreatingCourse = () => {
       const course: Course = getDefaultCourse();
       setCreatingCourse(course);
@@ -31,7 +31,7 @@ const ManageCourseOverviewSection = React.memo(
         <div className={`${isActive ? "" : "opacity-50"}`}>
           <h1 className="text-center mt-5">Manage courses</h1>
           {courses && (
-            <section className="ml-4 mr-64 mt-4 flex flex-col">
+            <section className="m-8 h-auto w-fit max-w-75%w flex flex-col">
               {courses.map((course) => {
                 return (
                   <CourseEditableItem
@@ -59,4 +59,4 @@ const ManageCourseOverviewSection = React.memo(
   }
 );
 
-export default ManageCourseOverviewSection;
+export default ManageCourseSection;

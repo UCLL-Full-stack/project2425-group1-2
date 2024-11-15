@@ -25,7 +25,7 @@ const SelectCourseSection = React.memo(
         <div className={`${isActive ? "" : "opacity-50"}`}>
           <h1 className="text-center mt-5">Select Courses</h1>
           {courses && (
-            <section className="ml-4 mr-64 mt-4 flex flex-col">
+            <section className="m-8 h-auto w-fit max-w-75%w flex flex-col">
               {courses.map((course) => {
                 return (
                   <div key={course.id} className="flex flex-col">

@@ -1,5 +1,5 @@
 import CourseForm from "@/components/courses/course_form/CourseForm";
-import ManageCourseOverviewSection from "@/components/courses/ManageCourseOverviewSection";
+import ManageCourseOverviewSection from "@/components/courses/ManageCourseSection";
 import ErrorDialog from "@/components/ErrorDialog";
 import CourseService from "@/services/CourseService";
 import { Course, EntityItem } from "@/types";
