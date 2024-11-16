@@ -1,50 +1,48 @@
-import CourseService from "@/services/CourseService";
-import { Course, CourseShort } from "@/types";
+
 import { ErrorState } from "@/types/errorState";
 import { useEffect, useState } from "react";
-import { mapCourseToUpdateView } from "../mappers";
+import DummyAdminService from "@/services/DummyAdminService";
+import { Admin, UserShort } from "@/types";
 
-export const useCrudCourse = (errorCallback?: (error: ErrorState) => void) => {
-  const [courses, setCourses] = useState<CourseShort[]>([]);
+export const useCrudAdmin = (errorCallback?: (error: ErrorState) => void) => {
+  const [admins, setAdmins] = useState<UserShort[]>([]);
 
-  const getCourses = async () => {
-    const courses: CourseShort[] = await CourseService.getAllShortCourses(
+  const getAdmins = async () => {
+    const admins: UserShort[] = await DummyAdminService.getAllShortAdmins(
       errorCallback
     );
-    setCourses(courses);
+    setAdmins(admins);
   };
 
-  const updateCourse = async (course: Course) => {
-    const updateCourseView = mapCourseToUpdateView(course);
-    await CourseService.updateCourse(
-      course.id,
-      updateCourseView,
+  const updateAdmin = async (admin: Admin) => {
+    await DummyAdminService.updateAdmin(
+      admin.id,
+      admin,
       errorCallback
     );
-    await getCourses();
+    await getAdmins();
   };
 
-  const createCourse = async (course: Course) => {
-    const updateCourseView = mapCourseToUpdateView(course);
-    await CourseService.createCourse(updateCourseView, errorCallback);
-    await getCourses();
+  const createAdmin = async (admin: Admin) => {
+    await DummyAdminService.createAdmin(admin, errorCallback);
+    await getAdmins();
   };
 
-  const deleteCourse = async (id: number) => {
-    await CourseService.deleteCourses([id], errorCallback);
-    await getCourses();
+  const deleteAdmin = async (id: number) => {
+    await DummyAdminService.deleteAdmin(id, errorCallback);
+    await getAdmins();
   };
 
   useEffect(() => {
-    getCourses();
+    getAdmins();
   }, []);
 
   return {
-    courses,
-    setCourses,
-    getCourses,
-    updateCourse,
-    createCourse,
-    deleteCourse,
+    admins,
+    setAdmins: setAdmins,
+    getAdmins,
+    updateAdmin,
+    createAdmin,
+    deleteAdmin,
   };
 };

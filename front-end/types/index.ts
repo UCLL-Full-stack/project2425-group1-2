@@ -97,10 +97,16 @@ export type Admin = {
   name: string;
   email: string;
   password: string;
-  privileges: EntityItem[];
+  privileges: Privilege[];
 }
 
-export const enum Privilege {
+export type Privilege = {
+  id: number;
+  name: number
+  description: string;
+}
+
+export const enum PrivilegeType {
   CREATE_ISP = 1,
   UPDATE_ISP = 2,
   DELETE_ISP = 3,
@@ -114,18 +120,3 @@ export const enum Privilege {
   UPDATE_ADMINISTRATIVE = 11,
   DELETE_ADMINISTRATIVE = 12,
 }
-
-export const privileges = [
-  { id: Privilege.CREATE_ISP, name: "Create ISP" },
-  { id: Privilege.UPDATE_ISP, name: "Update ISP" },
-  { id: Privilege.DELETE_ISP, name: "Delete ISP" },
-  { id: Privilege.CREATE_STUDENT, name: "Create Student" },
-  { id: Privilege.UPDATE_STUDENT, name: "Update Student" },
-  { id: Privilege.DELETE_STUDENT, name: "Delete Student" },
-  { id: Privilege.CREATE_COURSE, name: "Create Course" },
-  { id: Privilege.UPDATE_COURSE, name: "Update Course" },
-  { id: Privilege.DELETE_COURSE, name: "Delete Course" },
-  { id: Privilege.CREATE_ADMINISTRATIVE, name: "Create Administrative" },
-  { id: Privilege.UPDATE_ADMINISTRATIVE, name: "Update Administrative" },
-  { id: Privilege.DELETE_ADMINISTRATIVE, name: "Delete Administrative" },
-];
