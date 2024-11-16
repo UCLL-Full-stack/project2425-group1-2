@@ -24,9 +24,7 @@ const CourseItemLayout = React.memo(
     children,
   }: CourseEditableItemProps) => {
     const handleToggleCourseDetails = async () => {
-      if (isActive) {
-        await toggleCourseDetails(course.id);
-      }
+      await toggleCourseDetails(course.id);
     };
 
     return (

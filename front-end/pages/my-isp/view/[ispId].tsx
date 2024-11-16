@@ -1,13 +1,14 @@
-import ReviewCourseSection from "@/components/courses/ReviewCourseSection";
+import FixedBackButton from "@/components/buttons/FixedBackButton";
+import CourseItemLayout from "@/components/courses/CourseItemLayout";
+import CourseShortView from "@/components/courses/CourseShortView";
 import ErrorDialog from "@/components/ErrorDialog";
+import MapObjectsLayout from "@/components/layouts/MapObjectsLayout";
 import Loading from "@/components/Loading";
-import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
 import { useDetailedCoursesToggle } from "@/utils/hooks/useDetailedCoursesToggle";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { useIspByIdGetter } from "@/utils/hooks/useIspByIdGetter";
 import { MY_ISP_URL } from "@/utils/urls";
 import Head from "next/head";
-import Link from "next/link";
 import { useRouter } from "next/router";
 
 const TITLE = "Review ISP";
@@ -25,38 +26,39 @@ export default function ReviewISP() {
   if (!isp) {
     return <Loading />;
   }
+  const mainSectionTitle = `ISP ${isp.startYear}-${isp.startYear + 1}`;
   const totalCourseCredits =
     isp.courses.reduce((acc, c) => acc + c.credits, 0) || 0;
+  const isActive = Object.keys(errors).length === 0;
 
   return (
     <>
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <h1 className="text-center mt-5">Review ISP</h1>
-      <ReviewCourseSection
-        courses={isp.courses}
-        isActive={Object.keys(errors).length === 0}
-        detailedCourses={detailedCourses}
-        toggleCourseDetails={toggleCourseDetails}
+      <h1 className="text-center mt-5">{mainSectionTitle}</h1>
+      <MapObjectsLayout
+        objects={isp.courses}
+        flex="row"
+        children={(course) => (
+          <CourseItemLayout
+            course={course}
+            details={detailedCourses[course.id]}
+            toggleCourseDetails={toggleCourseDetails}
+            isActive={isActive}
+          >
+            <CourseShortView course={course} />
+          </CourseItemLayout>
+        )}
       />
 
-      <section className="fixed bottom-8 right-8 flex flex-row gap-2">
+      <section className="fixed bottom-8 right-8">
         <article>
           <p>{`${totalCourseCredits}/${isp.totalCredits}`}</p>
         </article>
       </section>
 
-      <section className="fixed bottom-10 left-8  ">
-        <Link
-          href={MY_ISP_URL + `/${isp.student.id}`}
-          className={
-            "hover:shadow-success rounded shadow-regular bg-indigo-950 p-3"
-          }
-        >
-          My ISP
-        </Link>
-      </section>
+      <FixedBackButton url={MY_ISP_URL} />
 
       {errors && Object.keys(errors).length > 0 && (
         <ErrorDialog errors={errors} setErrors={setErrors} />

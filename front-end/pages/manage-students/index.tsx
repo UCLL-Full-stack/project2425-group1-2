@@ -1,7 +1,8 @@
 import FixedCreateButton from "@/components/buttons/FixedCreateButton";
 import ErrorDialog from "@/components/ErrorDialog";
-import ManageStudentsOverviewSection from "@/components/students/ManageStudentsSection";
+import MapObjectsLayout from "@/components/layouts/MapObjectsLayout";
 import StudentForm from "@/components/students/student_form/StudentForm";
+import StudentEditableItem from "@/components/students/StudentEditableItem";
 import StudentService from "@/services/DummyStudentService";
 import { EntityItem, Student } from "@/types";
 import { getDefaultStudent } from "@/utils/defaultTypes";
@@ -12,6 +13,7 @@ import Head from "next/head";
 import { useState } from "react";
 
 const TITLE = "Manage Students";
+const MAIN_SECTION_TITLE = "Manage students";
 
 export default function manageStudents() {
   const [updatingStudent, setUpdatingStudent] = useState<Student | null>(null);
@@ -65,7 +67,7 @@ export default function manageStudents() {
       .map((course) => ({ id: course.id, name: course.name }));
   };
 
-  const overviewTabIsActive =
+  const ManageTabisActive =
     updatingStudent == null &&
     creatingStudent == null &&
     Object.keys(errors).length === 0;
@@ -75,16 +77,19 @@ export default function manageStudents() {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <h1 className="text-center mt-5">Manage students</h1>
-      <ManageStudentsOverviewSection
-        students={students}
-        isActive={overviewTabIsActive}
-        redactorStudent={handleUpdate}
+      <h1 className="text-center mt-5">{MAIN_SECTION_TITLE}</h1>
+      <MapObjectsLayout
+        objects={students}
+        flex="row"
+        children={(student) => (
+          <StudentEditableItem
+            student={student}
+            redactorStudent={handleUpdate}
+            isActive={ManageTabisActive}
+          />
+        )}
       />
-      <FixedCreateButton
-        onClick={handleCreate}
-        isActive={overviewTabIsActive}
-      />
+      <FixedCreateButton onClick={handleCreate} isActive={ManageTabisActive} />
       <StudentForm
         student={updatingStudent || creatingStudent}
         formName={updatingStudent ? "Update Student" : "Create Student"}

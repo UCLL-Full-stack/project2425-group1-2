@@ -1,26 +1,28 @@
 import ErrorDialog from "@/components/ErrorDialog";
-import MyISPOverviewSection from "@/components/isps/MyISPOverviewSection";
+import Loading from "@/components/Loading";
+import ISPLinkItem from "@/components/isps/ISPLinkItem";
+import MapObjectsLayout from "@/components/layouts/MapObjectsLayout";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { useISPShortByStudentGetter } from "@/utils/hooks/useISPShortByStudentGetter";
-import { useRouter } from "next/router";
+import { EDIT_URL, MY_ISP_URL, VIEW_URL } from "@/utils/urls";
 import Head from "next/head";
-import React from "react";
-import Loading from "@/components/Loading";
+import { useRouter } from "next/router";
 
 const TITLE = "your ISP";
+const MAIN_SECTION_TITLE = "Your ISP";
 
 export default function StudentISP() {
   const router = useRouter();
   const { studentId } = router.query;
   const id = parseInt(studentId as string);
-  
+
   const { errors, setErrors } = useErrorHandler();
   const { isps } = useISPShortByStudentGetter(id);
 
-  const tabIsActive = Object.keys(errors).length === 0;
+  const isActive = Object.keys(errors).length === 0;
 
   if (isps === null) {
-    return <Loading/>
+    return <Loading />;
   }
 
   return (
@@ -28,10 +30,22 @@ export default function StudentISP() {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      {isps && <MyISPOverviewSection isps={isps} isActive={tabIsActive} />}
+      <h1 className="text-center mt-5">{MAIN_SECTION_TITLE}</h1>
+      <MapObjectsLayout
+        objects={isps}
+        flex="col"
+        children={(isp) => (
+          <ISPLinkItem
+            isp={isp}
+            editHref={MY_ISP_URL + EDIT_URL}
+            viewHref={MY_ISP_URL + VIEW_URL}
+            isActive={isActive}
+          />
+        )}
+      />
       {errors && Object.keys(errors).length > 0 && (
         <ErrorDialog errors={errors} setErrors={setErrors} />
       )}
     </>
   );
-};
+}

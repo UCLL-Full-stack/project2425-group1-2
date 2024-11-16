@@ -1,7 +1,8 @@
 import FixedCreateButton from "@/components/buttons/FixedCreateButton";
 import ErrorDialog from "@/components/ErrorDialog";
 import ISPForm from "@/components/isps/isp_form/ISPForm";
-import ManageISPOverviewSection from "@/components/isps/ManageISPOverviewSection";
+import ISPEditableItem from "@/components/isps/ISPEditableItem";
+import MapObjectsLayout from "@/components/layouts/MapObjectsLayout";
 import ISPService from "@/services/DummyIspService";
 import { CourseShort, ISP } from "@/types";
 import { ErrorState } from "@/types/errorState";
@@ -14,6 +15,7 @@ import Head from "next/head";
 import { useState } from "react";
 
 const TITLE = "Manage ISP";
+const MAIN_SECTION_TITLE = "Manage ISP";
 
 export default function ISPManagement() {
   const [updatingISP, setUpdatingISP] = useState<ISP | null>(null);
@@ -71,7 +73,7 @@ export default function ISPManagement() {
     );
   };
 
-  const overviewTabIsActive =
+  const ManageTabisActive =
     updatingISP == null &&
     creatingISP == null &&
     Object.keys(errors).length === 0;
@@ -81,16 +83,19 @@ export default function ISPManagement() {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <h1 className="text-center mt-5">Manage ISP</h1>
-      <ManageISPOverviewSection
-        isps={isps}
-        isActive={overviewTabIsActive}
-        redactorISP={handleUpdate}
+      <h1 className="text-center mt-5">{MAIN_SECTION_TITLE}</h1>
+      <MapObjectsLayout
+        objects={isps}
+        flex="row"
+        children={(isp) => (
+          <ISPEditableItem
+            isp={isp}
+            redactorISP={handleUpdate}
+            isActive={ManageTabisActive}
+          />
+        )}
       />
-      <FixedCreateButton
-        onClick={handleCreate}
-        isActive={overviewTabIsActive}
-      />
+      <FixedCreateButton onClick={handleCreate} isActive={ManageTabisActive} />
       <ISPForm
         isp={updatingISP || creatingISP}
         formName={updatingISP ? "Update ISP" : "Create ISP"}

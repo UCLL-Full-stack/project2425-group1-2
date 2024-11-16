@@ -1,8 +1,10 @@
-import SelectCourseSection from "@/components/courses/SelectCourseSection";
+import FixedBackButton from "@/components/buttons/FixedBackButton";
+import SaveUndoButtons from "@/components/buttons/SaveUndoButtons";
+import CourseSelectableItem from "@/components/courses/CourseSelectableItem";
 import ErrorDialog from "@/components/ErrorDialog";
 import ISPSubmitNotification from "@/components/isps/ISPSubmitNotification";
+import MapObjectsLayout from "@/components/layouts/MapObjectsLayout";
 import Loading from "@/components/Loading";
-import SaveUndoButtons from "@/components/buttons/SaveUndoButtons";
 import DummyIspService from "@/services/DummyIspService";
 import { CourseShort, ISPStatus } from "@/types";
 import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
@@ -11,7 +13,6 @@ import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { useIspByIdGetter } from "@/utils/hooks/useIspByIdGetter";
 import { MY_ISP_URL } from "@/utils/urls";
 import Head from "next/head";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 
@@ -81,6 +82,9 @@ export default function ComposeISP() {
     return <ISPSubmitNotification id={isp.id} />;
   }
 
+  const mainSectionTitle = `ISP ${isp.startYear}-${isp.startYear + 1}`;
+  const isActive = Object.keys(errors).length === 0;
+
   const updateISPByStudentId = async (
     id: number,
     ispData: { status: ISPStatus; courses: number[] }
@@ -143,16 +147,23 @@ export default function ComposeISP() {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <SelectCourseSection
-        courses={courses}
-        isActive={Object.keys(errors).length === 0}
-        detailedCourses={detailedCourses}
-        isSelected={isSelected}
-        toggleSelectCourse={toggleSelectCourse}
-        toggleCourseDetails={toggleCourseDetails}
+      <h1 className="text-center mt-5">{mainSectionTitle}</h1>
+      <MapObjectsLayout
+        objects={courses}
+        flex="col"
+        children={(course) => (
+          <CourseSelectableItem
+            course={course}
+            details={detailedCourses[course.id]}
+            selected={isSelected(course.id)}
+            toggleSelectCourse={() => toggleSelectCourse(course)}
+            toggleCourseDetails={toggleCourseDetails}
+            isActive={isActive}
+          />
+        )}
       />
 
-      <section className="fixed bottom-8 right-8 flex flex-row gap-2">
+      <section className="fixed bottom-6 right-8 flex flex-row gap-2">
         {changes.length > 0 && (
           <SaveUndoButtons onSave={handleSave} onUndo={undoLastChange} />
         )}
@@ -172,16 +183,7 @@ export default function ComposeISP() {
         </section>
       </section>
 
-      <section className="fixed bottom-10 left-8  ">
-        <Link
-          href={MY_ISP_URL + `/${isp.student.id}`}
-          className={
-            "hover:shadow-success rounded shadow-regular bg-indigo-950 p-3"
-          }
-        >
-          My ISP
-        </Link>
-      </section>
+      <FixedBackButton url={MY_ISP_URL} />
 
       {errors && Object.keys(errors).length > 0 && (
         <ErrorDialog errors={errors} setErrors={setErrors} />

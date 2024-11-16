@@ -1,95 +1,79 @@
-import ErrorDialog from "@/components/ErrorDialog";
-import ManageStudentsOverviewSection from "@/components/students/ManageStudentsSection";
-import StudentForm from "@/components/students/student_form/StudentForm";
-import StudentService from "@/services/DummyStudentService";
-import { EntityItem, Student } from "@/types";
-import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
-import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
-import { useStudentsShortGetter } from "@/utils/hooks/useStudentsShortGetter";
-import Head from "next/head";
-import { useState } from "react";
+// import ErrorDialog from "@/components/ErrorDialog";
+// import MapObjectsLayout from "@/components/layouts/MapObjectsLayout";
+// import AdminService from "@/services/DummyAdminService";
+// import { Admin, EntityItem } from "@/types";
+// import { useAdminsShortGetter } from "@/utils/hooks/useAdminsShortGetter";
+// import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
+// import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
+// import Head from "next/head";
+// import { useState } from "react";
 
-const TITLE = "Manage Admins";
+// const TITLE = "Manage Admins";
+// const MAIN_SECTION_TITLE = "Manage admins";
 
-export default function manageAdmins() {
-  const [updatingStudent, setUpdatingStudent] = useState<Student | null>(null);
-  const [creatingStudent, setCreatingStudent] = useState<Student | null>(null);
-  const { errors, setErrors, handleError } = useErrorHandler();
-  const { students, getStudents } = useStudentsShortGetter(handleError);
-  const { courses } = useCoursesShortGetter(handleError);
+// export default function manageAdmins() {
+//   const [updatingAdmin, setUpdatingAdmin] = useState<Admin | null>(null);
+//   const [creatingAdmin, setCreatingAdmin] = useState<Admin | null>(null);
+//   const { errors, setErrors, handleError } = useErrorHandler();
+//   const { admins, getAdmins } = useAdminsShortGetter(handleError);
+//   const { roles } = useCoursesShortGetter(handleError);
 
+//   const redactorAdmin = async (id: number) => {
+//     const admin: Admin | undefined = await AdminService.getAdminById(
+//       id,
+//       handleError
+//     );
+//     if (admin) {
+//       setUpdatingAdmin(admin);
+//     }
+//   };
 
-  const redactorStudent = async (id: number) => {
-    const student: Student | undefined = await StudentService.getStudentById(
-      id,
-      handleError
-    );
-    if (student) {
-      setUpdatingStudent(student);
-    }
-  };
+//   const updateAdmin = async (admin: Admin) => {
+//     await AdminService.updateAdmin(admin.id, admin, handleError);
+//     setUpdatingAdmin(null);
+//     await getAdmins();
+//   };
 
-  const updateStudent = async (student: Student) => {
-    // const updateStudentView = convertStudentToUpdateView(student);
-    await StudentService.updateStudent(student.id, student, handleError);
-    setUpdatingStudent(null);
-    await getStudents();
-  };
+//   const createAdmin = async (admin: Admin) => {
+//     await AdminService.createAdmin(admin, handleError);
+//     setCreatingAdmin(null);
+//     await getAdmins();
+//   };
 
-  const createStudent = async (student: Student) => {
-    // const updateStudentView = convertStudentToUpdateView(student);
-    await StudentService.createStudent(student, handleError);
-    setCreatingStudent(null);
-    await getStudents();
-  };
+//   const deleteAdmin = async (id: number) => {
+//     await AdminService.deleteAdmin(id, handleError);
+//     setUpdatingAdmin(null);
+//     await getAdmins();
+//   };
 
-  const deleteStudent = async (id: number) => {
-    await StudentService.deleteStudent(id, handleError);
-    setUpdatingStudent(null);
-    await getStudents();
-  };
+//   const getPossibleRoles = (admin: Admin): EntityItem[] => {
+//     const rolesIds = new Set(admin.roles.map((role) => role.id));
 
-  const getPossiblePassedCourses = (student: Student): EntityItem[] => {
-    const passedCourseIds = new Set(
-      student.passedCourses.map((course) => course.id)
-    );
+//     return roles
+//       .filter((role) => !rolesIds.has(role.id))
+//       .map((role) => ({ id: role.id, name: role.name }));
+//   };
 
-    return courses
-      .filter((course) => !passedCourseIds.has(course.id))
-      .map((course) => ({ id: course.id, name: course.name }));
-  };
+//   const manageTabIsActive =
+//     updatingAdmin == null &&
+//     creatingAdmin == null &&
+//     Object.keys(errors).length === 0;
 
-  const overviewTabIsActive =
-    updatingStudent == null &&
-    creatingStudent == null &&
-    Object.keys(errors).length === 0;
+//   return (
+//     <>
+//       <Head>
+//         <title>{TITLE}</title>
+//       </Head>
+//       <h1 className="text-center mt-5">{MAIN_SECTION_TITLE}</h1>
+//       <MapObjectsLayout
+//         objects={admins}
+//         flex="row"
+//         children={(admin) => null}
+//       />
 
-  return (
-    <>
-      <Head>
-        <title>{TITLE}</title>
-      </Head>
-      <ManageStudentsOverviewSection
-        students={students}
-        isActive={overviewTabIsActive}
-        redactorStudent={redactorStudent}
-        setCreatingStudent={setCreatingStudent}
-      />
-      <StudentForm
-        student={updatingStudent || creatingStudent}
-        formName={updatingStudent ? "Update Student" : "Create Student"}
-        getPossiblePassedCourses={getPossiblePassedCourses}
-        onSubmit={updatingStudent ? updateStudent : createStudent}
-        onCancel={
-          updatingStudent
-            ? () => setUpdatingStudent(null)
-            : () => setCreatingStudent(null)
-        }
-        onDelete={updatingStudent ? deleteStudent : undefined}
-      />
-      {errors && Object.keys(errors).length > 0 && (
-        <ErrorDialog errors={errors} setErrors={setErrors} />
-      )}
-    </>
-  );
-}
+//       {errors && Object.keys(errors).length > 0 && (
+//         <ErrorDialog errors={errors} setErrors={setErrors} />
+//       )}
+//     </>
+//   );
+// }

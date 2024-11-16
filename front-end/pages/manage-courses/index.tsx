@@ -1,7 +1,8 @@
 import FixedCreateButton from "@/components/buttons/FixedCreateButton";
 import CourseForm from "@/components/courses/course_form/CourseForm";
-import ManageCourseOverviewSection from "@/components/courses/ManageCourseSection";
+import CourseEditableItem from "@/components/courses/CourseEditableItem";
 import ErrorDialog from "@/components/ErrorDialog";
+import MapObjectsLayout from "@/components/layouts/MapObjectsLayout";
 import CourseService from "@/services/CourseService";
 import { Course, EntityItem } from "@/types";
 import { getDefaultCourse } from "@/utils/defaultTypes";
@@ -16,6 +17,7 @@ import Head from "next/head";
 import { useState } from "react";
 
 const TITLE = "Manage Courses";
+const MAIN_SECTION_TITLE = "Manage courses";
 
 export default function CourseManagement() {
   const [updatingCourse, setUpdatingCourse] = useState<Course | null>(null);
@@ -66,7 +68,7 @@ export default function CourseManagement() {
       .map(mapCourseShortToEntityItem);
   };
 
-  const overviewTabIsActive =
+  const manageTabIsActive =
     updatingCourse == null &&
     creatingCourse == null &&
     Object.keys(errors).length === 0;
@@ -76,17 +78,21 @@ export default function CourseManagement() {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <ManageCourseOverviewSection
-        courses={courses}
-        isActive={overviewTabIsActive}
-        detailedCourses={detailedCourses}
-        redactorCourse={handleUpdate}
-        toggleCourseDetails={toggleCourseDetails}
+      <h1 className="text-center mt-5">{MAIN_SECTION_TITLE}</h1>
+      <MapObjectsLayout
+        objects={courses}
+        flex="row"
+        children={(course) => (
+          <CourseEditableItem
+            course={course}
+            details={detailedCourses[course.id]}
+            redactorCourse={handleUpdate}
+            toggleCourseDetails={toggleCourseDetails}
+            isActive={manageTabIsActive}
+          />
+        )}
       />
-      <FixedCreateButton
-        onClick={handleCreate}
-        isActive={overviewTabIsActive}
-      />
+      <FixedCreateButton onClick={handleCreate} isActive={manageTabIsActive} />
       <CourseForm
         course={updatingCourse || creatingCourse}
         formName={updatingCourse ? "Update Course" : "Create Course"}
