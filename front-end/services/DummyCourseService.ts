@@ -1,5 +1,6 @@
 import { CourseShort, Student } from "@/types";
 import StudentService from "./DummyStudentService";
+import { ErrorState } from "@/types/errorState";
 
 const courses = [
   {
@@ -55,10 +56,12 @@ const courses = [
 ];
 
 const getCoursesForStudent = async (
-  studentId: number
+  studentId: number,
+  errorCallback?: (error: ErrorState) => void
 ): Promise<CourseShort[]> => {
   let student: Student | undefined = await StudentService.getStudentById(
-    studentId
+    studentId,
+    errorCallback
   );
   if (!student) {
     return [];

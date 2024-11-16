@@ -7,7 +7,7 @@ import MapObjectsLayout from "@/components/layouts/MapObjectsLayout";
 import Loading from "@/components/Loading";
 import DummyIspService from "@/services/DummyIspService";
 import { CourseShort, ISPStatus } from "@/types";
-import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
+import { useCoursesForStudentGetter } from "@/utils/hooks/useCoursesForStudentGetter";
 import { useDetailedCoursesToggle } from "@/utils/hooks/useDetailedCoursesToggle";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { useIspByIdGetter } from "@/utils/hooks/useIspByIdGetter";
@@ -26,8 +26,8 @@ export default function ComposeISP() {
   const { errors, setErrors, handleError } = useErrorHandler();
   const { detailedCourses, toggleCourseDetails } =
     useDetailedCoursesToggle(handleError);
-  const { courses } = useCoursesShortGetter(handleError);
   const { isp, setIsp } = useIspByIdGetter(id);
+  const { courses } = useCoursesForStudentGetter(isp ? isp.student.id : 0);
   const [changes, setChanges] = useState<
     { course: CourseShort; selected: boolean }[]
   >([]);
