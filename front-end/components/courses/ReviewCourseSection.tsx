@@ -1,6 +1,6 @@
 import { Course, CourseShort } from "@/types";
 import React from "react";
-import OverviewLayout from "../ColumnOverviewLayout";
+import OverviewLayout from "../OverviewLayout";
 import CourseItemLayout from "./CourseItemLayout";
 import CourseShortView from "./CourseShortView";
 
@@ -23,7 +23,7 @@ const ReviewCourseSection = React.memo(
         <div className={`${isActive ? "" : "opacity-50"}`}>
           <h1 className="text-center mt-5">Review Courses</h1>
           {courses && (
-            <OverviewLayout>
+            <OverviewLayout flex="col">
               {courses.map((course) => {
                 return (
                   <CourseItemLayout

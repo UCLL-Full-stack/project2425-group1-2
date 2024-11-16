@@ -2,8 +2,8 @@ import { Course, CourseShort } from "@/types";
 import { getDefaultCourse } from "@/utils/defaultTypes";
 import React from "react";
 import CourseEditableItem from "./CourseEditableItem";
-import RectangleLayout from "../ColumnOverviewLayout";
-import OverviewLayout from "../ColumnOverviewLayout";
+import RectangleLayout from "../OverviewLayout";
+import OverviewLayout from "../OverviewLayout";
 
 interface ManageCourseSectionProps {
   courses: Array<CourseShort>;
@@ -33,7 +33,7 @@ const ManageCourseSection = React.memo(
         <div className={`${isActive ? "" : "opacity-50"}`}>
           <h1 className="text-center mt-5">Manage courses</h1>
           {courses && (
-            <OverviewLayout>
+            <OverviewLayout flex="col">
               {courses.map((course) => {
                 return (
                   <CourseEditableItem

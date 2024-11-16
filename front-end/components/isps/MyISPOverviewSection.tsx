@@ -2,7 +2,7 @@ import { ISPShort } from "@/types";
 import { EDIT_URL, MY_ISP_URL, VIEW_URL } from "@/utils/urls";
 import React from "react";
 import ISPLinkItem from "./ISPLinkItem";
-import OverviewLayout from "../ColumnOverviewLayout";
+import OverviewLayout from "../OverviewLayout";
 
 interface MyISPOverviewSectionProps {
   isps: ISPShort[];
@@ -16,7 +16,7 @@ const MyISPOverviewSection = React.memo(
         <div className={`  ${isActive ? "" : "opacity-50"}`}>
           <h1 className="text-center mt-5">My ISP</h1>
           {isps && (
-            <OverviewLayout>
+            <OverviewLayout flex="col">
               {isps.map((isp) => {
                 return (
                   <div key={isp.id} className="flex">

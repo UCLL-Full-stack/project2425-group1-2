@@ -1,6 +1,6 @@
 import { Course, CourseShort } from "@/types";
 import React from "react";
-import OverviewLayout from "../ColumnOverviewLayout";
+import OverviewLayout from "../OverviewLayout";
 import CourseSelectableItem from "./CourseSelectableItem";
 
 interface SelectCourseSectionProps {
@@ -26,7 +26,7 @@ const SelectCourseSection = React.memo(
         <div className={`${isActive ? "" : "opacity-50"}`}>
           <h1 className="text-center mt-5">Select Courses</h1>
           {courses && (
-            <OverviewLayout>
+            <OverviewLayout flex="col">
               {courses.map((course) => {
                 return (
                   <div key={course.id} className="flex flex-col">
