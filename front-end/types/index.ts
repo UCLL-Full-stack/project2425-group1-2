@@ -31,6 +31,7 @@ export type Student = {
   name: string;
   email: string;
   password: string;
+  year: number;
   nationality?: string;
   passedCourses: { id: number; name: string }[];
 };

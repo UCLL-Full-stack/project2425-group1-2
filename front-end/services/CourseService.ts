@@ -29,6 +29,11 @@ const getCourseById = async (id: number, errorCallback?: (error: ErrorState) => 
   return handleResponse(response, errorCallback);
 };
 
+const getCoursesForStudent = async (studentId: number, errorCallback?: (error: ErrorState) => void) => {
+  const response = await fetch(`${URL}/forStudent/${studentId}`);
+  return handleResponse(response, errorCallback);
+}
+
 const createCourse = async (course: CourseUpdateView, errorCallback?: (error: ErrorState) => void) => {
   const response = await fetch(URL, {
     method: "POST",
@@ -66,6 +71,7 @@ const CourseService = {
   getAllCourses,
   getAllShortCourses,
   getCourseById,
+  getCoursesForStudent,
   createCourse,
   updateCourse,
   deleteCourses,

@@ -9,6 +9,7 @@ export let students: Student[] = [
     password: "password123",
     nationality: "American",
     passedCourses: [],
+    year: 1,
   },
   {
     id: 2,
@@ -17,6 +18,7 @@ export let students: Student[] = [
     password: "password123",
     nationality: "British",
     passedCourses: [],
+    year: 2,
   },
   {
     id: 3,
@@ -25,6 +27,7 @@ export let students: Student[] = [
     password: "password123",
     nationality: "Canadian",
     passedCourses: [],
+    year: 3,
   },
   {
     id: 4,
@@ -33,6 +36,7 @@ export let students: Student[] = [
     password: "password123",
     nationality: "Australian",
     passedCourses: [],
+    year: 2,
   },
   {
     id: 5,
@@ -41,6 +45,7 @@ export let students: Student[] = [
     password: "password123",
     nationality: "New Zealander",
     passedCourses: [],
+    year: 2,
   },
 ];
 
