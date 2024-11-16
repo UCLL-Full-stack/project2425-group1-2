@@ -1,8 +1,10 @@
+import FixedCreateButton from "@/components/buttons/FixedCreateButton";
 import CourseForm from "@/components/courses/course_form/CourseForm";
 import ManageCourseOverviewSection from "@/components/courses/ManageCourseSection";
 import ErrorDialog from "@/components/ErrorDialog";
 import CourseService from "@/services/CourseService";
 import { Course, EntityItem } from "@/types";
+import { getDefaultCourse } from "@/utils/defaultTypes";
 import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
 import { useDetailedCoursesToggle } from "@/utils/hooks/useDetailedCoursesToggle";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
@@ -23,9 +25,14 @@ export default function CourseManagement() {
   const { detailedCourses, toggleCourseDetails } =
     useDetailedCoursesToggle(handleError);
 
-  const redactorCourse = async (id: number) => {
+  const handleUpdate = async (id: number) => {
     const course: Course = await CourseService.getCourseById(id, handleError);
     setUpdatingCourse(course);
+  };
+
+  const handleCreate = () => {
+    const course: Course = getDefaultCourse();
+    setCreatingCourse(course);
   };
 
   const updateCourse = async (course: Course) => {
@@ -73,9 +80,12 @@ export default function CourseManagement() {
         courses={courses}
         isActive={overviewTabIsActive}
         detailedCourses={detailedCourses}
-        redactorCourse={redactorCourse}
-        setCreatingCourse={setCreatingCourse}
+        redactorCourse={handleUpdate}
         toggleCourseDetails={toggleCourseDetails}
+      />
+      <FixedCreateButton
+        onClick={handleCreate}
+        isActive={overviewTabIsActive}
       />
       <CourseForm
         course={updatingCourse || creatingCourse}

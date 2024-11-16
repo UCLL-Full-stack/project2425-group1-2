@@ -33,6 +33,7 @@ export default function ReviewISP() {
       <Head>
         <title>{TITLE}</title>
       </Head>
+      <h1 className="text-center mt-5">Review ISP</h1>
       <ReviewCourseSection
         courses={isp.courses}
         isActive={Object.keys(errors).length === 0}

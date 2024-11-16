@@ -1,6 +1,5 @@
 import { Course, CourseShort } from "@/types";
-import React from "react";
-import OverviewLayout from "../layouts/OverviewLayout";
+import MapObjectsLayout from "../layouts/MapObjectsLayout";
 import CourseSelectableItem from "./CourseSelectableItem";
 
 interface SelectCourseSectionProps {
@@ -12,41 +11,30 @@ interface SelectCourseSectionProps {
   toggleSelectCourse: (course: CourseShort) => void;
 }
 
-const SelectCourseSection = React.memo(
-  ({
-    courses,
-    isActive,
-    detailedCourses,
-    isSelected,
-    toggleSelectCourse,
-    toggleCourseDetails,
-  }: SelectCourseSectionProps) => {
-    return (
-      <>
-        <div className={`${isActive ? "" : "opacity-50"}`}>
-          <h1 className="text-center mt-5">Select Courses</h1>
-          {courses && (
-            <OverviewLayout flex="col">
-              {courses.map((course) => {
-                return (
-                  <div key={course.id} className="flex flex-col">
-                    <CourseSelectableItem
-                      course={course}
-                      details={detailedCourses[course.id]}
-                      selected={isSelected(course.id)}
-                      toggleSelectCourse={() => toggleSelectCourse(course)}
-                      toggleCourseDetails={toggleCourseDetails}
-                      isActive={isActive}
-                    />
-                  </div>
-                );
-              })}
-            </OverviewLayout>
-          )}
-        </div>
-      </>
-    );
-  }
-);
+const SelectCourseSection = ({
+  courses,
+  isActive,
+  detailedCourses,
+  isSelected,
+  toggleSelectCourse,
+  toggleCourseDetails,
+}: SelectCourseSectionProps) => {
+  return (
+    <MapObjectsLayout
+      objects={courses}
+      flex="col"
+      children={(course) => (
+        <CourseSelectableItem
+          course={course}
+          details={detailedCourses[course.id]}
+          selected={isSelected(course.id)}
+          toggleSelectCourse={() => toggleSelectCourse(course)}
+          toggleCourseDetails={toggleCourseDetails}
+          isActive={isActive}
+        />
+      )}
+    />
+  );
+};
 
 export default SelectCourseSection;

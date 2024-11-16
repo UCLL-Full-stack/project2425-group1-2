@@ -1,6 +1,5 @@
 import { Course, CourseShort } from "@/types";
-import React from "react";
-import OverviewLayout from "../layouts/OverviewLayout";
+import MapObjectsLayout from "../layouts/MapObjectsLayout";
 import CourseItemLayout from "./CourseItemLayout";
 import CourseShortView from "./CourseShortView";
 
@@ -11,37 +10,28 @@ interface ReviewCourseSectionProps {
   toggleCourseDetails: (courseId: number) => Promise<void>;
 }
 
-const ReviewCourseSection = React.memo(
-  ({
-    courses,
-    isActive,
-    detailedCourses,
-    toggleCourseDetails,
-  }: ReviewCourseSectionProps) => {
-    return (
-      <>
-        <div className={`${isActive ? "" : "opacity-50"}`}>
-          <h1 className="text-center mt-5">Review Courses</h1>
-          {courses && (
-            <OverviewLayout flex="col">
-              {courses.map((course) => {
-                return (
-                  <CourseItemLayout
-                    course={course}
-                    details={detailedCourses[course.id]}
-                    toggleCourseDetails={toggleCourseDetails}
-                    isActive={isActive}
-                  >
-                    <CourseShortView course={course} />
-                  </CourseItemLayout>
-                );
-              })}
-            </OverviewLayout>
-          )}
-        </div>
-      </>
-    );
-  }
-);
+const ReviewCourseSection = ({
+  courses,
+  isActive,
+  detailedCourses,
+  toggleCourseDetails,
+}: ReviewCourseSectionProps) => {
+  return (
+    <MapObjectsLayout
+      objects={courses}
+      flex="row"
+      children={(course) => (
+        <CourseItemLayout
+          course={course}
+          details={detailedCourses[course.id]}
+          toggleCourseDetails={toggleCourseDetails}
+          isActive={isActive}
+        >
+          <CourseShortView course={course} />
+        </CourseItemLayout>
+      )}
+    />
+  );
+};
 
 export default ReviewCourseSection;

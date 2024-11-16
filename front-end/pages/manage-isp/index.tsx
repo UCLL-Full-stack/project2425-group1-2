@@ -1,16 +1,15 @@
+import FixedCreateButton from "@/components/buttons/FixedCreateButton";
 import ErrorDialog from "@/components/ErrorDialog";
 import ISPForm from "@/components/isps/isp_form/ISPForm";
 import ManageISPOverviewSection from "@/components/isps/ManageISPOverviewSection";
 import ISPService from "@/services/DummyIspService";
 import { CourseShort, ISP } from "@/types";
 import { ErrorState } from "@/types/errorState";
+import { getDefaultISP } from "@/utils/defaultTypes";
 import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { useISPShortGetter } from "@/utils/hooks/useISPShortGetter";
-import {
-  mapISPToCreateView,
-  mapISPToUpdateView
-} from "@/utils/mappers";
+import { mapISPToCreateView, mapISPToUpdateView } from "@/utils/mappers";
 import Head from "next/head";
 import { useState } from "react";
 
@@ -23,12 +22,17 @@ export default function ISPManagement() {
   const { isps, getISPs } = useISPShortGetter(handleError);
   const { courses } = useCoursesShortGetter(handleError);
 
-  const redactorISP = async (id: number) => {
+  const handleUpdate = async (id: number) => {
     const updatingIsp: ISP | null = await ISPService.getISPById(
       id,
       handleError
     );
     setUpdatingISP(updatingIsp);
+  };
+
+  const handleCreate = () => {
+    const isp: ISP = getDefaultISP();
+    setCreatingISP(isp);
   };
 
   const updateISP = async (
@@ -62,8 +66,9 @@ export default function ISPManagement() {
     if (!isp.courses) {
       return courses;
     }
-    return courses
-      .filter((course) => !isp.courses.find((c) => c.id === course.id))
+    return courses.filter(
+      (course) => !isp.courses.find((c) => c.id === course.id)
+    );
   };
 
   const overviewTabIsActive =
@@ -76,11 +81,15 @@ export default function ISPManagement() {
       <Head>
         <title>{TITLE}</title>
       </Head>
+      <h1 className="text-center mt-5">Manage ISP</h1>
       <ManageISPOverviewSection
         isps={isps}
         isActive={overviewTabIsActive}
-        redactorISP={redactorISP}
-        setCreatingISP={setCreatingISP}
+        redactorISP={handleUpdate}
+      />
+      <FixedCreateButton
+        onClick={handleCreate}
+        isActive={overviewTabIsActive}
       />
       <ISPForm
         isp={updatingISP || creatingISP}

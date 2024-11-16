@@ -1,9 +1,8 @@
 import { CourseShort, EntityItem } from "@/types";
 import React from "react";
-import EditableItem from "../items/EditableItem";
-import CourseShortView from "./CourseShortView";
-import CourseDetailsView from "./CourseDetailsView";
+import EditButton from "../buttons/EditButton";
 import CourseItemLayout from "./CourseItemLayout";
+import CourseShortView from "./CourseShortView";
 
 interface CourseEditableItemProps {
   course: CourseShort;
@@ -37,7 +36,7 @@ const CourseEditableItem = React.memo(
         toggleCourseDetails={toggleCourseDetails}
         isActive={isActive}
       >
-        <EditableItem handleEdit={handleRedactorCourse} isActive={isActive} />
+        <EditButton handleEdit={handleRedactorCourse} isActive={isActive} />
         <CourseShortView course={course} />
       </CourseItemLayout>
     );

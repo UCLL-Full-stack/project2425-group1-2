@@ -1,8 +1,10 @@
+import FixedCreateButton from "@/components/buttons/FixedCreateButton";
 import ErrorDialog from "@/components/ErrorDialog";
 import ManageStudentsOverviewSection from "@/components/students/ManageStudentsSection";
 import StudentForm from "@/components/students/student_form/StudentForm";
 import StudentService from "@/services/DummyStudentService";
 import { EntityItem, Student } from "@/types";
+import { getDefaultStudent } from "@/utils/defaultTypes";
 import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { useStudentsShortGetter } from "@/utils/hooks/useStudentsShortGetter";
@@ -18,8 +20,12 @@ export default function manageStudents() {
   const { students, getStudents } = useStudentsShortGetter(handleError);
   const { courses } = useCoursesShortGetter(handleError);
 
+  const handleCreate = () => {
+    const student: Student = getDefaultStudent();
+    setCreatingStudent(student);
+  };
 
-  const redactorStudent = async (id: number) => {
+  const handleUpdate = async (id: number) => {
     const student: Student | undefined = await StudentService.getStudentById(
       id,
       handleError
@@ -69,11 +75,15 @@ export default function manageStudents() {
       <Head>
         <title>{TITLE}</title>
       </Head>
+      <h1 className="text-center mt-5">Manage students</h1>
       <ManageStudentsOverviewSection
         students={students}
         isActive={overviewTabIsActive}
-        redactorStudent={redactorStudent}
-        setCreatingStudent={setCreatingStudent}
+        redactorStudent={handleUpdate}
+      />
+      <FixedCreateButton
+        onClick={handleCreate}
+        isActive={overviewTabIsActive}
       />
       <StudentForm
         student={updatingStudent || creatingStudent}

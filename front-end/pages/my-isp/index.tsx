@@ -1,5 +1,5 @@
 import ErrorDialog from "@/components/ErrorDialog";
-import StudentsOverviewSection from "@/components/students/StudentsOverviewSection";
+import StudentsOverviewSection from "@/components/students/StudentsLinksSection";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { useStudentsShortGetter } from "@/utils/hooks/useStudentsShortGetter";
 import { MY_ISP_URL } from "@/utils/urls";

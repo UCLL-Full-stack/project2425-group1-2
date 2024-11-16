@@ -1,6 +1,7 @@
 import React from "react";
 import { UserShort } from "@/types";
 import Link from "next/link";
+import UserShortView from "./UserShortView";
 
 interface StudentLinkItemProps {
   student: UserShort;
@@ -9,26 +10,15 @@ interface StudentLinkItemProps {
 }
 const StudentLinkItem = ({ student, href, isActive }: StudentLinkItemProps) => {
   return (
-    <>
-      {student && (
-        <Link
-          href={href}
-          className={`p-1 rounded shadow-regular bg-primary ${
-            isActive
-              ? "hover:shadow-success"
-              : "opacity-50 cursor-not-allowed"
-          } align-top text-left w-64 h-64`}
-          onClick={(e) => !isActive && e.preventDefault()}
-        >
-          <div className="flex flex-row justify-between p-2">
-            <article className="flex flex-col gap-2 items-center">
-              <p>{`Id: ${student.id}`}</p>
-              <p>{student.name}</p>
-            </article>
-          </div>
-        </Link>
-      )}
-    </>
+    <Link
+      href={href}
+      className={`p-1 rounded shadow-regular bg-primary ${
+        isActive ? "hover:shadow-success" : "opacity-50 cursor-not-allowed"
+      } align-top text-left w-64 h-64`}
+      onClick={(e) => !isActive && e.preventDefault()}
+    >
+      <UserShortView user={student} />
+    </Link>
   );
 };
 

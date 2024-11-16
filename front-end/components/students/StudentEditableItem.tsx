@@ -1,11 +1,13 @@
 import React from "react";
 import { UserShort } from "@/types";
+import UserShortView from "./UserShortView";
+import EditButton from "../buttons/EditButton";
 
 interface StudentEditableItemProps {
   student: UserShort;
   redactorStudent: (studentId: number) => Promise<void>;
   isActive: boolean;
-};
+}
 const StudentEditableItem = ({
   student,
   redactorStudent,
@@ -18,29 +20,12 @@ const StudentEditableItem = ({
   };
 
   return (
-    <>
-      {student && (
-        <section className="p-1 rounded shadow-regular bg-primary align-top text-left w-64 h-64" >
-          <div className="flex flex-row justify-between p-2">
-            <article className="flex flex-col gap-2 items-center">
-              <p>{`Id: ${student.id}`}</p>
-              <p>{student.name}</p>
-            </article>
-            <article>
-              <button
-                className={`p-1 shadow-regular bg-danger rounded ${
-                  isActive ? "hover:shadow-success" : ""
-                }`}
-                onClick={handleRedactorStudent}
-                disabled={!isActive}
-              >
-                Edit
-              </button>
-            </article>
-          </div>
-        </section>
-      )}
-    </>
+    <section className="p-1 rounded shadow-regular bg-primary align-top text-left w-64 h-64">
+      <div className="flex flex-row justify-between p-2">
+        <UserShortView user={student} />
+        <EditButton handleEdit={handleRedactorStudent} isActive={isActive} />
+      </div>
+    </section>
   );
 };
 
