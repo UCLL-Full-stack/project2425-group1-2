@@ -1,5 +1,5 @@
 import ErrorDialog from "@/components/ErrorDialog";
-import ManageStudentsOverviewSection from "@/components/students/ManageStudentsOverviewSection";
+import ManageStudentsOverviewSection from "@/components/students/ManageStudentsSection";
 import StudentForm from "@/components/students/student_form/StudentForm";
 import StudentService from "@/services/DummyStudentService";
 import { EntityItem, Student } from "@/types";
@@ -9,9 +9,9 @@ import { useStudentsShortGetter } from "@/utils/hooks/useStudentsShortGetter";
 import Head from "next/head";
 import { useState } from "react";
 
-const TITLE = "Manage Profiles";
+const TITLE = "Manage Students";
 
-export default function ProfileManagement() {
+export default function manageStudents() {
   const [updatingStudent, setUpdatingStudent] = useState<Student | null>(null);
   const [creatingStudent, setCreatingStudent] = useState<Student | null>(null);
   const { errors, setErrors, handleError } = useErrorHandler();
