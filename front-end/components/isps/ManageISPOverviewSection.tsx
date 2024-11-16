@@ -1,8 +1,9 @@
 import { ISP, ISPShort } from "@/types";
 import { getDefaultISP } from "@/utils/defaultTypes";
 import React from "react";
+import FixedCreateButton from "../buttons/FixedCreateButton";
+import OverviewLayout from "../layouts/OverviewLayout";
 import ISPEditableItem from "./ISPEditableItem";
-import OverviewLayout from "../OverviewLayout";
 
 interface ManageISPOverviewSectionProps {
   isps: ISPShort[];
@@ -42,14 +43,7 @@ const ManageISPOverviewSection = React.memo(
               })}
             </OverviewLayout>
           )}
-          <section className="fixed bottom-8 right-8">
-            <button
-              className="bg-safe hover:shadow-success p-3 rounded shadow-regular"
-              onClick={handleCreatingISP}
-            >
-              Create
-            </button>
-          </section>
+          <FixedCreateButton onClick={handleCreatingISP} isActive={isActive} />
         </div>
       </>
     );

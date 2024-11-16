@@ -1,13 +1,13 @@
 import React from "react";
 
-interface SelectableItemProps {
+interface SelectButtonProps {
   toggleSelect: () => void;
   selected: boolean;
   isActive: boolean;
 }
 
-const SelectableItem = React.memo(
-  ({ toggleSelect, selected, isActive }: SelectableItemProps) => {
+const SelectButton = React.memo(
+  ({ toggleSelect, selected, isActive }: SelectButtonProps) => {
     return (
       <article className="flex items-center">
         <input
@@ -29,4 +29,4 @@ const SelectableItem = React.memo(
   }
 );
 
-export default SelectableItem;
+export default SelectButton;

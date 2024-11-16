@@ -2,7 +2,7 @@ import { ISPShort } from "@/types";
 import { EDIT_URL, MY_ISP_URL, VIEW_URL } from "@/utils/urls";
 import React from "react";
 import ISPLinkItem from "./ISPLinkItem";
-import OverviewLayout from "../OverviewLayout";
+import OverviewLayout from "../layouts/OverviewLayout";
 
 interface MyISPOverviewSectionProps {
   isps: ISPShort[];

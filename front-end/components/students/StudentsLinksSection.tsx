@@ -1,20 +1,17 @@
-import React from "react";
-import { Student, UserShort } from "@/types";
-import StudentEditableItem from "./StudentEditableItem";
+import { UserShort } from "@/types";
 import StudentLinkItem from "./StudentLinkItem";
 
-interface StudentsOverviewSectionProps {
+interface StudentsLinksSectionProps {
   students: Array<UserShort>;
   isActive: boolean;
   url: string;
-};
+}
 
-const StudentsOverviewSection = ({
+const StudentsLinksSection = ({
   students,
   isActive,
   url,
-}: StudentsOverviewSectionProps) => {
-
+}: StudentsLinksSectionProps) => {
   return (
     <>
       <div className={`${isActive ? "" : "opacity-50"}`}>
@@ -24,12 +21,12 @@ const StudentsOverviewSection = ({
             {students.map((student) => {
               return (
                 <div key={student.id} className="flex">
-                <StudentLinkItem
-                student={student}
-                href={`${url}/${student.id}`}
-                isActive={isActive}
-              />
-              </div>
+                  <StudentLinkItem
+                    student={student}
+                    href={`${url}/${student.id}`}
+                    isActive={isActive}
+                  />
+                </div>
               );
             })}
           </section>
@@ -39,4 +36,4 @@ const StudentsOverviewSection = ({
   );
 };
 
-export default StudentsOverviewSection;
+export default StudentsLinksSection;

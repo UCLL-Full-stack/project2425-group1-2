@@ -1,12 +1,12 @@
 import React from "react";
 
-interface EditableItemProps {
+interface EditButtonProps {
   handleEdit: () => Promise<void>;
   isActive: boolean;
 }
 
-const EditableItem = React.memo(
-  ({ handleEdit, isActive }: EditableItemProps) => {
+const EditButton = React.memo(
+  ({ handleEdit, isActive }: EditButtonProps) => {
     return (
       <article>
         <button
@@ -23,4 +23,4 @@ const EditableItem = React.memo(
   }
 );
 
-export default EditableItem;
+export default EditButton;

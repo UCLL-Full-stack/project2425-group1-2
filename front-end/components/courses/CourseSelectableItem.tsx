@@ -1,6 +1,6 @@
 import { CourseShort, EntityItem } from "@/types";
 import React from "react";
-import SelectableItem from "../SelectableItem";
+import SelectableItem from "../items/SelectableItem";
 import CourseShortView from "./CourseShortView";
 import CourseDetailsView from "./CourseDetailsView";
 import CourseItemLayout from "./CourseItemLayout";

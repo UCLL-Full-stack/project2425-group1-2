@@ -2,7 +2,7 @@ import SelectCourseSection from "@/components/courses/SelectCourseSection";
 import ErrorDialog from "@/components/ErrorDialog";
 import ISPSubmitNotification from "@/components/isps/ISPSubmitNotification";
 import Loading from "@/components/Loading";
-import SaveUndoButtons from "@/components/SaveUndoButtons";
+import SaveUndoButtons from "@/components/buttons/SaveUndoButtons";
 import DummyIspService from "@/services/DummyIspService";
 import { CourseShort, ISPStatus } from "@/types";
 import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";

@@ -1,20 +1,22 @@
 import { Student, UserShort } from "@/types";
 import { getDefaultStudent } from "@/utils/defaultTypes";
+import FixedCreateButton from "../buttons/FixedCreateButton";
+import OverviewLayout from "../layouts/OverviewLayout";
 import StudentEditableItem from "./StudentEditableItem";
 
-interface ManageStudentsOverviewSectionProps {
+interface ManageStudentsSectionProps {
   students: UserShort[];
   isActive: boolean;
   redactorStudent: (studentId: number) => Promise<void>;
   setCreatingStudent: (student: Student) => void;
 }
 
-const ManageStudentsOverviewSection = ({
+const ManageStudentsSection = ({
   students,
   isActive,
   redactorStudent,
   setCreatingStudent,
-}: ManageStudentsOverviewSectionProps) => {
+}: ManageStudentsSectionProps) => {
   const handleCreatingStudent = () => {
     const student: Student = getDefaultStudent();
     setCreatingStudent(student);
@@ -25,10 +27,10 @@ const ManageStudentsOverviewSection = ({
       <div className={`${isActive ? "" : "opacity-50"}`}>
         <h1 className="text-center mt-5">Manage students</h1>
         {students && (
-          <section className="ml-4 mr-64 mt-4 flex flex-row flex-wrap gap-8">
-            {students.map((student) => {
+          <OverviewLayout flex="col">
+            {students.map((student, index) => {
               return (
-                <div key={student.id} className="flex">
+                <div key={index} className="flex">
                   <StudentEditableItem
                     student={student}
                     redactorStudent={redactorStudent}
@@ -37,19 +39,15 @@ const ManageStudentsOverviewSection = ({
                 </div>
               );
             })}
-          </section>
+          </OverviewLayout>
         )}
-        <section className="fixed bottom-8 right-8">
-          <button
-            className="bg-safe hover:shadow-success p-3 rounded shadow-regular"
-            onClick={handleCreatingStudent}
-          >
-            Create
-          </button>
-        </section>
+        <FixedCreateButton
+          isActive={isActive}
+          onClick={handleCreatingStudent}
+        />
       </div>
     </>
   );
 };
 
-export default ManageStudentsOverviewSection;
+export default ManageStudentsSection;

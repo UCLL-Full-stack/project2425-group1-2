@@ -1,7 +1,7 @@
 // components/Layout.tsx
 import React, { ReactNode } from "react";
-import DefaultHead from "./DefaultHead";
-import Header from "./header/Header";
+import DefaultHead from "../DefaultHead";
+import Header from "../header/Header";
 
 interface LayoutProps {
   children: ReactNode;

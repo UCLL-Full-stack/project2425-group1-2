@@ -1,6 +1,6 @@
 import { Course, CourseShort } from "@/types";
 import React from "react";
-import OverviewLayout from "../OverviewLayout";
+import OverviewLayout from "../layouts/OverviewLayout";
 import CourseItemLayout from "./CourseItemLayout";
 import CourseShortView from "./CourseShortView";
 

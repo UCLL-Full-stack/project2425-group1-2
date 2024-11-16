@@ -2,8 +2,9 @@ import { Course, CourseShort } from "@/types";
 import { getDefaultCourse } from "@/utils/defaultTypes";
 import React from "react";
 import CourseEditableItem from "./CourseEditableItem";
-import RectangleLayout from "../OverviewLayout";
-import OverviewLayout from "../OverviewLayout";
+import RectangleLayout from "../layouts/OverviewLayout";
+import OverviewLayout from "../layouts/OverviewLayout";
+import FixedCreateButton from "../buttons/FixedCreateButton";
 
 interface ManageCourseSectionProps {
   courses: Array<CourseShort>;
@@ -47,14 +48,7 @@ const ManageCourseSection = React.memo(
               })}
             </OverviewLayout>
           )}
-          <section className="fixed bottom-8 right-8">
-            <button
-              className="bg-safe hover:shadow-success p-3 rounded shadow-regular"
-              onClick={handleCreatingCourse}
-            >
-              Create
-            </button>
-          </section>
+          <FixedCreateButton onClick={handleCreatingCourse} isActive={isActive}/>
         </div>
       </>
     );
