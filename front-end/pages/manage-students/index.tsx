@@ -7,8 +7,8 @@ import StudentService from "@/services/DummyStudentService";
 import { EntityItem, Student } from "@/types";
 import { getDefaultStudent } from "@/utils/defaultTypes";
 import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
+import { useCrudStudent } from "@/utils/hooks/useCrudStudent";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
-import { useStudentsShortGetter } from "@/utils/hooks/useStudentsShortGetter";
 import Head from "next/head";
 import { useState } from "react";
 
@@ -19,7 +19,8 @@ export default function manageStudents() {
   const [updatingStudent, setUpdatingStudent] = useState<Student | null>(null);
   const [creatingStudent, setCreatingStudent] = useState<Student | null>(null);
   const { errors, setErrors, handleError } = useErrorHandler();
-  const { students, getStudents } = useStudentsShortGetter(handleError);
+  const { students, updateStudent, createStudent, deleteStudent } =
+    useCrudStudent(handleError);
   const { courses } = useCoursesShortGetter(handleError);
 
   const handleCreate = () => {
@@ -37,24 +38,25 @@ export default function manageStudents() {
     }
   };
 
-  const updateStudent = async (student: Student) => {
-    // const updateStudentView = convertStudentToUpdateView(student);
-    await StudentService.updateStudent(student.id, student, handleError);
+  const handleDelete = async (id: number) => {
+    await deleteStudent(id);
     setUpdatingStudent(null);
-    await getStudents();
   };
 
-  const createStudent = async (student: Student) => {
-    // const updateStudentView = convertStudentToUpdateView(student);
-    await StudentService.createStudent(student, handleError);
+  const handleSubmit = async (student: Student) => {
+    if (updatingStudent) {
+      await updateStudent(student);
+      setUpdatingStudent(null);
+      return;
+    }
+    await createStudent(student);
     setCreatingStudent(null);
-    await getStudents();
+    return;
   };
 
-  const deleteStudent = async (id: number) => {
-    await StudentService.deleteStudent(id, handleError);
+  const handleCancel = () => {
     setUpdatingStudent(null);
-    await getStudents();
+    setCreatingStudent(null);
   };
 
   const getPossiblePassedCourses = (student: Student): EntityItem[] => {
@@ -94,13 +96,9 @@ export default function manageStudents() {
         student={updatingStudent || creatingStudent}
         formName={updatingStudent ? "Update Student" : "Create Student"}
         getPossiblePassedCourses={getPossiblePassedCourses}
-        onSubmit={updatingStudent ? updateStudent : createStudent}
-        onCancel={
-          updatingStudent
-            ? () => setUpdatingStudent(null)
-            : () => setCreatingStudent(null)
-        }
-        onDelete={updatingStudent ? deleteStudent : undefined}
+        onSubmit={handleSubmit}
+        onCancel={handleCancel}
+        onDelete={updatingStudent ? handleDelete : undefined}
       />
       {errors && Object.keys(errors).length > 0 && (
         <ErrorDialog errors={errors} setErrors={setErrors} />

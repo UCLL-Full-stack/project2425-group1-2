@@ -6,13 +6,10 @@ import MapObjectsLayout from "@/components/layouts/MapObjectsLayout";
 import CourseService from "@/services/CourseService";
 import { Course, EntityItem } from "@/types";
 import { getDefaultCourse } from "@/utils/defaultTypes";
-import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
+import { useCrudCourse } from "@/utils/hooks/useCrudCourse";
 import { useDetailedCoursesToggle } from "@/utils/hooks/useDetailedCoursesToggle";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
-import {
-  mapCourseShortToEntityItem,
-  mapCourseToUpdateView,
-} from "@/utils/mappers";
+import { mapCourseShortToEntityItem } from "@/utils/mappers";
 import Head from "next/head";
 import { useState } from "react";
 
@@ -23,7 +20,8 @@ export default function CourseManagement() {
   const [updatingCourse, setUpdatingCourse] = useState<Course | null>(null);
   const [creatingCourse, setCreatingCourse] = useState<Course | null>(null);
   const { errors, setErrors, handleError } = useErrorHandler();
-  const { courses, getCourses } = useCoursesShortGetter(handleError);
+  const { courses, createCourse, updateCourse, deleteCourse } =
+    useCrudCourse(handleError);
   const { detailedCourses, toggleCourseDetails } =
     useDetailedCoursesToggle(handleError);
 
@@ -37,24 +35,25 @@ export default function CourseManagement() {
     setCreatingCourse(course);
   };
 
-  const updateCourse = async (course: Course) => {
-    const updateCourseView = mapCourseToUpdateView(course);
-    await CourseService.updateCourse(course.id, updateCourseView, handleError);
-    setUpdatingCourse(null);
-    await getCourses();
-  };
-
-  const createCourse = async (course: Course) => {
-    const updateCourseView = mapCourseToUpdateView(course);
-    await CourseService.createCourse(updateCourseView, handleError);
+  const handleSubmit = async (isp: Course) => {
+    if (updatingCourse) {
+      await updateCourse(isp);
+      setUpdatingCourse(null);
+      return;
+    }
+    await createCourse(isp);
     setCreatingCourse(null);
-    await getCourses();
+    return;
   };
 
-  const deleteCourse = async (id: number) => {
-    await CourseService.deleteCourses([id], handleError);
+  const handleCancel = () => {
+    setCreatingCourse(null);
     setUpdatingCourse(null);
-    await getCourses();
+  };
+
+  const handleDelete = async (id: number) => {
+    await deleteCourse(id);
+    setUpdatingCourse(null);
   };
 
   const getPossibleRequiredPassedCourses = (course: Course): EntityItem[] => {
@@ -97,13 +96,9 @@ export default function CourseManagement() {
         course={updatingCourse || creatingCourse}
         formName={updatingCourse ? "Update Course" : "Create Course"}
         getPossibleRequiredCourses={getPossibleRequiredPassedCourses}
-        onSubmit={updatingCourse ? updateCourse : createCourse}
-        onCancel={
-          updatingCourse
-            ? () => setUpdatingCourse(null)
-            : () => setCreatingCourse(null)
-        }
-        onDelete={updatingCourse ? deleteCourse : undefined}
+        onSubmit={handleSubmit}
+        onCancel={handleCancel}
+        onDelete={updatingCourse ? handleDelete : undefined}
       />
       {errors && Object.keys(errors).length > 0 && (
         <ErrorDialog errors={errors} setErrors={setErrors} />
