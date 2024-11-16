@@ -4,9 +4,9 @@ import { ErrorState } from "@/types/errorState";
 import { nationalities } from "@/utils/nationalities";
 import { validateStudent } from "@/utils/validators";
 import React, { useEffect, useState } from "react";
-import StudentFormButtons from "../../forms/FormButtons";
-import FormInput from "../../forms/FormInput";
-import SelectListInput from "../../forms/SelectListInput";
+import StudentFormButtons from "../../../forms/FormButtons";
+import FormInput from "../../../forms/FormInput";
+import SelectListInput from "../../../forms/SelectListInput";
 import StudentPassedCoursesInput from "./StudentPassedCoursesInput";
 
 interface StudentFormProps {

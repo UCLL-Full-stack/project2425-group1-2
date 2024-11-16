@@ -39,7 +39,7 @@ export default function ReviewISP() {
       <h1 className="text-center mt-5">{mainSectionTitle}</h1>
       <MapObjectsLayout
         objects={isp.courses}
-        flex="row"
+        flex="col"
         children={(course) => (
           <CourseItemLayout
             course={course}

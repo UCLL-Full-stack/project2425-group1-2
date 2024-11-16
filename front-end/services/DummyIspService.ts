@@ -94,7 +94,6 @@ const getISPById = async (
     }
     return null;
   }
-  console.log(isp);
   return isp;
 };
 const createISP = async (

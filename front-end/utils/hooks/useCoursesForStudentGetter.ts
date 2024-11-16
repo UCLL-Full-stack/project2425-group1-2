@@ -21,7 +21,7 @@ export const useCoursesForStudentGetter = (
 
   useEffect(() => {
     getCourses();
-  }, []);
+  }, [studentId]);
 
   return { courses, setCourses, getCourses };
 };

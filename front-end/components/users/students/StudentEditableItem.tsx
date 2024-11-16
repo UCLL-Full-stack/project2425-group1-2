@@ -1,7 +1,7 @@
-import React from "react";
 import { UserShort } from "@/types";
+import EditButton from "../../buttons/EditButton";
+import StudentItemLayout from "./StudentItemLayout";
 import UserShortView from "./UserShortView";
-import EditButton from "../buttons/EditButton";
 
 interface StudentEditableItemProps {
   student: UserShort;
@@ -20,12 +20,10 @@ const StudentEditableItem = ({
   };
 
   return (
-    <section className="p-1 rounded shadow-regular bg-primary align-top text-left w-64 h-64">
-      <div className="flex flex-row justify-between p-2">
-        <UserShortView user={student} />
-        <EditButton handleEdit={handleRedactorStudent} isActive={isActive} />
-      </div>
-    </section>
+    <StudentItemLayout>
+      <UserShortView user={student} />
+      <EditButton handleEdit={handleRedactorStudent} isActive={isActive} />
+    </StudentItemLayout>
   );
 };
 

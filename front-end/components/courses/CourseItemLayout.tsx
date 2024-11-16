@@ -28,7 +28,7 @@ const CourseItemLayout = React.memo(
     };
 
     return (
-      <section className="bg-primary shadow-regular mb-3">
+      <section className="bg-primary shadow-regular w-full rounded">
         <section className="flex flex-row justify-between p-4">
           <article className="flex flex-row gap-4">{children}</article>
           <article className="ml-8">

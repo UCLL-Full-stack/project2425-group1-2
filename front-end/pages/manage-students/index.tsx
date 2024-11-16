@@ -1,8 +1,8 @@
 import FixedCreateButton from "@/components/buttons/FixedCreateButton";
 import ErrorDialog from "@/components/ErrorDialog";
 import MapObjectsLayout from "@/components/layouts/MapObjectsLayout";
-import StudentForm from "@/components/students/student_form/StudentForm";
-import StudentEditableItem from "@/components/students/StudentEditableItem";
+import StudentForm from "@/components/users/students/student_form/StudentForm";
+import StudentEditableItem from "@/components/users/students/StudentEditableItem";
 import StudentService from "@/services/DummyStudentService";
 import { EntityItem, Student } from "@/types";
 import { getDefaultStudent } from "@/utils/defaultTypes";

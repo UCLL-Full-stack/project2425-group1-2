@@ -1,6 +1,6 @@
 import ErrorDialog from "@/components/ErrorDialog";
 import MapObjectsLayout from "@/components/layouts/MapObjectsLayout";
-import StudentLinkItem from "@/components/students/StudentLinkItem";
+import StudentLinkItem from "@/components/users/students/StudentLinkItem";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { useStudentsShortGetter } from "@/utils/hooks/useStudentsShortGetter";
 import { MY_ISP_URL } from "@/utils/urls";

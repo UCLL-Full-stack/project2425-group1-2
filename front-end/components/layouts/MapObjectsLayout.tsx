@@ -9,7 +9,7 @@ interface MapObjectsLayoutProps {
 
 const MapObjectsLayout = React.memo(
   ({ objects, children, flex }: MapObjectsLayoutProps) => {
-    const flexClass = flex === "row" ? "flex-row gap-8" : "flex-col gap-3";
+    const flexClass = flex === "row" ? "flex-row gap-8 flex-wrap" : "flex-col gap-6";
 
     return (
       <OverviewLayout>

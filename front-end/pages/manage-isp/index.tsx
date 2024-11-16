@@ -81,7 +81,7 @@ export default function ISPManagement() {
       <h1 className="text-center mt-5">{MAIN_SECTION_TITLE}</h1>
       <MapObjectsLayout
         objects={isps}
-        flex="row"
+        flex="col"
         children={(isp) => (
           <ISPEditableItem
             isp={isp}
