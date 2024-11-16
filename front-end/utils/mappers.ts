@@ -5,6 +5,7 @@ import {
   CreateISPView,
   EntityItem,
   ISP,
+  Privilege,
   Student,
   StudentUpdateView,
   UpdateISPView,
@@ -57,4 +58,8 @@ export function mapCourseShortToEntityItem(course: CourseShort): EntityItem {
     id: course.id,
     name: `${course.name} ${course.credits} cr.`,
   };
+}
+
+export function mapPrivilegeToString(privilege: Privilege): string {
+  return  privilege.description;
 }

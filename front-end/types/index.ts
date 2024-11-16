@@ -107,6 +107,7 @@ export type Privilege = {
 }
 
 export const enum PrivilegeType {
+  NONE = -1,
   CREATE_ISP = 1,
   UPDATE_ISP = 2,
   DELETE_ISP = 3,

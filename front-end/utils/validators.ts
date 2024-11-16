@@ -1,4 +1,4 @@
-import { Course, ISP, Student } from "@/types";
+import { Admin, Course, ISP, Student } from "@/types";
 import { ErrorState } from "@/types/errorState";
 import exp from "constants";
 
@@ -41,6 +41,22 @@ const validateStudent = (data: Student, errorCallback?: (errors: ErrorState) => 
     return Object.keys(newErrors).length === 0;
 };
 
+const validateAdmin = (data: Admin, errorCallback?: (errors: ErrorState) => void) => {
+    const newErrors: ErrorState = {};
+    if (!data.name) newErrors.name = "Student name is required.";
+    if (!data.email) newErrors.email = "Email is required.";
+    if (!data.password) newErrors.password = "Password is required.";
+    if (data.privileges && data.privileges.some((c) => c.id === -1)) {
+        newErrors.passedCourses = "Privileges must be chosen.";
+    }
+
+    if (errorCallback) {
+        errorCallback(newErrors);
+    }
+
+    return Object.keys(newErrors).length === 0;
+};
+
 const validateCourse = (data: Course, errorCallback?: (errors: ErrorState) => void) => {
     const newErrors: ErrorState = {};
     if (!data.name) newErrors.name = "Course name is required.";
@@ -59,4 +75,4 @@ const validateCourse = (data: Course, errorCallback?: (errors: ErrorState) => vo
     return Object.keys(newErrors).length === 0;
 };
 
-export { validateISP, validateStudent, validateCourse };
+export { validateISP, validateStudent, validateAdmin, validateCourse };

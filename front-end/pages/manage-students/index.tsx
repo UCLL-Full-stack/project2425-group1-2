@@ -2,7 +2,7 @@ import FixedCreateButton from "@/components/buttons/FixedCreateButton";
 import ErrorDialog from "@/components/ErrorDialog";
 import ManageObjectsLayout from "@/components/layouts/ManageObjectsLayout";
 import StudentForm from "@/components/users/students/student_form/StudentForm";
-import StudentEditableItem from "@/components/users/students/StudentEditableItem";
+import UserEditableItem from "@/components/users/UserEditableItem";
 import StudentService from "@/services/DummyStudentService";
 import { EntityItem, Student } from "@/types";
 import { getDefaultStudent } from "@/utils/defaultTypes";
@@ -85,7 +85,7 @@ export default function manageStudents() {
         flex="row"
         headingTitle={MAIN_SECTION_TITLE}
         children={(student) => (
-          <StudentEditableItem
+          <UserEditableItem
             student={student}
             redactorStudent={handleUpdate}
             isActive={manageTabisActive}

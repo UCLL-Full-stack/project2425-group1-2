@@ -1,79 +1,107 @@
-// import ErrorDialog from "@/components/ErrorDialog";
-// import MapObjectsLayout from "@/components/layouts/MapObjectsLayout";
-// import AdminService from "@/services/DummyAdminService";
-// import { Admin, EntityItem } from "@/types";
-// import { useAdminsShortGetter } from "@/utils/hooks/useAdminsShortGetter";
-// import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
-// import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
-// import Head from "next/head";
-// import { useState } from "react";
+import FixedCreateButton from "@/components/buttons/FixedCreateButton";
+import ErrorDialog from "@/components/ErrorDialog";
+import ManageObjectsLayout from "@/components/layouts/ManageObjectsLayout";
+import AdminForm from "@/components/users/admins/AdminForm";
+import UserEditableItem from "@/components/users/UserEditableItem";
+import AdminService from "@/services/DummyAdminService";
+import { Admin, Privilege } from "@/types";
+import { getDefaultAdmin } from "@/utils/defaultTypes";
+import { useCrudAdmin } from "@/utils/hooks/useCrudAdmin";
+import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
+import { usePrivilegeGetter } from "@/utils/hooks/usePrivilegeGetter";
+import Head from "next/head";
+import { useState } from "react";
 
-// const TITLE = "Manage Admins";
-// const MAIN_SECTION_TITLE = "Manage admins";
+const TITLE = "Manage Admins";
+const MAIN_SECTION_TITLE = "Manage admins";
 
-// export default function manageAdmins() {
-//   const [updatingAdmin, setUpdatingAdmin] = useState<Admin | null>(null);
-//   const [creatingAdmin, setCreatingAdmin] = useState<Admin | null>(null);
-//   const { errors, setErrors, handleError } = useErrorHandler();
-//   const { admins, getAdmins } = useAdminsShortGetter(handleError);
-//   const { roles } = useCoursesShortGetter(handleError);
+export default function manageAdmins() {
+  const [updatingAdmin, setUpdatingAdmin] = useState<Admin | null>(null);
+  const [creatingAdmin, setCreatingAdmin] = useState<Admin | null>(null);
+  const { errors, setErrors, handleError } = useErrorHandler();
+  const { admins, updateAdmin, createAdmin, deleteAdmin } =
+    useCrudAdmin(handleError);
+  const { privileges } = usePrivilegeGetter(handleError);
 
-//   const redactorAdmin = async (id: number) => {
-//     const admin: Admin | undefined = await AdminService.getAdminById(
-//       id,
-//       handleError
-//     );
-//     if (admin) {
-//       setUpdatingAdmin(admin);
-//     }
-//   };
+  const handleUpdate = async (id: number) => {
+    const admin: Admin | undefined = await AdminService.getAdminById(
+      id,
+      handleError
+    );
+    if (admin) {
+      setUpdatingAdmin(admin);
+    }
+  };
 
-//   const updateAdmin = async (admin: Admin) => {
-//     await AdminService.updateAdmin(admin.id, admin, handleError);
-//     setUpdatingAdmin(null);
-//     await getAdmins();
-//   };
+  const handleCreate = () => {
+    const admin: Admin = getDefaultAdmin();
+    setCreatingAdmin(admin);
+  };
 
-//   const createAdmin = async (admin: Admin) => {
-//     await AdminService.createAdmin(admin, handleError);
-//     setCreatingAdmin(null);
-//     await getAdmins();
-//   };
+  const handleSubmit = async (admin: Admin) => {
+    if (updatingAdmin) {
+      await updateAdmin(admin);
+      setUpdatingAdmin(null);
+      return;
+    }
+    await createAdmin(admin);
+    setCreatingAdmin(null);
+    return;
+  };
 
-//   const deleteAdmin = async (id: number) => {
-//     await AdminService.deleteAdmin(id, handleError);
-//     setUpdatingAdmin(null);
-//     await getAdmins();
-//   };
+  const handleCancel = () => {
+    setCreatingAdmin(null);
+    setUpdatingAdmin(null);
+  };
 
-//   const getPossibleRoles = (admin: Admin): EntityItem[] => {
-//     const rolesIds = new Set(admin.roles.map((role) => role.id));
+  const handleDelete = async (id: number) => {
+    await deleteAdmin(id);
+    setUpdatingAdmin(null);
+  };
 
-//     return roles
-//       .filter((role) => !rolesIds.has(role.id))
-//       .map((role) => ({ id: role.id, name: role.name }));
-//   };
+  const getPossiblePrivileges = (admin: Admin): Privilege[] => {
+    const privilegesIds = new Set(
+      admin.privileges.map((privilege) => privilege.id)
+    );
 
-//   const manageTabIsActive =
-//     updatingAdmin == null &&
-//     creatingAdmin == null &&
-//     Object.keys(errors).length === 0;
+    return privileges.filter((privilege) => !privilegesIds.has(privilege.id));
+  };
 
-//   return (
-//     <>
-//       <Head>
-//         <title>{TITLE}</title>
-//       </Head>
-//       <h1 className="text-center mt-5">{MAIN_SECTION_TITLE}</h1>
-//       <MapObjectsLayout
-//         objects={admins}
-//         flex="row"
-//         children={(admin) => null}
-//       />
+  const manageTabIsActive =
+    updatingAdmin == null &&
+    creatingAdmin == null &&
+    Object.keys(errors).length === 0;
 
-//       {errors && Object.keys(errors).length > 0 && (
-//         <ErrorDialog errors={errors} setErrors={setErrors} />
-//       )}
-//     </>
-//   );
-// }
+  return (
+    <>
+      <Head>
+        <title>{TITLE}</title>
+      </Head>
+      <ManageObjectsLayout
+        objects={admins}
+        isActive={manageTabIsActive}
+        flex="row"
+        headingTitle={MAIN_SECTION_TITLE}
+        children={(admin: Admin) => (
+          <UserEditableItem
+            student={admin}
+            redactorStudent={handleUpdate}
+            isActive={manageTabIsActive}
+          />
+        )}
+      />
+      <AdminForm
+        admin={updatingAdmin || creatingAdmin}
+        formName={updatingAdmin ? "Update admin" : "Create admin"}
+        getPossiblePrivileges={getPossiblePrivileges}
+        onSubmit={handleSubmit}
+        onCancel={handleCancel}
+        onDelete={handleDelete}
+      />
+      <FixedCreateButton onClick={handleCreate} isActive={manageTabIsActive} />
+      {errors && Object.keys(errors).length > 0 && (
+        <ErrorDialog errors={errors} setErrors={setErrors} />
+      )}
+    </>
+  );
+}

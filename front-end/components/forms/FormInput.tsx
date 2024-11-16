@@ -10,7 +10,7 @@ interface CourseNameInputProps {
   error?: string;
 }
 
-const CourseFormInput = React.memo(
+const FormInput = React.memo(
   ({
     name,
     labelText,
@@ -38,4 +38,4 @@ const CourseFormInput = React.memo(
   )
 );
 
-export default CourseFormInput;
+export default FormInput;

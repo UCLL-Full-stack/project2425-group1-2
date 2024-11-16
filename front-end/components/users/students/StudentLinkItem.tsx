@@ -1,7 +1,7 @@
 import React from "react";
 import { UserShort } from "@/types";
 import Link from "next/link";
-import UserShortView from "./UserShortView";
+import UserShortView from "../UserShortView";
 
 interface StudentLinkItemProps {
   student: UserShort;

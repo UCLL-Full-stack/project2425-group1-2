@@ -1,18 +1,18 @@
 import { UserShort } from "@/types";
-import EditButton from "../../buttons/EditButton";
-import StudentItemLayout from "./StudentItemLayout";
+import EditButton from "../buttons/EditButton";
+import UserItemLayout from "./UserItemLayout";
 import UserShortView from "./UserShortView";
 
-interface StudentEditableItemProps {
+interface UserEditableItemProps {
   student: UserShort;
   redactorStudent: (studentId: number) => Promise<void>;
   isActive: boolean;
 }
-const StudentEditableItem = ({
+const UserEditableItem = ({
   student,
   redactorStudent,
   isActive,
-}: StudentEditableItemProps) => {
+}: UserEditableItemProps) => {
   const handleRedactorStudent = async () => {
     if (isActive) {
       await redactorStudent(student.id);
@@ -20,11 +20,11 @@ const StudentEditableItem = ({
   };
 
   return (
-    <StudentItemLayout>
+    <UserItemLayout>
       <UserShortView user={student} />
       <EditButton handleEdit={handleRedactorStudent} isActive={isActive} />
-    </StudentItemLayout>
+    </UserItemLayout>
   );
 };
 
-export default StudentEditableItem;
+export default UserEditableItem;

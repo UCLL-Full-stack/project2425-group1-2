@@ -1,10 +1,10 @@
 import React from "react";
 
-interface StudentItemLayoutProps {
+interface UserItemLayoutProps {
   children: React.ReactNode;
 }
 
-const StudentItemLayout = React.memo(({ children }: StudentItemLayoutProps) => {
+const UserItemLayout = React.memo(({ children }: UserItemLayoutProps) => {
   return (
     <section className="p-1 rounded shadow-regular bg-primary align-top text-left w-64 h-64">
       <div className="flex flex-row justify-between p-2">{children}</div>
@@ -12,4 +12,4 @@ const StudentItemLayout = React.memo(({ children }: StudentItemLayoutProps) => {
   );
 });
 
-export default StudentItemLayout;
+export default UserItemLayout;
