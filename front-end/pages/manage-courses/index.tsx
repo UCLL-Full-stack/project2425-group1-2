@@ -2,8 +2,7 @@ import FixedCreateButton from "@/components/buttons/FixedCreateButton";
 import CourseForm from "@/components/courses/course_form/CourseForm";
 import CourseEditableItem from "@/components/courses/CourseEditableItem";
 import ErrorDialog from "@/components/ErrorDialog";
-import LowOpacityLayout from "@/components/layouts/LowOpacityLayout";
-import MapObjectsLayout from "@/components/layouts/MapObjectsLayout";
+import ManageObjectsLayout from "@/components/layouts/ManageObjectsLayout";
 import CourseService from "@/services/CourseService";
 import { Course, EntityItem } from "@/types";
 import { getDefaultCourse } from "@/utils/defaultTypes";
@@ -78,26 +77,22 @@ export default function CourseManagement() {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <LowOpacityLayout isActive={!manageTabIsActive}>
-        <h1 className="text-center mt-5">{MAIN_SECTION_TITLE}</h1>
-        <MapObjectsLayout
-          objects={courses}
-          flex="col"
-          children={(course) => (
-            <CourseEditableItem
-              course={course}
-              details={detailedCourses[course.id]}
-              redactorCourse={handleUpdate}
-              toggleCourseDetails={toggleCourseDetails}
-              isActive={manageTabIsActive}
-            />
-          )}
-        />
-        <FixedCreateButton
-          onClick={handleCreate}
-          isActive={manageTabIsActive}
-        />
-      </LowOpacityLayout>
+      <ManageObjectsLayout
+        objects={courses}
+        isActive={manageTabIsActive}
+        headingTitle={MAIN_SECTION_TITLE}
+        flex="col"
+        children={(course) => (
+          <CourseEditableItem
+            course={course}
+            details={detailedCourses[course.id]}
+            redactorCourse={handleUpdate}
+            toggleCourseDetails={toggleCourseDetails}
+            isActive={manageTabIsActive}
+          />
+        )}
+      />
+      <FixedCreateButton onClick={handleCreate} isActive={manageTabIsActive} />
       <CourseForm
         course={updatingCourse || creatingCourse}
         formName={updatingCourse ? "Update Course" : "Create Course"}

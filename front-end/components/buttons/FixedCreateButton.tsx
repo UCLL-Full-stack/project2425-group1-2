@@ -11,7 +11,7 @@ const FixedCreateButton = React.memo(
       <section className="fixed bottom-8 right-8">
         <button
           className={`bg-safe p-3 rounded shadow-regular ${
-            isActive ? "hover:shadow-success" : ""
+            isActive ? "hover:shadow-success" : "opacity-50"
           }`}
           onClick={onClick}
           disabled={!isActive}

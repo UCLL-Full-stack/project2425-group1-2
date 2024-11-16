@@ -1,7 +1,6 @@
 import FixedCreateButton from "@/components/buttons/FixedCreateButton";
 import ErrorDialog from "@/components/ErrorDialog";
-import LowOpacityLayout from "@/components/layouts/LowOpacityLayout";
-import MapObjectsLayout from "@/components/layouts/MapObjectsLayout";
+import ManageObjectsLayout from "@/components/layouts/ManageObjectsLayout";
 import StudentForm from "@/components/users/students/student_form/StudentForm";
 import StudentEditableItem from "@/components/users/students/StudentEditableItem";
 import StudentService from "@/services/DummyStudentService";
@@ -80,24 +79,20 @@ export default function manageStudents() {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <LowOpacityLayout isActive={!manageTabisActive}>
-        <h1 className="text-center mt-5">{MAIN_SECTION_TITLE}</h1>
-        <MapObjectsLayout
-          objects={students}
-          flex="row"
-          children={(student) => (
-            <StudentEditableItem
-              student={student}
-              redactorStudent={handleUpdate}
-              isActive={manageTabisActive}
-            />
-          )}
-        />
-        <FixedCreateButton
-          onClick={handleCreate}
-          isActive={manageTabisActive}
-        />
-      </LowOpacityLayout>
+      <ManageObjectsLayout
+        objects={students}
+        isActive={manageTabisActive}
+        flex="row"
+        headingTitle={MAIN_SECTION_TITLE}
+        children={(student) => (
+          <StudentEditableItem
+            student={student}
+            redactorStudent={handleUpdate}
+            isActive={manageTabisActive}
+          />
+        )}
+      />
+      <FixedCreateButton onClick={handleCreate} isActive={manageTabisActive} />
       <StudentForm
         student={updatingStudent || creatingStudent}
         formName={updatingStudent ? "Update Student" : "Create Student"}

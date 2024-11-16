@@ -3,8 +3,7 @@ import SaveUndoButtons from "@/components/buttons/SaveUndoButtons";
 import CourseSelectableItem from "@/components/courses/CourseSelectableItem";
 import ErrorDialog from "@/components/ErrorDialog";
 import ISPSubmitNotification from "@/components/isps/ISPSubmitNotification";
-import LowOpacityLayout from "@/components/layouts/LowOpacityLayout";
-import MapObjectsLayout from "@/components/layouts/MapObjectsLayout";
+import ManageObjectsLayout from "@/components/layouts/ManageObjectsLayout";
 import Loading from "@/components/Loading";
 import DummyIspService from "@/services/DummyIspService";
 import { CourseShort, ISPStatus } from "@/types";
@@ -148,23 +147,22 @@ export default function ComposeISP() {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <h1 className="text-center mt-5">{mainSectionTitle}</h1>
-      <LowOpacityLayout isActive={!isActive}>
-        <MapObjectsLayout
-          objects={courses}
-          flex="col"
-          children={(course) => (
-            <CourseSelectableItem
-              course={course}
-              details={detailedCourses[course.id]}
-              selected={isSelected(course.id)}
-              toggleSelectCourse={() => toggleSelectCourse(course)}
-              toggleCourseDetails={toggleCourseDetails}
-              isActive={isActive}
-            />
-          )}
-        />
-      </LowOpacityLayout>
+      <ManageObjectsLayout
+        objects={courses}
+        isActive={isActive}
+        headingTitle={mainSectionTitle}
+        flex="col"
+        children={(course) => (
+          <CourseSelectableItem
+            course={course}
+            details={detailedCourses[course.id]}
+            selected={isSelected(course.id)}
+            toggleSelectCourse={() => toggleSelectCourse(course)}
+            toggleCourseDetails={toggleCourseDetails}
+            isActive={isActive}
+          />
+        )}
+      />
       <section className="fixed bottom-6 right-8 flex flex-row gap-2">
         {changes.length > 0 && (
           <SaveUndoButtons onSave={handleSave} onUndo={undoLastChange} />

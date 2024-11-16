@@ -2,8 +2,7 @@ import FixedBackButton from "@/components/buttons/FixedBackButton";
 import CourseItemLayout from "@/components/courses/CourseItemLayout";
 import CourseShortView from "@/components/courses/CourseShortView";
 import ErrorDialog from "@/components/ErrorDialog";
-import LowOpacityLayout from "@/components/layouts/LowOpacityLayout";
-import MapObjectsLayout from "@/components/layouts/MapObjectsLayout";
+import ManageObjectsLayout from "@/components/layouts/ManageObjectsLayout";
 import Loading from "@/components/Loading";
 import { useDetailedCoursesToggle } from "@/utils/hooks/useDetailedCoursesToggle";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
@@ -37,23 +36,22 @@ export default function ReviewISP() {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <h1 className="text-center mt-5">{mainSectionTitle}</h1>
-      <LowOpacityLayout isActive={!isActive}>
-        <MapObjectsLayout
-          objects={isp.courses}
-          flex="col"
-          children={(course) => (
-            <CourseItemLayout
-              course={course}
-              details={detailedCourses[course.id]}
-              toggleCourseDetails={toggleCourseDetails}
-              isActive={isActive}
-            >
-              <CourseShortView course={course} />
-            </CourseItemLayout>
-          )}
-        />
-      </LowOpacityLayout>
+      <ManageObjectsLayout
+        objects={isp.courses}
+        isActive={isActive}
+        headingTitle={mainSectionTitle}
+        flex="col"
+        children={(course) => (
+          <CourseItemLayout
+            course={course}
+            details={detailedCourses[course.id]}
+            toggleCourseDetails={toggleCourseDetails}
+            isActive={isActive}
+          >
+            <CourseShortView course={course} />
+          </CourseItemLayout>
+        )}
+      />
       <section className="fixed bottom-8 right-8">
         <article>
           <p>{`${totalCourseCredits}/${isp.totalCredits}`}</p>

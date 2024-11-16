@@ -1,8 +1,7 @@
 import ErrorDialog from "@/components/ErrorDialog";
 import Loading from "@/components/Loading";
 import ISPLinkItem from "@/components/isps/ISPLinkItem";
-import LowOpacityLayout from "@/components/layouts/LowOpacityLayout";
-import MapObjectsLayout from "@/components/layouts/MapObjectsLayout";
+import ManageObjectsLayout from "@/components/layouts/ManageObjectsLayout";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { useISPShortByStudentGetter } from "@/utils/hooks/useISPShortByStudentGetter";
 import { EDIT_URL, MY_ISP_URL, VIEW_URL } from "@/utils/urls";
@@ -31,21 +30,20 @@ export default function StudentISP() {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <LowOpacityLayout isActive={!isActive}>
-        <h1 className="text-center mt-5">{MAIN_SECTION_TITLE}</h1>
-        <MapObjectsLayout
-          objects={isps}
-          flex="col"
-          children={(isp) => (
-            <ISPLinkItem
-              isp={isp}
-              editHref={MY_ISP_URL + EDIT_URL}
-              viewHref={MY_ISP_URL + VIEW_URL}
-              isActive={isActive}
-            />
-          )}
-        />
-      </LowOpacityLayout>
+      <ManageObjectsLayout
+        objects={isps}
+        isActive={isActive}
+        headingTitle={MAIN_SECTION_TITLE}
+        flex="col"
+        children={(isp) => (
+          <ISPLinkItem
+            isp={isp}
+            editHref={MY_ISP_URL + EDIT_URL}
+            viewHref={MY_ISP_URL + VIEW_URL}
+            isActive={isActive}
+          />
+        )}
+      />
       {errors && Object.keys(errors).length > 0 && (
         <ErrorDialog errors={errors} setErrors={setErrors} />
       )}
