@@ -2,6 +2,7 @@ import FixedBackButton from "@/components/buttons/FixedBackButton";
 import CourseItemLayout from "@/components/courses/CourseItemLayout";
 import CourseShortView from "@/components/courses/CourseShortView";
 import ErrorDialog from "@/components/ErrorDialog";
+import LowOpacityLayout from "@/components/layouts/LowOpacityLayout";
 import MapObjectsLayout from "@/components/layouts/MapObjectsLayout";
 import Loading from "@/components/Loading";
 import { useDetailedCoursesToggle } from "@/utils/hooks/useDetailedCoursesToggle";
@@ -37,21 +38,22 @@ export default function ReviewISP() {
         <title>{TITLE}</title>
       </Head>
       <h1 className="text-center mt-5">{mainSectionTitle}</h1>
-      <MapObjectsLayout
-        objects={isp.courses}
-        flex="col"
-        children={(course) => (
-          <CourseItemLayout
-            course={course}
-            details={detailedCourses[course.id]}
-            toggleCourseDetails={toggleCourseDetails}
-            isActive={isActive}
-          >
-            <CourseShortView course={course} />
-          </CourseItemLayout>
-        )}
-      />
-
+      <LowOpacityLayout isActive={!isActive}>
+        <MapObjectsLayout
+          objects={isp.courses}
+          flex="col"
+          children={(course) => (
+            <CourseItemLayout
+              course={course}
+              details={detailedCourses[course.id]}
+              toggleCourseDetails={toggleCourseDetails}
+              isActive={isActive}
+            >
+              <CourseShortView course={course} />
+            </CourseItemLayout>
+          )}
+        />
+      </LowOpacityLayout>
       <section className="fixed bottom-8 right-8">
         <article>
           <p>{`${totalCourseCredits}/${isp.totalCredits}`}</p>

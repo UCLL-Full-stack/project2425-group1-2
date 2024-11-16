@@ -1,5 +1,6 @@
 import FixedCreateButton from "@/components/buttons/FixedCreateButton";
 import ErrorDialog from "@/components/ErrorDialog";
+import LowOpacityLayout from "@/components/layouts/LowOpacityLayout";
 import MapObjectsLayout from "@/components/layouts/MapObjectsLayout";
 import StudentForm from "@/components/users/students/student_form/StudentForm";
 import StudentEditableItem from "@/components/users/students/StudentEditableItem";
@@ -69,7 +70,7 @@ export default function manageStudents() {
       .map((course) => ({ id: course.id, name: course.name }));
   };
 
-  const ManageTabisActive =
+  const manageTabisActive =
     updatingStudent == null &&
     creatingStudent == null &&
     Object.keys(errors).length === 0;
@@ -79,19 +80,24 @@ export default function manageStudents() {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <h1 className="text-center mt-5">{MAIN_SECTION_TITLE}</h1>
-      <MapObjectsLayout
-        objects={students}
-        flex="row"
-        children={(student) => (
-          <StudentEditableItem
-            student={student}
-            redactorStudent={handleUpdate}
-            isActive={ManageTabisActive}
-          />
-        )}
-      />
-      <FixedCreateButton onClick={handleCreate} isActive={ManageTabisActive} />
+      <LowOpacityLayout isActive={!manageTabisActive}>
+        <h1 className="text-center mt-5">{MAIN_SECTION_TITLE}</h1>
+        <MapObjectsLayout
+          objects={students}
+          flex="row"
+          children={(student) => (
+            <StudentEditableItem
+              student={student}
+              redactorStudent={handleUpdate}
+              isActive={manageTabisActive}
+            />
+          )}
+        />
+        <FixedCreateButton
+          onClick={handleCreate}
+          isActive={manageTabisActive}
+        />
+      </LowOpacityLayout>
       <StudentForm
         student={updatingStudent || creatingStudent}
         formName={updatingStudent ? "Update Student" : "Create Student"}

@@ -2,6 +2,7 @@ import FixedCreateButton from "@/components/buttons/FixedCreateButton";
 import ErrorDialog from "@/components/ErrorDialog";
 import ISPForm from "@/components/isps/isp_form/ISPForm";
 import ISPEditableItem from "@/components/isps/ISPEditableItem";
+import LowOpacityLayout from "@/components/layouts/LowOpacityLayout";
 import MapObjectsLayout from "@/components/layouts/MapObjectsLayout";
 import ISPService from "@/services/DummyIspService";
 import { CourseShort, ISP } from "@/types";
@@ -68,7 +69,7 @@ export default function ISPManagement() {
     );
   };
 
-  const ManageTabisActive =
+  const manageTabisActive =
     updatingISP == null &&
     creatingISP == null &&
     Object.keys(errors).length === 0;
@@ -78,19 +79,24 @@ export default function ISPManagement() {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <h1 className="text-center mt-5">{MAIN_SECTION_TITLE}</h1>
-      <MapObjectsLayout
-        objects={isps}
-        flex="col"
-        children={(isp) => (
-          <ISPEditableItem
-            isp={isp}
-            redactorISP={handleUpdate}
-            isActive={ManageTabisActive}
-          />
-        )}
-      />
-      <FixedCreateButton onClick={handleCreate} isActive={ManageTabisActive} />
+      <LowOpacityLayout isActive={!manageTabisActive}>
+        <h1 className="text-center mt-5">{MAIN_SECTION_TITLE}</h1>
+        <MapObjectsLayout
+          objects={isps}
+          flex="col"
+          children={(isp) => (
+            <ISPEditableItem
+              isp={isp}
+              redactorISP={handleUpdate}
+              isActive={manageTabisActive}
+            />
+          )}
+        />
+        <FixedCreateButton
+          onClick={handleCreate}
+          isActive={manageTabisActive}
+        />
+      </LowOpacityLayout>
       <ISPForm
         isp={updatingISP || creatingISP}
         formName={updatingISP ? "Update ISP" : "Create ISP"}
