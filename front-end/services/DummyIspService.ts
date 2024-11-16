@@ -53,6 +53,8 @@ let isps: ISP[] = [
   },
 ];
 
+let nextId = isps.length + 1;
+
 const getAllISPShort = async (errorCallback?: (error: ErrorState) => void) => {
   return isps.map((isp) => ({
     id: isp.id,
@@ -115,7 +117,7 @@ const createISP = async (
     return null;
   }
   const newISP: ISP = {
-    id: isps.length + 1,
+    id: nextId++,
     status: ISPStatus.NOTSUBMITTED,
     totalCredits: ispData.totalCredits,
     startYear: ispData.startYear,

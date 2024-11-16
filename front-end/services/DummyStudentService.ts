@@ -49,6 +49,8 @@ export let students: Student[] = [
   },
 ];
 
+let nextId = students.length + 1;
+
 const getAllStudents = async (errorCallback?: (error: ErrorState) => void) => {
   return students;
 };
@@ -75,7 +77,7 @@ const createStudent = async (
   student: Student,
   errorCallback?: (error: ErrorState) => void
 ) => {
-  const newStudent = { ...student, id: students.length + 1 };
+  const newStudent = { ...student, id: nextId++ };
   students.push(newStudent as Student);
   return newStudent;
 };
