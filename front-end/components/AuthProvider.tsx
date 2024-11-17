@@ -12,7 +12,7 @@ import React, {
 interface AuthContextType {
   data: SessionData | null;
   token: string | null;
-  login: (data: LoginData) => void;
+  login: (data: LoginData) => Promise<void>;
   logout: () => void;
 }
 
