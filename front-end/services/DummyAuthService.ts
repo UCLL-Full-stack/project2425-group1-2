@@ -1,5 +1,5 @@
 import { Role } from "@/types";
-import { LoginData } from "@/types/auth";
+import { LoginData, SessionData } from "@/types/auth";
 import { BACKEND_APP_URL } from "@/utils/urls";
 import { admins } from "./DummyAdminService";
 import { students } from "./DummyStudentService";
@@ -45,8 +45,9 @@ const login = async (data: LoginData) => {
     throw new Error("Invalid credentials");
   }
 
-  const payload = {
-    user: user.email,
+  const payload: SessionData = {
+    userId: user.id,
+    email: user.email,
     role: admin ? Role.ADMIN : Role.STUDENT,
     privileges: admin ? admin.privileges.map((pr) => pr.name) : [],
   };

@@ -6,7 +6,8 @@ export type LoginData = {
 };
 
 export type SessionData = {
-  user: string;
+  userId: number;
+  email: string;
   role: Role;
   privileges?: number[];
 };
