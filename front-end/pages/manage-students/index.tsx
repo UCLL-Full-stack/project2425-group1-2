@@ -4,7 +4,7 @@ import ObjectsWithHeadingLayout from "@/components/layouts/ObjectsWithHeadingLay
 import StudentForm from "@/components/users/students/student_form/StudentForm";
 import UserEditableItem from "@/components/users/UserEditableItem";
 import DummyStudentService from "@/services/DummyStudentService";
-import { EntityItem, Student } from "@/types";
+import { CourseShort, Student } from "@/types";
 import { getDefaultStudent } from "@/utils/defaultTypes";
 import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
 import { useCrudStudent } from "@/utils/hooks/useCrudStudent";
@@ -29,10 +29,8 @@ export default function manageStudents() {
   };
 
   const handleUpdate = async (id: number) => {
-    const student: Student | undefined = await DummyStudentService.getStudentById(
-      id,
-      handleError
-    );
+    const student: Student | undefined =
+      await DummyStudentService.getStudentById(id, handleError);
     if (student) {
       setUpdatingStudent(student);
     }
@@ -59,14 +57,12 @@ export default function manageStudents() {
     setCreatingStudent(null);
   };
 
-  const getPossiblePassedCourses = (student: Student): EntityItem[] => {
+  const getPossiblePassedCourses = (student: Student): CourseShort[] => {
     const passedCourseIds = new Set(
       student.passedCourses.map((course) => course.id)
     );
 
-    return courses
-      .filter((course) => !passedCourseIds.has(course.id))
-      .map((course) => ({ id: course.id, name: course.name }));
+    return courses.filter((course) => !passedCourseIds.has(course.id));
   };
 
   const manageTabisActive =

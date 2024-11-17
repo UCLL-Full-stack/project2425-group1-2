@@ -1,18 +1,20 @@
 import FormLayout from "@/components/forms/FormLayout";
-import { EntityItem, Student } from "@/types";
+import FormObjectsInput from "@/components/forms/FormObjectsInput";
+import { CourseShort, Student } from "@/types";
 import { ErrorState } from "@/types/errorState";
+import { getDefaultCourse } from "@/utils/defaultTypes";
+import { mapCourseShortToString } from "@/utils/mappers";
 import { nationalities } from "@/utils/nationalities";
 import { validateStudent } from "@/utils/validators";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import StudentFormButtons from "../../../forms/FormButtons";
 import FormInput from "../../../forms/FormInput";
 import SelectListInput from "../../../forms/SelectListInput";
-import StudentPassedCoursesInput from "./StudentPassedCoursesInput";
 
 interface StudentFormProps {
   student: Student | null;
   formName: string;
-  getPossiblePassedCourses: (student: Student) => EntityItem[];
+  getPossiblePassedCourses: (student: Student) => CourseShort[];
   onSubmit: (student: Student) => Promise<void>;
   onCancel: () => void;
   onDelete?: (id: number) => Promise<void>;
@@ -29,6 +31,18 @@ const StudentForm = React.memo(
   }: StudentFormProps) => {
     const [formData, setFormData] = useState(student);
     const [errors, setErrors] = useState<ErrorState>({});
+
+    const availablePassedCourses = useMemo(
+      () => (formData && getPossiblePassedCourses(formData)) || [],
+      [formData?.passedCourses]
+    );
+    const canAddPassedCourse = useMemo(
+      () =>
+        availablePassedCourses &&
+        availablePassedCourses.length > 0 &&
+        !availablePassedCourses.some((p) => p.id === -1),
+      [availablePassedCourses, formData?.passedCourses]
+    );
 
     useEffect(() => {
       setErrors({});
@@ -54,9 +68,13 @@ const StudentForm = React.memo(
       setFormData({ ...formData, [name]: value });
     };
 
-    const handlePassedCourseChange = (index: number, value: EntityItem) => {
+    const handlePassedCourseChange = (
+      index: number,
+      availablePassedCourseIndex: number
+    ) => {
       const newPassedCourses = [...formData.passedCourses];
-      newPassedCourses[index] = value;
+      newPassedCourses[index] =
+        availablePassedCourses[availablePassedCourseIndex];
       setFormData({
         ...formData,
         passedCourses: newPassedCourses,
@@ -64,9 +82,10 @@ const StudentForm = React.memo(
     };
 
     const addEmptyPassedCourse = () => {
+      const defaultCourse: CourseShort = getDefaultCourse();
       setFormData({
         ...formData,
-        passedCourses: [...formData.passedCourses, { id: -1, name: "" }],
+        passedCourses: [...formData.passedCourses, defaultCourse],
       });
     };
 
@@ -115,6 +134,14 @@ const StudentForm = React.memo(
             onChange={handleChange}
             error={errors.password}
           />
+          <FormInput
+            name="year"
+            labelText="Year"
+            inputType="number"
+            value={formData.year}
+            onChange={handleChange}
+            error={errors.year}
+          />
           <SelectListInput<string>
             value={formData.nationality}
             labelText="Nationality"
@@ -124,12 +151,17 @@ const StudentForm = React.memo(
             onChange={handleChange}
             error={errors.nationality}
           />
-          <StudentPassedCoursesInput
-            passedCourses={formData.passedCourses}
+          <FormObjectsInput
+            objects={formData.passedCourses.map(mapCourseShortToString)}
+            name="passedCourses"
+            labelText="Passed Courses"
             onAdd={addEmptyPassedCourse}
             onRemove={removePassedCourse}
             onChange={handlePassedCourseChange}
-            getPossiblePassedCourses={() => getPossiblePassedCourses(formData)}
+            availableObjects={availablePassedCourses.map(
+              mapCourseShortToString
+            )}
+            canAddNewObject={canAddPassedCourse}
             error={errors.passedCourses}
           />
           <StudentFormButtons onCancel={onCancel} onDelete={handleDelete} />

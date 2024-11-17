@@ -33,7 +33,7 @@ export type Student = {
   password: string;
   year: number;
   nationality?: string;
-  passedCourses: { id: number; name: string }[];
+  passedCourses: CourseShort[];
 };
 
 export type UserShort = {
