@@ -1,15 +1,15 @@
-import EntityItemsInput from "@/components/forms/EntityItemsInput";
 import FormButtons from "@/components/forms/FormButtons";
 import FormLayout from "@/components/forms/FormLayout";
+import FormObjectsInput from "@/components/forms/FormObjectsInput";
 import SelectEntityItemInput from "@/components/forms/SelectEntityItemInput";
 import SelectListInput from "@/components/forms/SelectListInput";
 import { CourseShort, EntityItem, ISP, ISPStatus } from "@/types";
 import { ErrorState } from "@/types/errorState";
 import { getDefaultCourse } from "@/utils/defaultTypes";
 import { useStudentsShortGetter } from "@/utils/hooks/useStudentsShortGetter";
-import { mapCourseShortToEntityItem } from "@/utils/mappers";
+import { mapCourseShortToString } from "@/utils/mappers";
 import { validateISP } from "@/utils/validators";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import FormInput from "../../forms/FormInput";
 
 interface ISPFormProps {
@@ -34,6 +34,25 @@ const ISPForm = React.memo(
     const [errors, setErrors] = useState<ErrorState>({});
     const { students } = useStudentsShortGetter();
 
+    const availableCourses = useMemo(
+      () => (formData && getPossibleCourses(formData)) || [],
+      [formData?.courses]
+    );
+    const courseCreditsSum = useMemo(
+      () => formData?.courses.reduce((acc, course) => acc + course.credits, 0),
+      [formData?.courses]
+    );
+    const canAddCourse = useMemo(
+      () =>
+        (availableCourses &&
+          availableCourses.length > 0 &&
+          formData &&
+          formData.courses &&
+          !formData.courses.some((c) => c.id === -1)) ||
+        false,
+      [availableCourses, formData?.courses]
+    );
+
     useEffect(() => {
       setErrors({});
       setFormData(isp);
@@ -43,10 +62,10 @@ const ISPForm = React.memo(
       return null;
     }
 
-    const getAvailableYears = () => {
-      const currentYear = new Date().getFullYear();
-      return Array.from({ length: 27 }, (_, i) => currentYear - 20 + i);
-    };
+    const availableYears = Array.from(
+      { length: 27 },
+      (_, i) => new Date().getFullYear() - 20 + i
+    );
 
     const handleDelete = async () => {
       if (isp && onDelete) {
@@ -72,14 +91,13 @@ const ISPForm = React.memo(
         ...formData,
         student: student,
       });
-    }
+    };
 
     const handleCourseChange = (
       index: number,
-      value: { id: number; name: string }
+      possibleCoursesIndex: number
     ) => {
-      const courses = getPossibleCourses(formData);
-      const course = courses.find((c) => c.id === value.id);
+      const course = availableCourses[possibleCoursesIndex];
       if (!course) {
         return;
       }
@@ -116,10 +134,6 @@ const ISPForm = React.memo(
       });
     };
 
-    const sumCoursesCredits = () => {
-      return formData.courses.reduce((acc, course) => acc + course.credits, 0);
-    }
-
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       if (!validateISP(formData, setErrors)) {
@@ -150,7 +164,7 @@ const ISPForm = React.memo(
             name="startYear"
             labelText="Select Year"
             value={formData.startYear}
-            values={getAvailableYears()}
+            values={availableYears}
             onChange={handleChange}
             parseValue={(year) => `${year}-${year + 1}`}
             error={errors.status}
@@ -163,15 +177,16 @@ const ISPForm = React.memo(
             onChange={handleStudentChange}
             error={errors.student}
           />
-          <EntityItemsInput
+          <FormObjectsInput
             name="courses"
-            labelText={`Courses: ${sumCoursesCredits()} credits`}
-            entityItems={formData.courses.map(mapCourseShortToEntityItem)}
+            labelText={`Courses: ${courseCreditsSum} credits`}
+            objects={formData.courses.map(mapCourseShortToString)}
             onAdd={addEmptyCourse}
             onRemove={removeCourse}
             onChange={handleCourseChange}
-            getAvailableEntities={() => getPossibleCourses(formData).map(mapCourseShortToEntityItem)}
-            error={errors.courses}
+            canAddNewObject={canAddCourse}
+            availableObjects={availableCourses.map(mapCourseShortToString)}
+            error={errors.privileges}
           />
           <FormButtons onCancel={onCancel} onDelete={handleDelete} />
         </FormLayout>

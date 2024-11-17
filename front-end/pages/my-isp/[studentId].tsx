@@ -1,7 +1,7 @@
 import ErrorDialog from "@/components/ErrorDialog";
 import Loading from "@/components/Loading";
 import ISPLinkItem from "@/components/isps/ISPLinkItem";
-import ManageObjectsLayout from "@/components/layouts/ManageObjectsLayout";
+import ObjectsWithHeadingLayout from "@/components/layouts/ObjectsWithHeadingLayout";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { useISPShortByStudentGetter } from "@/utils/hooks/useISPShortByStudentGetter";
 import { EDIT_URL, MY_ISP_URL, VIEW_URL } from "@/utils/urls";
@@ -30,7 +30,7 @@ export default function StudentISP() {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <ManageObjectsLayout
+      <ObjectsWithHeadingLayout
         objects={isps}
         isActive={isActive}
         headingTitle={MAIN_SECTION_TITLE}

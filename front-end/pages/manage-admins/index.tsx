@@ -1,6 +1,6 @@
 import FixedCreateButton from "@/components/buttons/FixedCreateButton";
 import ErrorDialog from "@/components/ErrorDialog";
-import ManageObjectsLayout from "@/components/layouts/ManageObjectsLayout";
+import ObjectsWithHeadingLayout from "@/components/layouts/ObjectsWithHeadingLayout";
 import AdminForm from "@/components/users/admins/AdminForm";
 import UserEditableItem from "@/components/users/UserEditableItem";
 import AdminService from "@/services/DummyAdminService";
@@ -77,7 +77,7 @@ export default function manageAdmins() {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <ManageObjectsLayout
+      <ObjectsWithHeadingLayout
         objects={admins}
         isActive={manageTabIsActive}
         flex="row"

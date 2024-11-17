@@ -2,7 +2,7 @@ import FixedCreateButton from "@/components/buttons/FixedCreateButton";
 import CourseForm from "@/components/courses/course_form/CourseForm";
 import CourseEditableItem from "@/components/courses/CourseEditableItem";
 import ErrorDialog from "@/components/ErrorDialog";
-import ManageObjectsLayout from "@/components/layouts/ManageObjectsLayout";
+import ObjectsWithHeadingLayout from "@/components/layouts/ObjectsWithHeadingLayout";
 import CourseService from "@/services/CourseService";
 import { Course, EntityItem } from "@/types";
 import { getDefaultCourse } from "@/utils/defaultTypes";
@@ -77,7 +77,7 @@ export default function CourseManagement() {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <ManageObjectsLayout
+      <ObjectsWithHeadingLayout
         objects={courses}
         isActive={manageTabIsActive}
         headingTitle={MAIN_SECTION_TITLE}

@@ -2,7 +2,7 @@ import FixedCreateButton from "@/components/buttons/FixedCreateButton";
 import ErrorDialog from "@/components/ErrorDialog";
 import ISPForm from "@/components/isps/isp_form/ISPForm";
 import ISPEditableItem from "@/components/isps/ISPEditableItem";
-import ManageObjectsLayout from "@/components/layouts/ManageObjectsLayout";
+import ObjectsWithHeadingLayout from "@/components/layouts/ObjectsWithHeadingLayout";
 import ISPService from "@/services/DummyIspService";
 import { CourseShort, ISP } from "@/types";
 import { getDefaultISP } from "@/utils/defaultTypes";
@@ -78,7 +78,7 @@ export default function ISPManagement() {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <ManageObjectsLayout
+      <ObjectsWithHeadingLayout
         objects={isps}
         headingTitle={MAIN_SECTION_TITLE}
         flex="col"

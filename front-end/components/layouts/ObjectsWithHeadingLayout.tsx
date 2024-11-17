@@ -11,7 +11,7 @@ interface ManageObjectsLayoutProps {
   flex: "row" | "col";
 }
 
-const ManageObjectsLayout = React.memo(
+const ObjectsWithHeadingLayout = React.memo(
   ({
     objects,
     isActive,
@@ -28,4 +28,4 @@ const ManageObjectsLayout = React.memo(
   }
 );
 
-export default ManageObjectsLayout;
+export default ObjectsWithHeadingLayout;

@@ -1,6 +1,6 @@
 import FixedCreateButton from "@/components/buttons/FixedCreateButton";
 import ErrorDialog from "@/components/ErrorDialog";
-import ManageObjectsLayout from "@/components/layouts/ManageObjectsLayout";
+import ObjectsWithHeadingLayout from "@/components/layouts/ObjectsWithHeadingLayout";
 import StudentForm from "@/components/users/students/student_form/StudentForm";
 import UserEditableItem from "@/components/users/UserEditableItem";
 import StudentService from "@/services/DummyStudentService";
@@ -79,7 +79,7 @@ export default function manageStudents() {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <ManageObjectsLayout
+      <ObjectsWithHeadingLayout
         objects={students}
         isActive={manageTabisActive}
         flex="row"

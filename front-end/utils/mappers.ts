@@ -60,6 +60,10 @@ export function mapCourseShortToEntityItem(course: CourseShort): EntityItem {
   };
 }
 
+export function mapCourseShortToString(course: CourseShort): string {
+  return `${course.name} ${course.credits} cr.`;
+}
+
 export function mapPrivilegeToString(privilege: Privilege): string {
-  return  privilege.description;
+  return privilege.description;
 }

@@ -2,7 +2,7 @@ import FixedBackButton from "@/components/buttons/FixedBackButton";
 import CourseItemLayout from "@/components/courses/CourseItemLayout";
 import CourseShortView from "@/components/courses/CourseShortView";
 import ErrorDialog from "@/components/ErrorDialog";
-import ManageObjectsLayout from "@/components/layouts/ManageObjectsLayout";
+import ObjectsWithHeadingLayout from "@/components/layouts/ObjectsWithHeadingLayout";
 import Loading from "@/components/Loading";
 import { useDetailedCoursesToggle } from "@/utils/hooks/useDetailedCoursesToggle";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
@@ -36,7 +36,7 @@ export default function ReviewISP() {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <ManageObjectsLayout
+      <ObjectsWithHeadingLayout
         objects={isp.courses}
         isActive={isActive}
         headingTitle={mainSectionTitle}

@@ -3,7 +3,7 @@ import SaveUndoButtons from "@/components/buttons/SaveUndoButtons";
 import CourseSelectableItem from "@/components/courses/CourseSelectableItem";
 import ErrorDialog from "@/components/ErrorDialog";
 import ISPSubmitNotification from "@/components/isps/ISPSubmitNotification";
-import ManageObjectsLayout from "@/components/layouts/ManageObjectsLayout";
+import ObjectsWithHeadingLayout from "@/components/layouts/ObjectsWithHeadingLayout";
 import Loading from "@/components/Loading";
 import DummyIspService from "@/services/DummyIspService";
 import { CourseShort, ISPStatus } from "@/types";
@@ -147,7 +147,7 @@ export default function ComposeISP() {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <ManageObjectsLayout
+      <ObjectsWithHeadingLayout
         objects={courses}
         isActive={isActive}
         headingTitle={mainSectionTitle}
