@@ -1,17 +1,34 @@
-import { UserShort } from "@/types";
+import { Admin } from "@/types";
 import React from "react";
+import SmallTextLayout from "../layouts/SmallTextLayout";
+import MapObjectsLayout from "../layouts/MapObjectsLayout";
 
-interface UserShortViewProps {
-  user: UserShort;
+interface AdminDetailsViewProps {
+  user: Admin;
 }
 
-const UserShortView = React.memo(({ user }: UserShortViewProps) => {
+const AdminDetailsView = React.memo(({ user }: AdminDetailsViewProps) => {
   return (
-    <article className="flex flex-col gap-2 items-center">
-      <p>{`Id: ${user.id}`}</p>
-      <p>{user.name}</p>
-    </article>
+    <>
+      {user.privileges && user.privileges.length > 0 ? (
+        <article className="flex flex-col gap-2">
+          <p className="flex self-center">{`Privileges:`}</p>
+          <MapObjectsLayout
+            children={(priv, index) => (
+              <SmallTextLayout>
+                <p key={index}>{priv.description}</p>
+              </SmallTextLayout>
+            )}
+            objects={user.privileges}
+            flex="row"
+            gap={2}
+          />
+        </article>
+      ) : (
+        <p className="flex self-center">{`No privileges available.`}</p>
+      )}
+    </>
   );
 });
 
-export default UserShortView;
+export default AdminDetailsView;

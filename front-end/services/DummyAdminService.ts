@@ -1,5 +1,5 @@
 import { ErrorState } from "@/types/errorState";
-import { Admin, Privilege, PrivilegeType, Student } from "../types/index";
+import { Admin, Role } from "../types/index";
 import { privileges } from "./DummyPrivilegeService";
 
 export let admins: Admin[] = [
@@ -9,6 +9,7 @@ export let admins: Admin[] = [
     email: "zeus@example.com",
     password: "password123",
     privileges: [privileges[0], privileges[1], privileges[2]],
+    role: Role.ADMIN,
   },
   {
     id: 2,
@@ -16,6 +17,7 @@ export let admins: Admin[] = [
     email: "hera@example.com",
     password: "password123",
     privileges: [privileges[3], privileges[4], privileges[5]],
+    role: Role.ADMIN,
   },
   {
     id: 3,
@@ -23,6 +25,7 @@ export let admins: Admin[] = [
     email: "poseidon@example.com",
     password: "password123",
     privileges: [privileges[6], privileges[7], privileges[8]],
+    role: Role.ADMIN,
   },
   {
     id: 4,
@@ -30,6 +33,7 @@ export let admins: Admin[] = [
     email: "demeter@example.com",
     password: "password123",
     privileges: [privileges[9], privileges[10], privileges[11]],
+    role: Role.ADMIN,
   },
   {
     id: 5,
@@ -37,6 +41,7 @@ export let admins: Admin[] = [
     email: "athena@example.com",
     password: "password123",
     privileges: privileges,
+    role: Role.ADMIN,
   },
 ];
 
@@ -44,9 +49,11 @@ let nextId = admins.length + 1;
 
 const getAllAdmins = async (errorCallback?: (error: ErrorState) => void) => {
   return admins;
-}
+};
 
-const getAllShortAdmins = async (errorCallback?: (error: ErrorState) => void) => {
+const getAllShortAdmins = async (
+  errorCallback?: (error: ErrorState) => void
+) => {
   return admins.map((admin) => ({ id: admin.id, name: admin.name }));
 };
 

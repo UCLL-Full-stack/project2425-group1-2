@@ -1,4 +1,4 @@
-import { Admin, Course, ISP, ISPStatus, Privilege, PrivilegeType, Student } from "@/types";
+import { Admin, Course, ISP, ISPStatus, Privilege, PrivilegeType, Role, Student } from "@/types";
 
 const currentYear = new Date().getFullYear();
 
@@ -17,6 +17,7 @@ export const getDefaultStudent = (): Student => ({
     email: '',
     password: '',
     nationality: '',
+    role: Role.STUDENT,
     passedCourses: [],
     year: 1
 });
@@ -26,6 +27,7 @@ export const getDefaultAdmin = (): Admin => ({
     name: '',
     email: '',
     password: '',
+    role: Role.ADMIN,
     privileges: []
 });
 

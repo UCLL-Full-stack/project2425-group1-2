@@ -36,14 +36,14 @@ export default function Login() {
       name: admin.email,
       email: admin.email,
       password: admin.password,
-      type: Role.ADMIN,
+      role: Role.ADMIN,
     }));
     const students: User[] = studentsData.map((student) => ({
       id: student.id,
       name: student.email,
       email: student.email,
       password: student.password,
-      type: Role.STUDENT,
+      role: Role.STUDENT,
     }));
     return [...admins, ...students];
   };

@@ -1,5 +1,5 @@
 import { ErrorState } from "@/types/errorState";
-import { Student } from "../types/index";
+import { Role, Student } from "../types/index";
 
 export let students: Student[] = [
   {
@@ -10,6 +10,7 @@ export let students: Student[] = [
     nationality: "American",
     passedCourses: [],
     year: 1,
+    role: Role.STUDENT,
   },
   {
     id: 2,
@@ -19,6 +20,7 @@ export let students: Student[] = [
     nationality: "British",
     passedCourses: [],
     year: 2,
+    role: Role.STUDENT,
   },
   {
     id: 3,
@@ -28,6 +30,7 @@ export let students: Student[] = [
     nationality: "Canadian",
     passedCourses: [],
     year: 3,
+    role: Role.STUDENT,
   },
   {
     id: 4,
@@ -37,6 +40,7 @@ export let students: Student[] = [
     nationality: "Australian",
     passedCourses: [],
     year: 2,
+    role: Role.STUDENT,
   },
   {
     id: 5,
@@ -46,6 +50,7 @@ export let students: Student[] = [
     nationality: "New Zealander",
     passedCourses: [],
     year: 2,
+    role: Role.STUDENT,
   },
 ];
 
@@ -55,7 +60,9 @@ const getAllStudents = async (errorCallback?: (error: ErrorState) => void) => {
   return students;
 };
 
-const getAllShortStudents = async (errorCallback?: (error: ErrorState) => void) => {
+const getAllShortStudents = async (
+  errorCallback?: (error: ErrorState) => void
+) => {
   return students.map((student) => ({ id: student.id, name: student.name }));
 };
 

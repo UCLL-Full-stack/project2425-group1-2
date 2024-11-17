@@ -31,6 +31,7 @@ export type Student = {
   name: string;
   email: string;
   password: string;
+  role: Role;
   year: number;
   nationality?: string;
   passedCourses: CourseShort[];
@@ -97,7 +98,7 @@ export type User = {
   name: string;
   email: string;
   password: string;
-  type: Role;
+  role: Role;
 }
 
 export enum Role{
@@ -110,6 +111,7 @@ export type Admin = {
   name: string;
   email: string;
   password: string;
+  role: Role;
   privileges: Privilege[];
 }
 
