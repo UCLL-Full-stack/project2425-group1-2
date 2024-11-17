@@ -30,8 +30,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     const storedToken = localStorage.getItem("token");
     const storedUserData = localStorage.getItem("data");
 
-    console.log(storedToken);
-    console.log(storedUserData);
     if (storedToken && storedUserData) {
       setToken(storedToken);
       setData(JSON.parse(storedUserData));
@@ -43,8 +41,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       const response = await DummyAuthService.login(data);
       if (response.data) {
-        console.log(response.token);
-        console.log(response.data);
         setData(response.data);
         setToken(response.token);
         localStorage.setItem("token", response.token);

@@ -42,7 +42,6 @@ const login = async (data: LoginData) => {
   const user = admin || student;
 
   if (user === undefined) {
-    console.log("Invalid credentials");
     throw new Error("Invalid credentials");
   }
 

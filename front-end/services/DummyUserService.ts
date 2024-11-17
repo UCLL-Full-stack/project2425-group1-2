@@ -14,7 +14,6 @@ const getUserByEmail = async (
 
   let result = admin || student;
   if (result === undefined) {
-    console.log("User not found");
     if (errorCallback) {
       errorCallback({
         status: "application error",
