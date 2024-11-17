@@ -3,7 +3,7 @@ import ErrorDialog from "@/components/ErrorDialog";
 import ObjectsWithHeadingLayout from "@/components/layouts/ObjectsWithHeadingLayout";
 import StudentForm from "@/components/users/students/student_form/StudentForm";
 import UserEditableItem from "@/components/users/UserEditableItem";
-import StudentService from "@/services/DummyStudentService";
+import DummyStudentService from "@/services/DummyStudentService";
 import { EntityItem, Student } from "@/types";
 import { getDefaultStudent } from "@/utils/defaultTypes";
 import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
@@ -29,7 +29,7 @@ export default function manageStudents() {
   };
 
   const handleUpdate = async (id: number) => {
-    const student: Student | undefined = await StudentService.getStudentById(
+    const student: Student | undefined = await DummyStudentService.getStudentById(
       id,
       handleError
     );

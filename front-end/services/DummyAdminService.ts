@@ -42,6 +42,10 @@ export let admins: Admin[] = [
 
 let nextId = admins.length + 1;
 
+const getAllAdmins = async (errorCallback?: (error: ErrorState) => void) => {
+  return admins;
+}
+
 const getAllShortAdmins = async (errorCallback?: (error: ErrorState) => void) => {
   return admins.map((admin) => ({ id: admin.id, name: admin.name }));
 };
@@ -107,6 +111,7 @@ const deleteAdmin = async (
 };
 
 const DummyAdminService = {
+  getAllAdmins,
   getAllShortAdmins,
   getAdminById,
   createAdmin,

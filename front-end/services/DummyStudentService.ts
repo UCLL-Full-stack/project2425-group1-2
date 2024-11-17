@@ -119,7 +119,7 @@ const deleteStudent = async (
   return deletedStudent[0];
 };
 
-const StudentService = {
+const DummyStudentService = {
   getAllStudents,
   getAllShortStudents,
   getStudentById,
@@ -128,4 +128,4 @@ const StudentService = {
   deleteStudent,
 };
 
-export default StudentService;
+export default DummyStudentService;

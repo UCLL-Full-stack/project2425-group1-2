@@ -25,10 +25,10 @@ const URL = BACKEND_APP_URL + "/auth";
 //   }
 // };
 
-const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
 // Secret key used to sign the JWT (keep it private and secure)
-const SECRET_KEY = "yourSecretKey";
+const SECRET_KEY = Buffer.from("lalelele", "utf-8");
 
 const login = async (data: LoginData) => {
   let admin = admins.find(
@@ -49,21 +49,19 @@ const login = async (data: LoginData) => {
   const payload = {
     user: user.email,
     roles: admin ? ["admin"] : ["student"],
-    privileges: admin ? admin.privileges : [],
+    privileges: admin ? admin.privileges.map(pr => pr.name) : [],
   };
 
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" }); // Expires in 1 hour
-
-  let resData = {
-    user: user.email,
-    roles: admin ? ["admin"] : ["student"],
-    privileges: admin ? admin.privileges.map(mapPrivilegeToString) : [],
-  };
+  const tokenData = `${data.username}&timestamp=${Date.now()}`;
+  const token = crypto
+    .createHmac("sha256", { SECRET_KEY })
+    .update(tokenData)
+    .digest("hex");
 
   let res = {
-    data: resData,
+    data: payload,
     token: token, // Generated JWT token
-    message: "success login"
+    message: "success login",
   };
 
   return res;

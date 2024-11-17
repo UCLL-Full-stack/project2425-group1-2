@@ -9,6 +9,7 @@ import {
   Student,
   StudentUpdateView,
   UpdateISPView,
+  User,
 } from "@/types";
 
 export function mapCourseToUpdateView(course: Course): CourseUpdateView {
@@ -66,4 +67,8 @@ export function mapCourseShortToString(course: CourseShort): string {
 
 export function mapPrivilegeToString(privilege: Privilege): string {
   return privilege.description;
+}
+
+export function mapUserToString( user: User): string {
+  return `${user.name} (${user.type})`;
 }

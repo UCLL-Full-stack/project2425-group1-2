@@ -6,5 +6,5 @@ export type LoginData = {
 export type SessionData = {
   user: string;
   roles: string[];
-  privileges?: string[];
+  privileges?: number[];
 };

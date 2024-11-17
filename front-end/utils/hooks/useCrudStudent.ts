@@ -1,4 +1,4 @@
-import StudentService from "@/services/DummyStudentService";
+import DummyStudentService from "@/services/DummyStudentService";
 import { Student, UserShort } from "@/types";
 import { ErrorState } from "@/types/errorState";
 import { useEffect, useState } from "react";
@@ -9,7 +9,7 @@ export const useCrudStudent = (
   const [students, setStudents] = useState<UserShort[]>([]);
 
   const getStudents = async () => {
-    const courses: UserShort[] = await StudentService.getAllShortStudents(
+    const courses: UserShort[] = await DummyStudentService.getAllShortStudents(
       errorCallback
     );
     setStudents(courses);
@@ -17,18 +17,18 @@ export const useCrudStudent = (
 
   const updateStudent = async (student: Student) => {
     // const updateStudentView = convertStudentToUpdateView(student);
-    await StudentService.updateStudent(student.id, student, errorCallback);
+    await DummyStudentService.updateStudent(student.id, student, errorCallback);
     await getStudents();
   };
 
   const createStudent = async (student: Student) => {
     // const updateStudentView = convertStudentToUpdateView(student);
-    await StudentService.createStudent(student, errorCallback);
+    await DummyStudentService.createStudent(student, errorCallback);
     await getStudents();
   };
 
   const deleteStudent = async (id: number) => {
-    await StudentService.deleteStudent(id, errorCallback);
+    await DummyStudentService.deleteStudent(id, errorCallback);
     await getStudents();
   };
 
