@@ -97,7 +97,12 @@ export type User = {
   name: string;
   email: string;
   password: string;
-  type: "student" | "admin";
+  type: Role;
+}
+
+export enum Role{
+  STUDENT = "student",
+  ADMIN = "admin"
 }
 
 export type Admin = {

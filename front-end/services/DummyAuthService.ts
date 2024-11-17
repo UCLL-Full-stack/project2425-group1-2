@@ -1,5 +1,5 @@
+import { Role } from "@/types";
 import { LoginData } from "@/types/auth";
-import { mapPrivilegeToString } from "@/utils/mappers";
 import { BACKEND_APP_URL } from "@/utils/urls";
 import { admins } from "./DummyAdminService";
 import { students } from "./DummyStudentService";
@@ -48,8 +48,8 @@ const login = async (data: LoginData) => {
 
   const payload = {
     user: user.email,
-    roles: admin ? ["admin"] : ["student"],
-    privileges: admin ? admin.privileges.map(pr => pr.name) : [],
+    role: admin ? Role.ADMIN : Role.STUDENT,
+    privileges: admin ? admin.privileges.map((pr) => pr.name) : [],
   };
 
   const tokenData = `${data.username}&timestamp=${Date.now()}`;

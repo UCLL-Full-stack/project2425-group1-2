@@ -6,6 +6,7 @@ export const MANAGE_STUDENTS_URL = '/manage-students';
 export const MANAGE_ADMINS_URL = '/manage-admins';
 export const MANAGE_COURSES_URL = '/manage-courses';
 export const MY_ISP_URL = '/my-isp';
+export const MY_PROFILE_URL = '/my-profile';
 
 
 // SUPPLEMENTARY URLS

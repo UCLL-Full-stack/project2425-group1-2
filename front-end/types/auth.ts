@@ -1,3 +1,5 @@
+import { Role } from ".";
+
 export type LoginData = {
   username: string;
   password: string;
@@ -5,6 +7,6 @@ export type LoginData = {
 
 export type SessionData = {
   user: string;
-  roles: string[];
+  role: Role;
   privileges?: number[];
 };

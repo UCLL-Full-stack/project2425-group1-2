@@ -1,9 +1,10 @@
 import {
-    MANAGE_ADMINS_URL,
-    MANAGE_COURSES_URL,
-    MANAGE_ISP_URL,
-    MANAGE_STUDENTS_URL,
-    MY_ISP_URL
+  MANAGE_ADMINS_URL,
+  MANAGE_COURSES_URL,
+  MANAGE_ISP_URL,
+  MANAGE_STUDENTS_URL,
+  MY_ISP_URL,
+  MY_PROFILE_URL,
 } from "@/utils/urls";
 
 export type Tab = {

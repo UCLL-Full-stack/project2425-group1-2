@@ -4,7 +4,7 @@ import FormInput from "@/components/forms/FormInput";
 import FormSelectObjectInput from "@/components/forms/FormSelectObjectInput";
 import DummyAdminService from "@/services/DummyAdminService";
 import DummyStudentService from "@/services/DummyStudentService";
-import { User } from "@/types";
+import { Role, User } from "@/types";
 import { LoginData } from "@/types/auth";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { mapUserToString } from "@/utils/mappers";
@@ -36,14 +36,14 @@ export default function Login() {
       name: admin.email,
       email: admin.email,
       password: admin.password,
-      type: "admin",
+      type: Role.ADMIN,
     }));
     const students: User[] = studentsData.map((student) => ({
       id: student.id,
       name: student.email,
       email: student.email,
       password: student.password,
-      type: "student",
+      type: Role.STUDENT,
     }));
     return [...admins, ...students];
   };

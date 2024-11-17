@@ -5,10 +5,10 @@ import "../styles/globals.css";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <Layout>
-      <AuthProvider>
+    <AuthProvider>
+      <Layout>
         <Component {...pageProps} />
-      </AuthProvider>
-    </Layout>
+      </Layout>
+    </AuthProvider>
   );
 }
