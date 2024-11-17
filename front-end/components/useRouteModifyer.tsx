@@ -7,8 +7,8 @@ import {
   MY_ISP_URL,
   MY_PROFILE_URL,
 } from "@/utils/urls";
-import { NextRouter, useRouter } from "next/router";
-import { useEffect, useMemo } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useAuth } from "./AuthProvider";
 
 type UrlPattern = {
@@ -20,7 +20,7 @@ const modifyUrlBasedOnAccess = (url: string, urlPatterns: UrlPattern[]) => {
   // Check against specific patterns first
   for (const { regex, redirectUrl } of urlPatterns) {
     if (regex.test(url)) {
-      url = redirectUrl; // If the URL matches, return the corresponding modified URL
+      return redirectUrl; // If the URL matches, return the corresponding modified URL
     }
   }
 
@@ -38,7 +38,7 @@ const getStudentUrlPatterns = (userData: SessionData | null): UrlPattern[] => {
   const myIspRegex = new RegExp(`^${MY_ISP_URL}(?!/(edit|view)($|/)).*$`);
   // Regex to match /my-profile and any subpath
   const myProfileRegex = new RegExp(`^${MY_PROFILE_URL}.*$`);
-
+  
   return [
     // Redirect /my-isp* to /my-isp/[userId]
     { regex: myIspRegex, redirectUrl: `${MY_ISP_URL}/${userData?.userId}` },
@@ -84,40 +84,49 @@ const getGuestUrlPatterns = (): UrlPattern[] => {
   ];
 };
 
-const modifyRoute = (router: NextRouter, userData: SessionData | null) => {
-  let url = router.asPath;
-  if (
-    !userData ||
-    !userData.role ||
-    userData.userId === -1 ||
-    userData.email === ""
-  ) {
+const modifyUrl = (url: string, userData: SessionData | null) => {
+  if (!userData || userData.userId === -1 || userData.email === "") {
     const guestRoutes = getGuestUrlPatterns();
     url = modifyUrlBasedOnAccess(url, guestRoutes);
-    router.push(url);
-    return;
+    console.log(url);
+    return url;
   }
   if (userData?.role === Role.ADMIN) {
     const adminRoutes = getAdminUrlPatterns(userData);
     url = modifyUrlBasedOnAccess(url, adminRoutes);
-    router.push(url);
-    return;
+    return url;
   }
   if (userData?.role === Role.STUDENT) {
     const studentRoutes = getStudentUrlPatterns(userData);
     url = modifyUrlBasedOnAccess(url, studentRoutes);
-    router.push(url);
-    return;
+    return url;
   }
 };
 
 const useRouteModifyer = () => {
   const router = useRouter();
   const { data } = useAuth();
-  const userData = useMemo(() => data, [data]);
+  const [isRedirecting, setIsRedirecting] = useState<boolean>(true);
+
   useEffect(() => {
-    modifyRoute(router, userData);
-  }, [userData]);
+    const url = router.asPath;
+    console.log("urls", url);
+    console.log("data", data);
+    if (!url) return;
+
+    const userData = data;
+    const newUrl = modifyUrl(url, userData);
+
+    if (newUrl && newUrl !== url) {
+      console.log("newUrl", newUrl);
+      setIsRedirecting(true)
+      router.replace(newUrl).then(() => setIsRedirecting(false));
+      return;
+    }
+    setIsRedirecting(false);
+  }, [data, router]);
+
+  return isRedirecting;
 };
 
 export default useRouteModifyer;

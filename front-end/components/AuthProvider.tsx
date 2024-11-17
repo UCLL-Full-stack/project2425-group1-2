@@ -57,7 +57,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const logout = () => {
     setData(null);
     setToken("");
-    localStorage.removeItem("site");
+    localStorage.removeItem("token");
+    localStorage.removeItem("data");
     ROUTER.push("/");
   };
 

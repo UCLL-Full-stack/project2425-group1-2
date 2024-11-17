@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 import useRouteModifyer from "../useRouteModifyer";
+import Loading from "../Loading";
 
 interface RouteProtectionLayoutProps {
   children: ReactNode;
@@ -7,7 +8,11 @@ interface RouteProtectionLayoutProps {
 
 const RouteProtectionLayout: React.FC<RouteProtectionLayoutProps> = React.memo(
   ({ children }) => {
-    useRouteModifyer();
+    let isRedirecting = useRouteModifyer();
+
+    if (isRedirecting) {
+      return <Loading />;
+    }
     return <>{children}</>;
   }
 );

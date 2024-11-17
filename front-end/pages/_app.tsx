@@ -7,11 +7,11 @@ import "../styles/globals.css";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <AuthProvider>
-      <RouteProtectionLayout>
-        <Layout>
+      <Layout>
+        <RouteProtectionLayout>
           <Component {...pageProps} />
-        </Layout>
-      </RouteProtectionLayout>
+        </RouteProtectionLayout>
+      </Layout>
     </AuthProvider>
   );
 }

@@ -39,7 +39,7 @@ const Header = React.memo(() => {
         />
         {(userData && (
           <HeaderProfileButton
-            email={userData.user}
+            email={userData.email}
             role={userData.role}
             href={MY_PROFILE_URL}
           />

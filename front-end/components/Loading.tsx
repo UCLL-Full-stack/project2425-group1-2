@@ -1,9 +1,12 @@
 import React from "react";
+import CenteredFitContentLayout from "./layouts/CenteredFitContentLayout";
 
 const Loading = React.memo(() => {
   return (
     <>
-      <div>Loading...</div>
+      <CenteredFitContentLayout>
+        <div>Loading...</div>
+      </CenteredFitContentLayout>
     </>
   );
 });
