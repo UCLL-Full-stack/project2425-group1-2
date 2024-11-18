@@ -1,18 +1,24 @@
-import { CourseShort, EntityItem } from "@/types";
+import { Course, CourseShort, EntityItem } from "@/types";
 import React from "react";
 
 interface CourseDetailsViewProps {
-  details: {
-    description: string;
-    lecturers: string[];
-    requiredPassedCourses: EntityItem[];
-    isElective: boolean;
-  };
+  details: Course;
 }
 
 const CourseDetailsView = React.memo(({ details }: CourseDetailsViewProps) => {
+
+  const year = Math.ceil(details.phase / 2);
+  const semester = details.phase % 2 === 0 ? 2 : 1;
+
   return (
     <section className="flex flex-col gap-4 p-4">
+      <div className="flex flex-col lg:hidden gap-4">
+        <p>{year} Year</p>
+        <p>{semester} Semester</p>
+        <div className="flex xl:hidden">
+          <p>{details.credits} Credits</p>
+        </div>
+      </div>
       <p>{details.description}</p>
       <p>
         Taught by:{" "}

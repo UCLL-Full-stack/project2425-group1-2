@@ -11,10 +11,14 @@ const CourseShortView = React.memo(({ course }: CourseShortViewProps) => {
 
   return (
     <article className="flex flex-row gap-4">
-      <p>{course.name},</p>
-      <p>{year} Year,</p>
-      <p>{semester} Semester,</p>
-      <p>{course.credits} Credits</p>
+      <p>{course.name}</p>
+      <div className="hidden lg:flex flex-row gap-4">
+        <p>{year} Year</p>
+        <p>{semester} Semester</p>
+        <div className="hidden xl:flex">
+          <p>{course.credits} Credits</p>
+        </div>
+      </div>
     </article>
   );
 });
