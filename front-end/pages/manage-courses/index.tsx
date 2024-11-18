@@ -17,7 +17,7 @@ import { useState } from "react";
 const TITLE = "Manage Courses";
 const MAIN_SECTION_TITLE = "Manage courses";
 
-export default function CourseManagement() {
+export default function ManageCourses() {
   const [updatingCourse, setUpdatingCourse] = useState<Course | null>(null);
   const [creatingCourse, setCreatingCourse] = useState<Course | null>(null);
   const { errors, setErrors, handleError } = useErrorHandler();

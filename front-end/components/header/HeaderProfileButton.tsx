@@ -33,7 +33,7 @@ const HeaderProfileButton = ({
 
   return (
     <Link href={buttonHref} className={buttonClass}>
-      {email ? email[0].toUpperCase() : ""}
+      {email[0].toUpperCase()}
     </Link>
   );
 };

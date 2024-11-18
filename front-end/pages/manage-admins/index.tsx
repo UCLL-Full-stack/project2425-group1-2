@@ -16,7 +16,7 @@ import { useState } from "react";
 const TITLE = "Manage Admins";
 const MAIN_SECTION_TITLE = "Manage admins";
 
-export default function manageAdmins() {
+export default function ManageAdmins() {
   const [updatingAdmin, setUpdatingAdmin] = useState<Admin | null>(null);
   const [creatingAdmin, setCreatingAdmin] = useState<Admin | null>(null);
   const { errors, setErrors, handleError } = useErrorHandler();

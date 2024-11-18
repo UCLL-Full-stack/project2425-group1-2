@@ -1,10 +1,10 @@
-import { HeaderButton, ButtonStatus, ButtonType } from "./HeaderButton";
+import { MY_PROFILE_URL } from "@/utils/urls";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 import { AuthContextType, useAuth } from "../AuthProvider";
+import { ButtonStatus, ButtonType, HeaderButton } from "./HeaderButton";
 import HeaderProfileButton from "./HeaderProfileButton";
-import { BACKEND_APP_URL, MY_PROFILE_URL } from "@/utils/urls";
 
 const IMAGE_WIDTH = 103;
 const IMAGE_HEIGHT = 32.25;
@@ -37,7 +37,7 @@ const Header = React.memo(() => {
           buttonType={ButtonType.Home}
           buttonStatus={homeButtonStatus}
         />
-        {(userData && userData.email && (
+        {(userData.email && (
           <HeaderProfileButton
             email={userData.email}
             role={userData.role}

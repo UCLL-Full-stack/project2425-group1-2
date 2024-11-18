@@ -16,7 +16,7 @@ import { useState } from "react";
 const TITLE = "Manage Students";
 const MAIN_SECTION_TITLE = "Manage students";
 
-export default function manageStudents() {
+export default function ManageStudents() {
   const [updatingStudent, setUpdatingStudent] = useState<Student | null>(null);
   const [creatingStudent, setCreatingStudent] = useState<Student | null>(null);
   const { errors, setErrors, handleError } = useErrorHandler();

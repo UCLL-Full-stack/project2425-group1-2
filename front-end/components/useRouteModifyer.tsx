@@ -6,6 +6,7 @@ import {
   LOGIN_URL,
   MY_ISP_URL,
   MY_PROFILE_URL,
+  NO_ACCESS_URL,
 } from "@/utils/urls";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -38,7 +39,7 @@ const getStudentUrlPatterns = (userData: SessionData | null): UrlPattern[] => {
   const myIspRegex = new RegExp(`^${MY_ISP_URL}(?!/(edit|view)($|/)).*$`);
   // Regex to match /my-profile and any subpath
   const myProfileRegex = new RegExp(`^${MY_PROFILE_URL}.*$`);
-  
+
   return [
     // Redirect /my-isp* to /my-isp/[userId]
     { regex: myIspRegex, redirectUrl: `${MY_ISP_URL}/${userData?.userId}` },
@@ -48,9 +49,12 @@ const getStudentUrlPatterns = (userData: SessionData | null): UrlPattern[] => {
       redirectUrl: `${MY_PROFILE_URL}/${userData?.email}`,
     },
     // Redirect /manage-* to home
-    { regex: /^\/manage-.*/, redirectUrl: HOME_URL },
+    { regex: /^\/manage-.*/, redirectUrl: NO_ACCESS_URL },
     // Redirect /login* to home
-    { regex: /^\/login.*$/, redirectUrl: HOME_URL },
+    {
+      regex: /^\/login.*$/,
+      redirectUrl: `${MY_PROFILE_URL}/${userData?.email}`,
+    },
   ];
 };
 
@@ -109,16 +113,16 @@ const useRouteModifyer = () => {
 
   useEffect(() => {
     const url = router.asPath;
-    if (!url || !data) return;
+    if (!url) return;
 
     const userData = data;
     const newUrl = modifyUrl(url, userData);
+    setIsRedirecting(false);
     if (newUrl && newUrl !== url) {
-      setIsRedirecting(true)
+      setIsRedirecting(true);
       router.replace(newUrl).then(() => setIsRedirecting(false));
       return;
     }
-    setIsRedirecting(false);
   }, [data, router]);
 
   return isRedirecting;

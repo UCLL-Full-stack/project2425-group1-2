@@ -16,7 +16,7 @@ import { Suspense } from "react";
 const TITLE = "your profile";
 const MAIN_SECTION_TITLE = "Your Profile";
 
-export default function StudentISP() {
+export default function MyProfile() {
   const router = useRouter();
   const { email } = router.query;
   const userEmail = email as string;

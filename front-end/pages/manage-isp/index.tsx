@@ -16,7 +16,7 @@ import { useState } from "react";
 const TITLE = "Manage ISP";
 const MAIN_SECTION_TITLE = "Manage ISP";
 
-export default function ISPManagement() {
+export default function ManageISP() {
   const [updatingISP, setUpdatingISP] = useState<ISP | null>(null);
   const [creatingISP, setCreatingISP] = useState<ISP | null>(null);
   const { errors, setErrors, handleError } = useErrorHandler();
