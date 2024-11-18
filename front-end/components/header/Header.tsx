@@ -20,7 +20,7 @@ const Header = React.memo(() => {
     pathname === "/login" ? ButtonStatus.CurrentPage : ButtonStatus.Active;
 
   return (
-    <header className="h-20 flex flex-row justify-between p-4 px-4 bg-primary shadow-[0_3px_4px_rgba(0,0,0,0.8)]">
+    <header className="h-fit flex flex-col gap-4 items-center md:flex-row justify-between p-4 px-4 bg-primary shadow-[0_3px_4px_rgba(0,0,0,0.8)]">
       <div className="flex items-center">
         <Image
           priority
