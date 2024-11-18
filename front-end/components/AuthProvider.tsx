@@ -9,22 +9,31 @@ import React, {
   useState,
 } from "react";
 import Loading from "./Loading";
+import { t } from "i18next";
+import { Role } from "@/types";
 
 export interface AuthContextType {
-  data: SessionData | null;
-  token: string | null;
+  data: SessionData;
+  token: string;
   login: (data: LoginData) => Promise<void>;
   logout: () => void;
 }
 
-const AUTH_CONTEXT = createContext<AuthContextType | undefined>(undefined);
+const AUTH_CONTEXT = createContext<AuthContextType>(
+  {
+    data: { email: "", userId: -1, role: Role.NONE },
+    token: "",
+    login: async () => {},
+    logout: () => {},
+  }
+);
 
 interface AuthProviderProps {
   children: ReactNode;
 }
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [data, setData] = useState<SessionData | null>(null);
+  const [data, setData] = useState<SessionData>({ email: "", userId: -1, role: Role.NONE });
   const [token, setToken] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -58,7 +67,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const logout = () => {
-    setData(null);
+    setData({ email: "", userId: -1, role: Role.NONE });
     setToken("");
     localStorage.removeItem("token");
     localStorage.removeItem("data");
@@ -80,8 +89,5 @@ export default React.memo(AuthProvider);
 
 export const useAuth = () => {
   const context = useContext(AUTH_CONTEXT);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
   return context;
 };

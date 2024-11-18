@@ -37,7 +37,7 @@ const Header = React.memo(() => {
           buttonType={ButtonType.Home}
           buttonStatus={homeButtonStatus}
         />
-        {(userData && (
+        {(userData && userData.email && (
           <HeaderProfileButton
             email={userData.email}
             role={userData.role}

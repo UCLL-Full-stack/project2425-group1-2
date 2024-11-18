@@ -103,7 +103,8 @@ export type User = {
 
 export enum Role{
   STUDENT = "student",
-  ADMIN = "admin"
+  ADMIN = "admin",
+  NONE = "none",
 }
 
 export type Admin = {

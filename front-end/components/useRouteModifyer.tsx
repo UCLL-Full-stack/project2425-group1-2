@@ -88,7 +88,6 @@ const modifyUrl = (url: string, userData: SessionData | null) => {
   if (!userData || userData.userId === -1 || userData.email === "") {
     const guestRoutes = getGuestUrlPatterns();
     url = modifyUrlBasedOnAccess(url, guestRoutes);
-    console.log(url);
     return url;
   }
   if (userData?.role === Role.ADMIN) {
@@ -110,15 +109,11 @@ const useRouteModifyer = () => {
 
   useEffect(() => {
     const url = router.asPath;
-    console.log("urls", url);
-    console.log("data", data);
     if (!url || !data) return;
 
     const userData = data;
     const newUrl = modifyUrl(url, userData);
-
     if (newUrl && newUrl !== url) {
-      console.log("newUrl", newUrl);
       setIsRedirecting(true)
       router.replace(newUrl).then(() => setIsRedirecting(false));
       return;

@@ -18,6 +18,9 @@ const roleOptions = {
   admin: {
     class: "bg-success hover:shadow-safe",
   },
+  none: {
+    class: "",
+  },
 };
 
 const HeaderProfileButton = ({
@@ -30,7 +33,7 @@ const HeaderProfileButton = ({
 
   return (
     <Link href={buttonHref} className={buttonClass}>
-      {email[0].toUpperCase()}
+      {email ? email[0].toUpperCase() : ""}
     </Link>
   );
 };
