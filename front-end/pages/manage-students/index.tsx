@@ -4,11 +4,12 @@ import ObjectsWithHeadingLayout from "@/components/layouts/ObjectsWithHeadingLay
 import StudentForm from "@/components/users/students/student_form/StudentForm";
 import UserEditableItem from "@/components/users/UserEditableItem";
 import DummyStudentService from "@/services/DummyStudentService";
-import { CourseShort, Student } from "@/types";
+import { CourseShort, PrivilegeType, Student } from "@/types";
 import { getDefaultStudent } from "@/utils/defaultTypes";
 import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
 import { useCrudStudent } from "@/utils/hooks/useCrudStudent";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
+import { usePrivilegeVerifier } from "@/utils/hooks/usePrivilegeVerifier";
 import Head from "next/head";
 import { useState } from "react";
 
@@ -22,6 +23,7 @@ export default function manageStudents() {
   const { students, updateStudent, createStudent, deleteStudent } =
     useCrudStudent(handleError);
   const { courses } = useCoursesShortGetter(handleError);
+  const { verifyPrivilege } = usePrivilegeVerifier(handleError);
 
   const handleCreate = () => {
     const student: Student = getDefaultStudent();
@@ -37,19 +39,34 @@ export default function manageStudents() {
   };
 
   const handleDelete = async (id: number) => {
+    const verified = await verifyPrivilege(PrivilegeType.DELETE_STUDENT);
+    if (!verified) {
+      return;
+    }
     await deleteStudent(id);
     setUpdatingStudent(null);
   };
 
   const handleSubmit = async (student: Student) => {
-    if (updatingStudent) {
-      await updateStudent(student);
-      setUpdatingStudent(null);
+    updatingStudent ? await update(student) : await create(student);
+  };
+
+  const update = async (student: Student) => {
+    const verified = await verifyPrivilege(PrivilegeType.UPDATE_STUDENT);
+    if (!verified) {
+      return;
+    }
+    await updateStudent(student);
+    setUpdatingStudent(null);
+  };
+
+  const create = async (student: Student) => {
+    const verified = await verifyPrivilege(PrivilegeType.CREATE_STUDENT);
+    if (!verified) {
       return;
     }
     await createStudent(student);
     setCreatingStudent(null);
-    return;
   };
 
   const handleCancel = () => {

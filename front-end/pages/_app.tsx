@@ -6,12 +6,12 @@ import "../styles/globals.css";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <AuthProvider>
-      <Layout>
+    <Layout>
+      <AuthProvider>
         <RouteProtectionLayout>
           <Component {...pageProps} />
         </RouteProtectionLayout>
-      </Layout>
-    </AuthProvider>
+      </AuthProvider>
+    </Layout>
   );
 }

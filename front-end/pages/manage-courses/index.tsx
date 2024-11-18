@@ -4,11 +4,12 @@ import CourseEditableItem from "@/components/courses/CourseEditableItem";
 import ErrorDialog from "@/components/ErrorDialog";
 import ObjectsWithHeadingLayout from "@/components/layouts/ObjectsWithHeadingLayout";
 import CourseService from "@/services/CourseService";
-import { Course, EntityItem } from "@/types";
+import { Course, EntityItem, PrivilegeType } from "@/types";
 import { getDefaultCourse } from "@/utils/defaultTypes";
 import { useCrudCourse } from "@/utils/hooks/useCrudCourse";
 import { useDetailedCoursesToggle } from "@/utils/hooks/useDetailedCoursesToggle";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
+import { usePrivilegeVerifier } from "@/utils/hooks/usePrivilegeVerifier";
 import { mapCourseShortToEntityItem } from "@/utils/mappers";
 import Head from "next/head";
 import { useState } from "react";
@@ -24,6 +25,7 @@ export default function CourseManagement() {
     useCrudCourse(handleError);
   const { detailedCourses, toggleCourseDetails } =
     useDetailedCoursesToggle(handleError);
+  const { verifyPrivilege } = usePrivilegeVerifier(handleError);
 
   const handleUpdate = async (id: number) => {
     const course: Course = await CourseService.getCourseById(id, handleError);
@@ -36,14 +38,25 @@ export default function CourseManagement() {
   };
 
   const handleSubmit = async (isp: Course) => {
-    if (updatingCourse) {
-      await updateCourse(isp);
-      setUpdatingCourse(null);
+    updatingCourse ? await update(isp) : await create(isp);
+  };
+
+  const update = async (course: Course) => {
+    const verified = await verifyPrivilege(PrivilegeType.UPDATE_COURSE);
+    if (!verified) {
       return;
     }
-    await createCourse(isp);
+    await updateCourse(course);
+    setUpdatingCourse(null);
+  };
+
+  const create = async (course: Course) => {
+    const verified = await verifyPrivilege(PrivilegeType.CREATE_COURSE);
+    if (!verified) {
+      return;
+    }
+    await createCourse(course);
     setCreatingCourse(null);
-    return;
   };
 
   const handleCancel = () => {
@@ -52,6 +65,10 @@ export default function CourseManagement() {
   };
 
   const handleDelete = async (id: number) => {
+    const verified = await verifyPrivilege(PrivilegeType.DELETE_COURSE);
+    if (!verified) {
+      return;
+    }
     await deleteCourse(id);
     setUpdatingCourse(null);
   };

@@ -33,14 +33,14 @@ export default function Login() {
     );
     const admins: User[] = adminsData.map((admin) => ({
       id: admin.id,
-      name: admin.email,
+      name: admin.name,
       email: admin.email,
       password: admin.password,
       role: Role.ADMIN,
     }));
     const students: User[] = studentsData.map((student) => ({
       id: student.id,
-      name: student.email,
+      name: student.name,
       email: student.email,
       password: student.password,
       role: Role.STUDENT,

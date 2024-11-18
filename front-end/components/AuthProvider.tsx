@@ -8,6 +8,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import Loading from "./Loading";
 
 export interface AuthContextType {
   data: SessionData | null;
@@ -25,6 +26,7 @@ interface AuthProviderProps {
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [data, setData] = useState<SessionData | null>(null);
   const [token, setToken] = useState("");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -34,6 +36,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       setToken(storedToken);
       setData(JSON.parse(storedUserData));
     }
+    setIsLoading(false);
   }, []);
 
   const ROUTER = useRouter();
@@ -61,6 +64,10 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.removeItem("data");
     ROUTER.push("/");
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <AUTH_CONTEXT.Provider value={{ token, data, login, logout }}>

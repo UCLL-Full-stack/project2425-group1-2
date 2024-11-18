@@ -4,11 +4,12 @@ import ISPForm from "@/components/isps/isp_form/ISPForm";
 import ISPEditableItem from "@/components/isps/ISPEditableItem";
 import ObjectsWithHeadingLayout from "@/components/layouts/ObjectsWithHeadingLayout";
 import ISPService from "@/services/DummyIspService";
-import { CourseShort, ISP } from "@/types";
+import { CourseShort, ISP, PrivilegeType } from "@/types";
 import { getDefaultISP } from "@/utils/defaultTypes";
 import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
 import { useCrudISP } from "@/utils/hooks/useCrudISP";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
+import { usePrivilegeVerifier } from "@/utils/hooks/usePrivilegeVerifier";
 import Head from "next/head";
 import { useState } from "react";
 
@@ -21,6 +22,7 @@ export default function ISPManagement() {
   const { errors, setErrors, handleError } = useErrorHandler();
   const { isps, createISP, updateISP, deleteISP } = useCrudISP(handleError);
   const { courses } = useCoursesShortGetter(handleError);
+  const { verifyPrivilege } = usePrivilegeVerifier(handleError);
 
   const handleUpdate = async (id: number) => {
     const updatingIsp: ISP | null = await ISPService.getISPById(
@@ -36,14 +38,25 @@ export default function ISPManagement() {
   };
 
   const handleSubmit = async (isp: ISP) => {
-    if (updatingISP) {
-      await updateISP(isp);
-      setUpdatingISP(null);
+    updatingISP ? await update(isp) : await create(isp);
+  };
+
+  const update = async (isp: ISP) => {
+    const verified = await verifyPrivilege(PrivilegeType.UPDATE_ISP);
+    if (!verified) {
+      return;
+    }
+    await updateISP(isp);
+    setUpdatingISP(null);
+  };
+
+  const create = async (isp: ISP) => {
+    const verified = await verifyPrivilege(PrivilegeType.CREATE_ISP);
+    if (!verified) {
       return;
     }
     await createISP(isp);
     setCreatingISP(null);
-    return;
   };
 
   const handleCancel = () => {
@@ -52,6 +65,10 @@ export default function ISPManagement() {
   };
 
   const handleDelete = async (id: number) => {
+    const verified = await verifyPrivilege(PrivilegeType.DELETE_ISP);
+    if (!verified) {
+      return;
+    }
     await deleteISP(id);
     setUpdatingISP(null);
   };

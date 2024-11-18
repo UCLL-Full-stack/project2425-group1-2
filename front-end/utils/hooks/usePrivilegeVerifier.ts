@@ -1,22 +1,18 @@
-import DummyUserService from "@/services/DummyUserService";
-import { Admin, Student } from "@/types";
+import { useAuth } from "@/components/AuthProvider";
+import { PrivilegeType } from "@/types";
 import { ErrorState } from "@/types/errorState";
-import { useEffect, useState } from "react";
 
 export const usePrivilegeVerifier = (
-  email: string,
   errorCallback?: (error: ErrorState) => void
 ) => {
-  const [user, setUser] = useState<Admin | Student | undefined>(undefined);
-
-  const getUser = async () => {
-    const newUser = await DummyUserService.getUserByEmail(email, errorCallback);
-    setUser(newUser);
+  const { data } = useAuth();
+  const verifyPrivilege = async (privilege: PrivilegeType) => {
+    if (data && data.privileges && data.privileges.includes(privilege)) {
+      return true;
+    }
+    errorCallback && errorCallback({ message: "Unauthorized for this action" });
+    return false;
   };
 
-  useEffect(() => {
-    getUser();
-  }, [email]);
-
-  return { user, setUser, getUser };
+  return { verifyPrivilege };
 };

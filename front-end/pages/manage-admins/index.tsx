@@ -4,11 +4,12 @@ import ObjectsWithHeadingLayout from "@/components/layouts/ObjectsWithHeadingLay
 import AdminForm from "@/components/users/admins/AdminForm";
 import UserEditableItem from "@/components/users/UserEditableItem";
 import AdminService from "@/services/DummyAdminService";
-import { Admin, Privilege } from "@/types";
+import { Admin, Privilege, PrivilegeType } from "@/types";
 import { getDefaultAdmin } from "@/utils/defaultTypes";
 import { useCrudAdmin } from "@/utils/hooks/useCrudAdmin";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { usePrivilegeGetter } from "@/utils/hooks/usePrivilegeGetter";
+import { usePrivilegeVerifier } from "@/utils/hooks/usePrivilegeVerifier";
 import Head from "next/head";
 import { useState } from "react";
 
@@ -22,6 +23,7 @@ export default function manageAdmins() {
   const { admins, updateAdmin, createAdmin, deleteAdmin } =
     useCrudAdmin(handleError);
   const { privileges } = usePrivilegeGetter(handleError);
+  const { verifyPrivilege } = usePrivilegeVerifier(handleError);
 
   const handleUpdate = async (id: number) => {
     const admin: Admin | undefined = await AdminService.getAdminById(
@@ -39,14 +41,25 @@ export default function manageAdmins() {
   };
 
   const handleSubmit = async (admin: Admin) => {
-    if (updatingAdmin) {
-      await updateAdmin(admin);
-      setUpdatingAdmin(null);
+    updatingAdmin ? await update(admin) : await create(admin);
+  };
+
+  const update = async (admin: Admin) => {
+    const verified = await verifyPrivilege(PrivilegeType.UPDATE_ADMINISTRATIVE);
+    if (!verified) {
+      return;
+    }
+    await updateAdmin(admin);
+    setUpdatingAdmin(null);
+  };
+
+  const create = async (admin: Admin) => {
+    const verified = await verifyPrivilege(PrivilegeType.CREATE_ADMINISTRATIVE);
+    if (!verified) {
       return;
     }
     await createAdmin(admin);
     setCreatingAdmin(null);
-    return;
   };
 
   const handleCancel = () => {
@@ -55,6 +68,10 @@ export default function manageAdmins() {
   };
 
   const handleDelete = async (id: number) => {
+    const verified = await verifyPrivilege(PrivilegeType.DELETE_ADMINISTRATIVE);
+    if (!verified) {
+      return;
+    }
     await deleteAdmin(id);
     setUpdatingAdmin(null);
   };

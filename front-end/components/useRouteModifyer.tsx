@@ -112,7 +112,7 @@ const useRouteModifyer = () => {
     const url = router.asPath;
     console.log("urls", url);
     console.log("data", data);
-    if (!url) return;
+    if (!url || !data) return;
 
     const userData = data;
     const newUrl = modifyUrl(url, userData);
