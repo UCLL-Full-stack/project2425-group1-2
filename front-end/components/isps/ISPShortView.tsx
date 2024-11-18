@@ -11,10 +11,10 @@ const ISPShortView = React.memo(({ isp }: ISPShortViewProps) => {
       <div className="flex flex-row gap-2">
         <p>ISP</p>
         <p>{`${isp.startYear}-${isp.startYear + 1}`},</p>
-        <p>{isp.totalCredits} credits</p>
+        <p className="hidden sm:block">{isp.totalCredits} credits</p>
       </div>
       <div className="flex flex-row gap-2">
-        <p>Status:</p>
+        <p className="hidden sm:block">Status:</p>
         <p>{isp.status}</p>
       </div>
     </article>
