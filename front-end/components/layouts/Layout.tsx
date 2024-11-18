@@ -12,7 +12,7 @@ const Layout: React.FC<LayoutProps> = React.memo(({ children }) => {
       <DefaultHead />
       <div className="font-poppins text-white font-bold text-2xl bg-secondary">
         <Header />
-        <main className="min-h-screen">{children}</main>
+        <main className="min-h-screen pb-10">{children}</main>
       </div>
     </>
   );
