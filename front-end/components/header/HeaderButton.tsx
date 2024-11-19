@@ -17,7 +17,7 @@ interface HeaderButtonProps {
     buttonStatus: ButtonStatus;
 }
 
-const sharedClassOptions = 'p-1 rounded';
+const sharedClassOptions = 'p-2 rounded';
 
     const typeOptions = {
         home: {
@@ -38,7 +38,7 @@ const sharedClassOptions = 'p-1 rounded';
             attributes: {},
         },
         inactive: {
-            class: 'shadow-button_pressed bg-secondary pointer-events-none',
+            class: 'shadow-activated bg-secondary pointer-events-none',
             attributes: {
                 disabled: true,
                 tabIndex: -1,
@@ -46,7 +46,7 @@ const sharedClassOptions = 'p-1 rounded';
             },
         },
         currentPage: {
-            class: 'shadow-button_pressed bg-success pointer-events-none',
+            class: 'shadow-activated bg-success pointer-events-none',
             attributes: {
                 disabled: true,
                 tabIndex: -1,
@@ -55,7 +55,7 @@ const sharedClassOptions = 'p-1 rounded';
         },
     };
 
-const HeaderButton: React.FC<HeaderButtonProps> = ({ buttonType, buttonStatus }) => {
+const HeaderButton = ({ buttonType, buttonStatus }: HeaderButtonProps) => {
     const buttonClass = `${sharedClassOptions} ${statusOptions[buttonStatus].class} ${typeOptions[buttonType].class}`;
     const buttonAttributes = statusOptions[buttonStatus].attributes;
     const buttonHref = typeOptions[buttonType].href;

@@ -1,28 +1,57 @@
-import { HeaderButton, ButtonStatus, ButtonType } from './HeaderButton';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
+import { MY_PROFILE_URL } from "@/utils/urls";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import React from "react";
+import { AuthContextType, useAuth } from "../AuthProvider";
+import { ButtonStatus, ButtonType, HeaderButton } from "./HeaderButton";
+import HeaderProfileButton from "./HeaderProfileButton";
 
-const imageWidth = 103;
-const imageHeight = 32.25;
+const IMAGE_WIDTH = 103;
+const IMAGE_HEIGHT = 32.25;
 
-const Header: React.FC = () => {
-
+const Header = React.memo(() => {
   const { pathname } = useRouter();
-  const homeButtonStatus = pathname === '/' ? ButtonStatus.CurrentPage : ButtonStatus.Inactive;
-  const loginButtonStatus = pathname === '/login' ? ButtonStatus.CurrentPage : ButtonStatus.Inactive;
+  const auth: AuthContextType = useAuth();
+  const userData = auth.data;
+
+  const homeButtonStatus =
+    pathname === "/" ? ButtonStatus.CurrentPage : ButtonStatus.Active;
+  const loginButtonStatus =
+    pathname === "/login" ? ButtonStatus.CurrentPage : ButtonStatus.Active;
 
   return (
-    <header className="flex flex-row justify-between p-2 px-4 bg-primary shadow-[0_3px_4px_rgba(0,0,0,0.8)]">
+    <header className="h-fit flex flex-col gap-4 items-center md:flex-row justify-between p-4 px-4 bg-primary shadow-[0_3px_4px_rgba(0,0,0,0.8)]">
       <div className="flex items-center">
-        <Image className="mr-1" src="/images/Brand.png" alt="ucll" width={imageWidth} height={imageHeight} />
+        <Image
+          priority
+          className="mr-1 w-auto h-auto"
+          src="/images/Brand.svg"
+          alt="ucll"
+          width={IMAGE_WIDTH}
+          height={IMAGE_HEIGHT}
+        />
         <h1>ISP submission system</h1>
       </div>
       <nav className="flex items-center">
-        <HeaderButton buttonType={ButtonType.Home} buttonStatus={ButtonStatus.Inactive} />
-        <HeaderButton buttonType={ButtonType.Login} buttonStatus={ButtonStatus.Inactive} />
+        <HeaderButton
+          buttonType={ButtonType.Home}
+          buttonStatus={homeButtonStatus}
+        />
+        {(userData.email && (
+          <HeaderProfileButton
+            email={userData.email}
+            role={userData.role}
+            href={MY_PROFILE_URL}
+          />
+        )) || (
+          <HeaderButton
+            buttonType={ButtonType.Login}
+            buttonStatus={loginButtonStatus}
+          />
+        )}
       </nav>
     </header>
   );
-};
+});
 
 export default Header;
