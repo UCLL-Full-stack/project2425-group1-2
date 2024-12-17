@@ -8,11 +8,27 @@ const getAllByPassedCourseId = (courseId: number) : Student[] => {
 }
 
 const getAllStudents = async(): Promise<Student[]> => {
-    return StudentRepository.getAllStudents();
+    try{
+        const allStudents = StudentRepository.getAllStudents()
+        if (!allStudents) {
+            throw new Error("There are no students in database.")
+        }
+        return allStudents;
+    } catch(error) {
+        throw new Error("Student service error!")
+    }
 }
 
 const getStudentById = async(id : number): Promise<Student|null> => {
+    try{
+        const studentPrisma = StudentRepository.getStudentById(id);
+        if (studentPrisma === null) {
+            throw new Error("No student exists with this id.") 
+        }
     return StudentRepository.getStudentById(id);
+    } catch(error){
+        throw new Error("Student service error!")
+    }
 }
 
 const addStudent = async (student: Partial<Student>): Promise<Student> => {
@@ -23,7 +39,15 @@ const getAllStudentsShortForm = async(): Promise<string[]> =>{
     return StudentRepository.getAllStudentsShortForm();
 }
 const deleteStudentById= async(id: number): Promise<boolean> =>{
-    return StudentRepository.deleteStudentById(id);
+    try{
+        const userExist = getStudentById(id);
+        if (!userExist) {
+            throw new Error("User doesn't exists")
+        }
+        return StudentRepository.deleteStudentById(id);
+    } catch(error) {
+        throw new Error("Service error!")
+    }
 }
 
 
