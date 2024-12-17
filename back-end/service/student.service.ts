@@ -1,7 +1,8 @@
-import { id } from 'date-fns/locale';
 import { Student } from '../model/student';
 import StudentRepository from '../repository/student.db';
 import { Prisma } from '@prisma/client';
+import { StudentInput } from '../types';
+import studentDb from '../repository/student.db';
 
 const getAllByPassedCourseId = (courseId: number) : Student[] => {
     return StudentRepository.findAllByPassedCourseId(courseId);
@@ -31,8 +32,17 @@ const getStudentById = async(id : number): Promise<Student|null> => {
     }
 }
 
-const addStudent = async (student: Partial<Student>): Promise<Student> => {
-    return StudentRepository.addStudent(student);
+const addStudent = async ({user: UserInput, nationality,passedCourses: CourseInput[]}: StudentInput): Promise<Student> => {
+    try{
+        if (!UserInput.name || !UserInput.email || !Us.password) {
+            throw new Error("Required fields: 'name', 'email', and 'password' must be provided and cannot be empty.");
+        } else if(!StudentRepository.getStudentByEmail(user.email)){
+
+        }
+        return StudentRepository.addStudent({user, nationality,passedCourses});
+    }catch{
+        throw new Error("Student service error!")
+    }
 };
 
 const getAllStudentsShortForm = async(): Promise<string[]> =>{

@@ -40,6 +40,23 @@ const getStudentById = async (id: number): Promise<Student | null> => {
     }
 };
 
+const getStudentByEmail = async (email: string): Promise<Student | null> => {
+    try {
+        const studentPrisma = await prisma.user.findUnique({
+            where: {email,
+                userType: UserTypes.STUDENT,
+             },
+        });
+
+        if (studentPrisma === null) {
+            throw new Error("No student exists with this id.") 
+        }
+
+        return Student.from(studentPrisma);
+    } catch (error) {
+        throw new Error('Database error. See server log for details.');
+    }
+};
 const getAllStudentsShortForm = async(): Promise<string[]> => {
     try{
         const studentsPrisma = await prisma.user.findMany({
@@ -120,5 +137,6 @@ export default {
     getStudentById,
     addStudent,
     getAllStudentsShortForm,
-    deleteStudentById
+    deleteStudentById,
+    getStudentByEmail
 };
