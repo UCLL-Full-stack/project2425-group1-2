@@ -22,6 +22,7 @@ model User {
 
   //student
   nationality       String  @db.VarChar(256)
+  studyYear         Int
   isps              Isp[]
   courses           StudentPassedCourse[]
 
@@ -80,22 +81,11 @@ model StudentPassedCourse {
   @@unique([courseId, studentId])
 }
 
-model Invoice {
-  id                Int   @id @default(autoincrement())
-  totalAmount       Float
-  paidAmount        Float  @default(0)
-  paymentReference  String  @db.VarChar(256)
-  deadline          DateTime  @db.Timestamp(0) @default(dbgenerated("NOW() + interval '3 month'"))
-  ispId             Int @unique
-  isp               Isp @relation(fields: [ispId], references: [id])
-}
-
 model Isp {
   id                Int  @id @default(autoincrement())
   totalCredits      Int  @default(60)
   startYear         Int
   status            IspStatus
-  invoice           Invoice?
   studentId         Int
   student           User @relation(fields: [studentId], references: [id]) 
   courses           CourseAddedISP[]
