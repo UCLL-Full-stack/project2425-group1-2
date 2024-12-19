@@ -30,7 +30,7 @@ const getCourseById = async (id: number, errorCallback?: (error: ErrorState) => 
 };
 
 const getCoursesForStudent = async (studentId: number, errorCallback?: (error: ErrorState) => void) => {
-  const response = await fetch(`${URL}/forStudent/${studentId}`);
+  const response = await fetch(`${URL}/for-student/${studentId}`);
   return handleResponse(response, errorCallback);
 }
 
