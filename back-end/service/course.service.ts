@@ -24,7 +24,7 @@ const getCourseById = async (id: number): Promise<Course> => {
 const getCoursesForStudent = async (studentId: number) : Promise<CourseShortView[]> => {
     let student: StudentIncludeCourses = await StudentRepository.findById(studentId);
     let desiredPhases = [student.studyYear * 2 - 1, student.studyYear * 2];
-    let passedCoursesIds = student.courses.map(course => course.courseId);
+    let passedCoursesIds = student.passedCourses.map(course => course.courseId);
     let courses: CourseShortView[] = await CourseRepository.findAllShortByPhaseAndPassedCourses(desiredPhases, passedCoursesIds);
     return courses;
 }

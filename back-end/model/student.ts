@@ -22,14 +22,13 @@ export class Student extends User {
             email: student.email,
             password: student.password,
         });
-        this.validate(student);
+        Student.validateStudent(student);
         this.nationality = student.nationality || '';
         this.studyYear = student.studyYear || 0;
         this.passedCourses = student.passedCourses || [];
     }
 
-    validate(student: {
-        id: number;
+    public static validateStudent(student: {
         name: string;
         email: string;
         password: string;

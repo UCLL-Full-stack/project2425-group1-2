@@ -5,7 +5,7 @@ export class StudentIncludeCourses {
     public password: string;
     public nationality: string;
     public studyYear: number;
-    public courses: { courseId: number }[];
+    public passedCourses: { courseId: number }[];
 
     constructor(student: {
         id: number;
@@ -14,7 +14,7 @@ export class StudentIncludeCourses {
         password: string;
         nationality: string | null;
         studyYear: number | null;
-        courses: { courseId: number }[];
+        passedCourses: { courseId: number }[];
     }) {
         this.id = student.id;
         this.name = student.name;
@@ -22,6 +22,25 @@ export class StudentIncludeCourses {
         this.password = student.password;
         this.nationality = student.nationality || '';
         this.studyYear = student.studyYear || 0;
-        this.courses = student.courses;
+        this.passedCourses = student.passedCourses;
+    }
+}
+
+
+export class StudentUpdateView {
+    public name: string;
+    public email: string;
+    public password: string;
+    public nationality?: string;
+    public studyYear: number;
+    public passedCourses: number[];
+
+    constructor(student: StudentUpdateView) {
+        this.name = student.name;
+        this.email = student.email;
+        this.password = student.password;
+        this.nationality = student.nationality;
+        this.studyYear = student.studyYear;
+        this.passedCourses = student.passedCourses;
     }
 }

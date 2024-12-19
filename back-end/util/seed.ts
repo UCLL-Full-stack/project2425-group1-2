@@ -1,4 +1,5 @@
 import prisma from '../repository/prisma/prismaClient';
+import bcrypt from 'bcrypt';
 import students from '../data/students';
 import courses from '../data/courses';
 import isp from '../data/isp';
@@ -61,26 +62,28 @@ async function createPrivilege(privilege: Privilege) {
 }
 
 async function createAdministrative(admin: Administrative) {
+    let hashedPassword = await bcrypt.hash(admin.password, 12);
     return prisma.user.upsert({
         where: { email: admin.email },
         update: {},
         create: {
             name: admin.name,
             email: admin.email,
-            password: admin.password,
+            password: hashedPassword,
             userType: 'ADMINISTRATIVE',
         },
     });
 }
 
 async function createStudent(student: Student) {
+    let hashedPassword = await bcrypt.hash(student.password, 12);
     return prisma.user.upsert({
         where: { email: student.email },
         update: {},
         create: {
             name: student.name,
             email: student.email,
-            password: student.password,
+            password: hashedPassword,
             userType: 'STUDENT',
             nationality: student.nationality,
             studyYear: student.studyYear,
