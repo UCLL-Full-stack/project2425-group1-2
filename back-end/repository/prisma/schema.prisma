@@ -89,6 +89,7 @@ model Isp {
   studentId         Int
   student           User @relation(fields: [studentId], references: [id]) 
   courses           CourseAddedISP[]
+  @@unique([startYear, studentId])
 }
 
 enum IspStatus {

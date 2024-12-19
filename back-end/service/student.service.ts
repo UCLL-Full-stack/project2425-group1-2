@@ -1,6 +1,7 @@
 import { Course } from '../model/course';
 import { Student } from '../model/student';
 import StudentRepository from '../repository/student.db';
+import ispService from './isp.service';
 import CourseService from './course.service';
 import { StudentUpdateView } from '../types/studentDTO';
 import bcrypt from 'bcrypt';
@@ -75,6 +76,7 @@ const updateStudent = async (id: number, studentInfo: StudentUpdateView): Promis
 
 const deleteStudentById = async (id: number): Promise<string> => {
     await throwErrorIfNotExist(id);
+    await ispService.deleteISPByStudentId(id);
     await StudentRepository.deleteById(id);
     return 'Student deleted successfully';
 };

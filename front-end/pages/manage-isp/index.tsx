@@ -3,7 +3,7 @@ import ErrorDialog from "@/components/ErrorDialog";
 import ISPForm from "@/components/isps/isp_form/ISPForm";
 import ISPEditableItem from "@/components/isps/ISPEditableItem";
 import ObjectsWithHeadingLayout from "@/components/layouts/ObjectsWithHeadingLayout";
-import ISPService from "@/services/DummyIspService";
+import ISPService from "@/services/IspService";
 import { CourseShort, ISP, PrivilegeType } from "@/types";
 import { getDefaultISP } from "@/utils/defaultTypes";
 import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";

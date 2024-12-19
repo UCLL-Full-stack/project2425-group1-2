@@ -20,7 +20,7 @@ export class ISP {
         courses: Course[];
         student: Student;
     }) {
-        this.validate(isp);
+        ISP.validateISP(isp);
         this.id = isp.id;
         this.status = isp.status;
         this.totalCredits = isp.totalCredits;
@@ -29,7 +29,7 @@ export class ISP {
         this.student = isp.student;
     }
 
-    validate(isp: { status: IspStatus; totalCredits: number; startYear: number; student: Student;}) {
+    public static validateISP(isp: { status: IspStatus; totalCredits: number; startYear: number; student: Student;}) {
         if (!isp.status || isp.status.length=== 0){
             throw new Error("Description is required.")
         }
@@ -66,7 +66,7 @@ export class ISP {
         startYear,
         courses,
         student
-    }: PrismaISP & { courses: PrismaCourse[], student: PrismaStudent & { passedCourses : PrismaCourse[]}}): ISP {
+    }: PrismaISP & { courses: PrismaCourse[], student: PrismaStudent}): ISP {
         return new ISP({
             id,
             status,

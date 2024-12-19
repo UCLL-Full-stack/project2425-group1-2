@@ -1,4 +1,4 @@
-import DummyIspService from "@/services/DummyIspService";
+import IspService from "@/services/IspService";
 import { ISP, ISPShort } from "@/types";
 import { ErrorState } from "@/types/errorState";
 import { useEffect, useState } from "react";
@@ -8,7 +8,7 @@ export const useCrudISP = (errorCallback?: (error: ErrorState) => void) => {
   const [isps, setISPs] = useState<ISPShort[]>([]);
 
   const getISPs = async () => {
-    const newIsp: ISPShort[] = await DummyIspService.getAllISPShort(
+    const newIsp: ISPShort[] = await IspService.getAllISPShort(
       errorCallback
     );
     setISPs(newIsp);
@@ -20,18 +20,18 @@ export const useCrudISP = (errorCallback?: (error: ErrorState) => void) => {
   ) => {
     const updateISPView = mapISPToUpdateView(isp);
     errorCallback = handleError || errorCallback;
-    await DummyIspService.updateISP(isp.id, updateISPView, errorCallback);
+    await IspService.updateISP(isp.id, updateISPView, errorCallback);
     await getISPs();
   };
 
   const createISP = async (isp: ISP) => {
     const createISPView = mapISPToCreateView(isp);
-    await DummyIspService.createISP(createISPView, errorCallback);
+    await IspService.createISP(createISPView, errorCallback);
     await getISPs();
   };
 
   const deleteISP = async (id: number) => {
-    await DummyIspService.deleteISP(id, errorCallback);
+    await IspService.deleteISP(id, errorCallback);
     await getISPs();
   };
   

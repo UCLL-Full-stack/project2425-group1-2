@@ -133,26 +133,6 @@ const deleteById = tryCatchWrapper(async (id: number): Promise<void> => {
         },
     });
 
-    let isps = await prismaClient.isp.findMany({
-        where: {
-            studentId: id,
-        },
-    });
-
-    for (const isp of isps) {
-        await prismaClient.courseAddedISP.deleteMany({
-            where: {
-                ispId: isp.id,
-            },
-        });
-    }
-
-    await prismaClient.isp.deleteMany({
-        where: {
-            studentId: id,
-        },
-    });
-
     await prismaClient.user.delete({
         where: { id },
     });

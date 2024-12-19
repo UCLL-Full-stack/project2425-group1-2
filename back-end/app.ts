@@ -6,6 +6,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { courseRouter } from './controller/course.routes';
 import { studentRouter } from './controller/student.routes';
+import { ispRouter } from './controller/isp.routes';
 
 const app = express();
 dotenv.config();
@@ -16,6 +17,7 @@ app.use(bodyParser.json());
 //Mappings
 app.use("/courses", courseRouter);
 app.use("/students", studentRouter);
+app.use("/isps", ispRouter);
 
 //Swagger
 const swaggerOpts = {

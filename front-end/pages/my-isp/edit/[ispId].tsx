@@ -5,7 +5,7 @@ import ErrorDialog from "@/components/ErrorDialog";
 import ISPSubmitNotification from "@/components/isps/ISPSubmitNotification";
 import ObjectsWithHeadingLayout from "@/components/layouts/ObjectsWithHeadingLayout";
 import Loading from "@/components/Loading";
-import DummyIspService from "@/services/DummyIspService";
+import IspService from "@/services/IspService";
 import { CourseShort, ISPStatus } from "@/types";
 import { useCoursesForStudentGetter } from "@/utils/hooks/useCoursesForStudentGetter";
 import { useDetailedCoursesToggle } from "@/utils/hooks/useDetailedCoursesToggle";
@@ -85,11 +85,11 @@ export default function ComposeISP() {
   const mainSectionTitle = `ISP ${isp.startYear}-${isp.startYear + 1}`;
   const isActive = Object.keys(errors).length === 0;
 
-  const updateISPByStudentId = async (
+  const updateISPByStudent = async (
     id: number,
     ispData: { status: ISPStatus; courses: number[] }
   ) => {
-    const isp = await DummyIspService.updateISPByStudentId(
+    const isp = await IspService.updateISPByStudent(
       id,
       ispData,
       handleError
@@ -126,7 +126,7 @@ export default function ComposeISP() {
   };
 
   const handleSave = async () => {
-    await updateISPByStudentId(id, {
+    await updateISPByStudent(id, {
       status: isp.status,
       courses: isp.courses.map((c) => c.id),
     });
