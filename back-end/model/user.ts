@@ -5,14 +5,14 @@ export abstract class User {
     public readonly password: string;
 
     constructor(user: { id: number, name: string, email: string, password: string }) {
-        this.validate(user);
+        User.validateUser(user);
         this.id = user.id;
         this.name = user.name;
         this.email = user.email;
         this.password = user.password;
     }
 
-    validate(user: {name: string; email: string; password: string}) {
+    public static validateUser(user: {name: string; email: string; password: string}) {
         if (!user.name || user.name.length=== 0){
             throw new Error("Name is required.")
         }

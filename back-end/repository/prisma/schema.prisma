@@ -21,8 +21,8 @@ model User {
   userType          UserTypes
 
   //student
-  nationality       String  @db.VarChar(256)
-  studyYear         Int
+  nationality       String?  @db.VarChar(256)
+  studyYear         Int?
   isps              Isp[]
   courses           StudentPassedCourse[]
 
@@ -37,7 +37,7 @@ enum UserTypes {
 
 model Privilege {
   id                Int   @id @default(autoincrement())
-  name              String  @db.VarChar(256)
+  name              Int 
   description       String  @db.VarChar(256)
   administratives   AdministrativePrivilege[]
 }

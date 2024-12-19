@@ -6,7 +6,7 @@ import { PrismaStudent } from "../types/prismaTypesExtension";
 
 export class ISP {
     public readonly id?: number;
-    public readonly status: string;
+    public readonly status: IspStatus;
     public readonly totalCredits: number;
     public readonly startYear: number;
     public readonly courses: Course[];
@@ -83,7 +83,7 @@ export class ISP {
         totalCredits,
         startYear,
         student
-    }: PrismaISP & { courses: PrismaCourse[], student: PrismaStudent }): ISP {
+    }: PrismaISP & { student: PrismaStudent }): ISP {
         return new ISP({
             id,
             status,
