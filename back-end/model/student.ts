@@ -1,9 +1,10 @@
+import { Course as PrismaCourse } from '@prisma/client';
+import { PrismaStudent } from '../types/prismaTypesExtension';
 import { Course } from './course';
 import { User } from './user';
-import { PrismaStudent } from '../types/prismaTypesExtension';
-import { Course as PrismaCourse } from '@prisma/client';
 export class Student extends User {
     public readonly nationality: string;
+    public readonly studyYear: number;
     public readonly passedCourses: Course[];
 
     constructor(student: {
@@ -12,6 +13,7 @@ export class Student extends User {
         email: string;
         password: string;
         nationality: string;
+        studyYear: number;
         passedCourses: Course[];
     }) {
         super({
@@ -22,15 +24,26 @@ export class Student extends User {
         });
         this.validates(student);
         this.nationality = student.nationality;
+        this.studyYear = student.studyYear;
         this.passedCourses = student.passedCourses || [];
     }
 
-    validates(student: { nationality: string;}) {
-        if (!student.nationality || student.nationality.length=== 0){
-            throw new Error("Nationality is required.")
+    validates(student: {
+        id: number;
+        name: string;
+        email: string;
+        password: string;
+        nationality: string;
+        studyYear: number;
+        passedCourses: Course[];
+    }): void {
+        if (!student.nationality || student.nationality.length === 0) {
+            throw new Error('Nationality is required.');
+        }
+        if (student.studyYear < 1) {
+            throw new Error('Study year must be more than 0.');
         }
     }
-
 
     equals(student: Student): boolean {
         return (
@@ -39,7 +52,9 @@ export class Student extends User {
             this.email === student.email &&
             this.password === student.password &&
             this.nationality === student.nationality &&
-            this.passedCourses.every((passedCourse,index)=> passedCourse.equals(student.passedCourses[index]))
+            this.passedCourses.every((passedCourse, index) =>
+                passedCourse.equals(student.passedCourses[index])
+            )
         );
     }
 
@@ -49,6 +64,7 @@ export class Student extends User {
         email,
         password,
         nationality,
+        studyYear,
         passedCourses,
     }: PrismaStudent & { passedCourses: PrismaCourse[] }): Student {
         return new Student({
@@ -57,24 +73,20 @@ export class Student extends User {
             email,
             password,
             nationality,
-            passedCourses: passedCourses.map(Course.from)
+            studyYear,
+            passedCourses: passedCourses.map(Course.from),
         });
     }
 
-    public static from({
-        id,
-        name,
-        email,
-        password,
-        nationality
-    }: PrismaStudent): Student {
+    public static from({ id, name, email, password, nationality, studyYear }: PrismaStudent): Student {
         return new Student({
             id,
             name,
             email,
             password,
             nationality,
-            passedCourses: []
+            studyYear,
+            passedCourses: [],
         });
     }
 }

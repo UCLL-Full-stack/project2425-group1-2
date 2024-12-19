@@ -58,7 +58,7 @@ model Course {
   credits           Int
   isElective        Boolean
   lecturers         String[]
-  requiredBy    CourseRequiredPassedCourses[] @relation(name: "RequiredBy")
+  requiredBy        CourseRequiredPassedCourses[] @relation(name: "RequiredBy")
   requiredPassedCourses CourseRequiredPassedCourses[] @relation(name: "Required")
   isps              CourseAddedISP[]
   passedStudents    StudentPassedCourse[]

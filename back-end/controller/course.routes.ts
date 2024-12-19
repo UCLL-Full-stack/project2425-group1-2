@@ -54,7 +54,7 @@
 
 import express, { NextFunction, Request, Response } from 'express';
 import courseService from '../service/course.service';
-import { CourseUpdateView } from '../types/courseUpdateView';
+import { CourseUpdateView } from '../types/coursesDTO';
 
 const courseRouter = express.Router();
 
@@ -130,6 +130,37 @@ courseRouter.get("/short", async (req: Request, res: Response, next: NextFunctio
 courseRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         res.status(200).json(courseService.getCourseById(parseInt(req.params.id)));
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /courses/for-student/{id}:
+ *   get:
+ *     summary: Get courses appropriate for a student by student ID.
+ *     tags: [Course]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The id of the student to retrieve appropriate courses for.
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved courses appropriate for the student.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Course'
+ */
+courseRouter.get('/for-student/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        res.status(200).json(courseService.getCoursesForStudent(parseInt(req.params.id)));
     } catch (error) {
         next(error);
     }

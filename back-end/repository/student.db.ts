@@ -1,15 +1,23 @@
 import prismaClient from './prisma/prismaClient'
 import tryCatcher from '../util/tryCatchWrapper';
 import { Student } from '../model/student';
+import { StudentIncludeCourses } from '../types/studentDTO';
 
-const findById = tryCatcher(async (id: number): Promise<Student> => {
+const findById = tryCatcher(async (id: number): Promise<StudentIncludeCourses> => {
     const student = await prismaClient.user.findUnique({
-        where: { id }
+        where: { id },
+        include: {
+            courses: {
+                select: {
+                    courseId: true
+                }
+            }
+        }
     });
     if (!student) {
         throw new Error(STUDENT_NOT_FOUND_ERROR);
     }
-    return Student.from(student);
+    return student;
 });
 
 const findAllByPassedCourseId = tryCatcher(async (courseId: number): Promise<Student[]> => {
