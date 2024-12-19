@@ -19,7 +19,7 @@ export const getDefaultStudent = (): Student => ({
     nationality: '',
     role: Role.STUDENT,
     passedCourses: [],
-    year: 1
+    studyYear: 1
 });
 
 export const getDefaultAdmin = (): Admin => ({

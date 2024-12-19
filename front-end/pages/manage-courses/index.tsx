@@ -94,21 +94,24 @@ export default function ManageCourses() {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <ObjectsWithHeadingLayout
-        objects={courses}
-        isActive={manageTabIsActive}
-        headingTitle={MAIN_SECTION_TITLE}
-        flex="col"
-        children={(course) => (
-          <CourseEditableItem
-            course={course}
-            details={detailedCourses[course.id]}
-            redactorCourse={handleUpdate}
-            toggleCourseDetails={toggleCourseDetails}
-            isActive={manageTabIsActive}
-          />
-        )}
-      />
+      {courses && courses.length && (
+        <ObjectsWithHeadingLayout
+          objects={courses}
+          isActive={manageTabIsActive}
+          headingTitle={MAIN_SECTION_TITLE}
+          flex="col"
+          children={(course) => (
+            <CourseEditableItem
+              course={course}
+              details={detailedCourses[course.id]}
+              redactorCourse={handleUpdate}
+              toggleCourseDetails={toggleCourseDetails}
+              isActive={manageTabIsActive}
+            />
+          )}
+        />
+      )}
+
       <FixedCreateButton onClick={handleCreate} isActive={manageTabIsActive} />
       <CourseForm
         course={updatingCourse || creatingCourse}

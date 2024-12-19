@@ -13,7 +13,8 @@ const getAll = async () : Promise<Course[]> => {
 }
 
 const getAllShort = async () : Promise<CourseShortView[]> => {
-    return await CourseRepository.findAllShort();
+    let result = await CourseRepository.findAllShort();
+    return result;
 }
 
 const getCourseById = async (id: number): Promise<Course> => {

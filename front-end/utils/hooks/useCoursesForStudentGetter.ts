@@ -1,5 +1,4 @@
 import CourseService from "@/services/CourseService";
-import DummyCourseService from "@/services/DummyCourseService";
 import { CourseShort } from "@/types";
 import { ErrorState } from "@/types/errorState";
 import { useEffect, useState } from "react";
@@ -12,7 +11,7 @@ export const useCoursesForStudentGetter = (
   const [courses, setCourses] = useState<CourseShort[]>([]);
 
   const getCourses = async () => {
-    const courses: CourseShort[] = await DummyCourseService.getCoursesForStudent(
+    const courses: CourseShort[] = await CourseService.getCoursesForStudent(
       studentId,
       errorCallback
     );

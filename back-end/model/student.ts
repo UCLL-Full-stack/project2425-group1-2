@@ -3,8 +3,8 @@ import { PrismaStudent } from '../types/prismaTypesExtension';
 import { Course } from './course';
 import { User } from './user';
 export class Student extends User {
-    public readonly nationality: string | null;
-    public readonly studyYear: number | null;
+    public readonly nationality: string;
+    public readonly studyYear: number;
     public readonly passedCourses: Course[];
 
     constructor(student: {
@@ -22,10 +22,9 @@ export class Student extends User {
             email: student.email,
             password: student.password,
         });
-        student.studyYear = student.studyYear || 1;
         this.validate(student);
-        this.nationality = student.nationality;
-        this.studyYear = student.studyYear;
+        this.nationality = student.nationality || '';
+        this.studyYear = student.studyYear || 0;
         this.passedCourses = student.passedCourses || [];
     }
 

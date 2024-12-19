@@ -1,10 +1,10 @@
 import { ISP } from '../model/isp';
 import isps from '../data/isp';
-import tryCatcher from '../util/tryCatchWrapper';
+import { syncTryCatchWrapper } from '../util/tryCatchWrapper';
 
 let DBisps: ISP[] = isps;
 
-const findAllByCourseId = tryCatcher((id: number): ISP[] => {
+const findAllByCourseId = syncTryCatchWrapper((id: number): ISP[] => {
     return DBisps.filter(isp => isp.courses.some(course => course.id === id));
 });
 

@@ -12,7 +12,7 @@ const StudentDetailsView = React.memo(({ user }: StudentDetailsViewProps) => {
   return (
     <article className="flex flex-col gap-2">
       <p>{`Nationality: ${user.nationality}`}</p>
-      <p>{`Study year: ${user.year}`}</p>
+      <p>{`Study year: ${user.studyYear}`}</p>
       {user.passedCourses.length > 0 && (
         <>
           <p className="flex self-center">{`Passed courses:`}</p>

@@ -53,11 +53,16 @@ const CourseForm = React.memo(
 
     const handlePhaseChange = (value: number) => {
       let newFormData = { ...formData, phase: value };
+      console.log(newFormData);
       if (value < formData.phase) {
         newFormData.requiredPassedCourses = [];
       }
       setFormData(newFormData);
     };
+
+    const handleCreditsChange = (value: number) => {
+      setFormData({ ...formData, credits: value });
+    }
 
     const toggleElective = () => {
       setFormData({ ...formData, isElective: !formData.isElective });
@@ -150,7 +155,7 @@ const CourseForm = React.memo(
             labelText="Credits"
             inputType="number"
             value={formData.credits}
-            onChange={handleChange}
+            onChange={(e) => handleCreditsChange(parseInt(e.target.value))}
             error={errors.credits}
           />
           <CourseLecturersInput

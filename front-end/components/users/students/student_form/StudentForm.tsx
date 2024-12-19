@@ -138,7 +138,7 @@ const StudentForm = React.memo(
             name="year"
             labelText="Year"
             inputType="number"
-            value={formData.year}
+            value={formData.studyYear}
             onChange={handleChange}
             error={errors.year}
           />

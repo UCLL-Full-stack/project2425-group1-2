@@ -4,7 +4,7 @@ import { ErrorState } from "@/types/errorState";
 
 const URL = BACKEND_APP_URL + "/courses";
 
-const handleResponse = async (response: Response, errorCallback?: (error: ErrorState) => void) => {
+const handleJsonResponse = async (response: Response, errorCallback?: (error: ErrorState) => void) => {
   const data = await response.json();
   if (!response.ok) {
     if (errorCallback) {
@@ -14,24 +14,34 @@ const handleResponse = async (response: Response, errorCallback?: (error: ErrorS
   return data;
 };
 
+const handleTextResponse = async (response: Response, errorCallback?: (error: ErrorState) => void) => {
+  const data = await response.text();
+  if (!response.ok) {
+    if (errorCallback) {
+      errorCallback({ message: data });
+    }
+  }
+  return data;
+}
+
 const getAllCourses = async (errorCallback?: (error: ErrorState) => void) => {
   const response = await fetch(URL);
-  return handleResponse(response, errorCallback);
+  return handleJsonResponse(response, errorCallback);
 };
 
 const getAllShortCourses = async (errorCallback?: (error: ErrorState) => void) => {
   const response = await fetch(`${URL}/short`);
-  return handleResponse(response, errorCallback);
+  return handleJsonResponse(response, errorCallback);
 };
 
 const getCourseById = async (id: number, errorCallback?: (error: ErrorState) => void) => {
   const response = await fetch(`${URL}/${id}`);
-  return handleResponse(response, errorCallback);
+  return handleJsonResponse(response, errorCallback);
 };
 
 const getCoursesForStudent = async (studentId: number, errorCallback?: (error: ErrorState) => void) => {
   const response = await fetch(`${URL}/for-student/${studentId}`);
-  return handleResponse(response, errorCallback);
+  return handleJsonResponse(response, errorCallback);
 }
 
 const createCourse = async (course: CourseUpdateView, errorCallback?: (error: ErrorState) => void) => {
@@ -42,7 +52,7 @@ const createCourse = async (course: CourseUpdateView, errorCallback?: (error: Er
     },
     body: JSON.stringify(course),
   });
-  return handleResponse(response, errorCallback);
+  return handleJsonResponse(response, errorCallback);
 };
 
 const updateCourse = async (id: number, course: CourseUpdateView, errorCallback?: (error: ErrorState) => void) => {
@@ -53,7 +63,7 @@ const updateCourse = async (id: number, course: CourseUpdateView, errorCallback?
     },
     body: JSON.stringify(course),
   });
-  return handleResponse(response, errorCallback);
+  return handleJsonResponse(response, errorCallback);
 };
 
 const deleteCourses = async (courseIds: number[], errorCallback?: (error: ErrorState) => void) => {
@@ -64,7 +74,7 @@ const deleteCourses = async (courseIds: number[], errorCallback?: (error: ErrorS
     },
     body: JSON.stringify(courseIds),
   });
-  return handleResponse(response, errorCallback);
+  return handleJsonResponse(response, errorCallback);
 };
 
 const CourseService = {

@@ -6,8 +6,8 @@ const getStudentById = async (id: number): Promise<Student> => {
     return res;
 }
 
-const getAllByPassedCourseId = (courseId: number) : Student[] => {
-    return StudentRepository.findAllByPassedCourseId(courseId);
+const getAllByPassedCourseId = async (courseId: number) : Promise<Student[]> => {
+    return await StudentRepository.findAllByPassedCourseId(courseId);
 }
 
 export default {

@@ -32,7 +32,7 @@ export type Student = {
   email: string;
   password: string;
   role: Role;
-  year: number;
+  studyYear: number;
   nationality?: string;
   passedCourses: CourseShort[];
 };

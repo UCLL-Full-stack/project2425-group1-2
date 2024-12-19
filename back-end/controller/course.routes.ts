@@ -100,7 +100,8 @@ courseRouter.get("/", async (req: Request, res: Response, next: NextFunction) =>
  */
 courseRouter.get("/short", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.status(200).json(courseService.getAllShort());
+        let result = await courseService.getAllShort();
+        res.status(200).json(result);
     } catch (error) {
         next(error);
     }
@@ -129,7 +130,7 @@ courseRouter.get("/short", async (req: Request, res: Response, next: NextFunctio
  */
 courseRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.status(200).json(courseService.getCourseById(parseInt(req.params.id)));
+        res.status(200).json(await courseService.getCourseById(parseInt(req.params.id)));
     } catch (error) {
         next(error);
     }
@@ -160,7 +161,7 @@ courseRouter.get('/:id', async (req: Request, res: Response, next: NextFunction)
  */
 courseRouter.get('/for-student/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.status(200).json(courseService.getCoursesForStudent(parseInt(req.params.id)));
+        res.status(200).json(await courseService.getCoursesForStudent(parseInt(req.params.id)));
     } catch (error) {
         next(error);
     }
@@ -189,7 +190,7 @@ courseRouter.get('/for-student/:id', async (req: Request, res: Response, next: N
 courseRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const course: CourseUpdateView = req.body;
-        res.status(201).json(courseService.createCourse(course));
+        res.status(201).json(await courseService.createCourse(course));
     } catch (error) {
         next(error);
     }
@@ -218,7 +219,7 @@ courseRouter.post('/', async (req: Request, res: Response, next: NextFunction) =
 courseRouter.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const course: CourseUpdateView = req.body;
-        res.status(200).json(courseService.updateCourse(parseInt(req.params.id), course));
+        res.status(200).json(await courseService.updateCourse(parseInt(req.params.id), course));
     } catch (error) {
         next(error);
     }
@@ -247,7 +248,7 @@ courseRouter.delete('/delete', async (req: Request<{}, {}, number[]>, res: Respo
     try {
         const courseIds: number[] = req.body;
         const operationStatus: String = await courseService.deleteCourses(courseIds);
-        res.status(200).send(operationStatus);
+        res.status(200).json(operationStatus);
     } catch (error) {
         next(error);
     }

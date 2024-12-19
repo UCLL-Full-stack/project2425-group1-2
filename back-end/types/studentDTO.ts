@@ -12,16 +12,16 @@ export class StudentIncludeCourses {
         name: string;
         email: string;
         password: string;
-        nationality: string;
-        studyYear: number;
+        nationality: string | null;
+        studyYear: number | null;
         courses: { courseId: number }[];
     }) {
         this.id = student.id;
         this.name = student.name;
         this.email = student.email;
         this.password = student.password;
-        this.nationality = student.nationality;
-        this.studyYear = student.studyYear;
+        this.nationality = student.nationality || '';
+        this.studyYear = student.studyYear || 0;
         this.courses = student.courses;
     }
 }

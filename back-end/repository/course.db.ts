@@ -1,14 +1,14 @@
 import prismaClient from './prisma/prismaClient';
-import tryCatcher from '../util/tryCatchWrapper';
+import { tryCatchWrapper } from '../util/tryCatchWrapper';
 import { Course } from '../model/course';
 import { CourseUpdateView, CourseShortView } from '../types/coursesDTO';
 
-const findAll = tryCatcher(async (): Promise<Course[]> => {
+const findAll = tryCatchWrapper(async (): Promise<Course[]> => {
     let result = await prismaClient.course.findMany();
     return result.map(Course.from);
 });
 
-const findAllShort = tryCatcher(async (): Promise<CourseShortView[]> => {
+const findAllShort = tryCatchWrapper(async (): Promise<CourseShortView[]> => {
     const result = await prismaClient.course.findMany({
         select: {
             id: true,
@@ -20,7 +20,7 @@ const findAllShort = tryCatcher(async (): Promise<CourseShortView[]> => {
     return result;
 });
 
-const findById = tryCatcher(async (id: number): Promise<Course> => {
+const findById = tryCatchWrapper(async (id: number): Promise<Course> => {
     const course = await prismaClient.course.findUnique({
         where: { id },
     });
@@ -30,7 +30,7 @@ const findById = tryCatcher(async (id: number): Promise<Course> => {
     return Course.from(course);
 });
 
-const findAllShortByPhaseAndPassedCourses = tryCatcher(async (phases: number[], passedCourseIds: number[]): Promise<CourseShortView[]> => {
+const findAllShortByPhaseAndPassedCourses = tryCatchWrapper(async (phases: number[], passedCourseIds: number[]): Promise<CourseShortView[]> => {
     const courses = await prismaClient.course.findMany({
         select: {
             id: true,
@@ -55,7 +55,7 @@ const findAllShortByPhaseAndPassedCourses = tryCatcher(async (phases: number[], 
     return courses;
 });
 
-const existsById = tryCatcher(async (id: number): Promise<boolean> => {
+const existsById = tryCatchWrapper(async (id: number): Promise<boolean> => {
     const existingCourse = await prismaClient.course.findUnique({
         where: { id },
     });
@@ -63,7 +63,7 @@ const existsById = tryCatcher(async (id: number): Promise<boolean> => {
     return !!existingCourse;
 });
 
-const existsByNameAndPhase = tryCatcher(async (name: string, phase: number): Promise<boolean> => {
+const existsByNameAndPhase = tryCatchWrapper(async (name: string, phase: number): Promise<boolean> => {
     const existingCourse = await prismaClient.course.findUnique({
         where: {
             name_phase: {
@@ -76,7 +76,7 @@ const existsByNameAndPhase = tryCatcher(async (name: string, phase: number): Pro
     return !!existingCourse;
 });
 
-const isRequiredByAnotherCourse = tryCatcher((courseId: number): Promise<boolean> => {
+const isRequiredByAnotherCourse = tryCatchWrapper((courseId: number): Promise<boolean> => {
     return prismaClient.courseRequiredPassedCourses.findFirst({
         where: {
             requiredCourseId: courseId,
@@ -84,7 +84,7 @@ const isRequiredByAnotherCourse = tryCatcher((courseId: number): Promise<boolean
     }).then(course => !!course);
 });
 
-const create = tryCatcher(async (courseInfo: CourseUpdateView): Promise<Course> => {
+const create = tryCatchWrapper(async (courseInfo: CourseUpdateView): Promise<Course> => {
     const course = await prismaClient.course.create({
         data: {
             name: courseInfo.name,
@@ -106,7 +106,7 @@ const create = tryCatcher(async (courseInfo: CourseUpdateView): Promise<Course> 
 });
 
 
-const update = tryCatcher(async (id: number, courseUpdateInfo: CourseUpdateView): Promise<Course> => {
+const update = tryCatchWrapper(async (id: number, courseUpdateInfo: CourseUpdateView): Promise<Course> => {
     const updatedCourse = await prismaClient.course.update({
         where: { id },
         data: {
@@ -133,7 +133,17 @@ const update = tryCatcher(async (id: number, courseUpdateInfo: CourseUpdateView)
     return Course.from(updatedCourse);
 });
 
-const deleteAllById = tryCatcher(async (ids: number[]): Promise<string> => {
+const deleteAllById = tryCatchWrapper(async (ids: number[]): Promise<string> => {
+    await prismaClient.courseRequiredPassedCourses.deleteMany({
+        where: {
+            OR: [
+                { courseId: { in: ids } },
+                { requiredCourseId: { in: ids } },
+            ],
+        },
+    });
+
+    // Delete courses
     await prismaClient.course.deleteMany({
         where: {
             id: { in: ids },

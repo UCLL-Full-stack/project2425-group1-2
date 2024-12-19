@@ -9,7 +9,7 @@ export let students: Student[] = [
     password: "password123",
     nationality: "American",
     passedCourses: [],
-    year: 1,
+    studyYear: 1,
     role: Role.STUDENT,
   },
   {
@@ -19,7 +19,7 @@ export let students: Student[] = [
     password: "password123",
     nationality: "British",
     passedCourses: [],
-    year: 2,
+    studyYear: 2,
     role: Role.STUDENT,
   },
   {
@@ -29,7 +29,7 @@ export let students: Student[] = [
     password: "password123",
     nationality: "Canadian",
     passedCourses: [],
-    year: 3,
+    studyYear: 3,
     role: Role.STUDENT,
   },
   {
@@ -39,7 +39,7 @@ export let students: Student[] = [
     password: "password123",
     nationality: "Australian",
     passedCourses: [],
-    year: 2,
+    studyYear: 2,
     role: Role.STUDENT,
   },
   {
@@ -49,7 +49,7 @@ export let students: Student[] = [
     password: "password123",
     nationality: "New Zealander",
     passedCourses: [],
-    year: 2,
+    studyYear: 2,
     role: Role.STUDENT,
   },
 ];
