@@ -27,16 +27,16 @@ studentRouter.get("/:id", async (req: Request, res: Response, next: NextFunction
     }
 });
 
-studentRouter.post("/", async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const newStudent = req.body;
-        const student = await studentService.addStudent(newStudent);
-        res.status(201).json(student);
-    } catch (error) {
-        console.error("Route error:", error);
+// studentRouter.post("/", async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const newStudent = req.body;
+//         const student = await studentService.addStudent(newStudent);
+//         res.status(201).json(student);
+//     } catch (error) {
+//         console.error("Route error:", error);
         
-    }
-});
+//     }
+// });
 
 studentRouter.get("/shortform" , async (req: Request, res: Response, next: NextFunction) => {
     try {

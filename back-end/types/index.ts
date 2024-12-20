@@ -27,13 +27,19 @@ type UserInput = {
 };
 
 type StudentInput = {
-    user: UserInput;
+    id?: number;
+    name: string;
+    email: string;
+    password: string;
     nationality: string;
-    passedCourses: CourseInput[];
+    passedCourses?: CourseInput[];
 };
 
 type AdministrativeInput = {
-    user:UserInput;
+    id?: number;
+    name: string;
+    email: string;
+    password: string;
     privileges: PrivilegeInput[];
 
 };

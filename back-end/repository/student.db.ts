@@ -3,6 +3,7 @@ import students from '../data/students';
 import tryCatcher from '../util/tryCatchWrapper';
 import prisma from './prisma/prismaClient';
 import { Prisma, UserTypes } from '@prisma/client';
+import { StudentShortView } from '../types/studentShortView';
 
 let DBstudents: Student[] = students;
 
@@ -57,45 +58,32 @@ const getStudentByEmail = async (email: string): Promise<Student | null> => {
         throw new Error('Database error. See server log for details.');
     }
 };
-const getAllStudentsShortForm = async(): Promise<string[]> => {
-    try{
-        const studentsPrisma = await prisma.user.findMany({
+const getAllStudentsShortForm = async (): Promise<StudentShortView[]> => {
+    try {
+        const students = await prisma.user.findMany({
             where: {
-                userType: UserTypes.STUDENT, 
+                userType: 'STUDENT', // Ensure this matches the userType value for students in your DB
             },
             select: {
-                name: true, 
+                name: true, // Only fetch the name of the students
             },
         });
 
-        return studentsPrisma.map(student => student.name);
+        return students.map(student => new StudentShortView(student)); // Return only the names of the students
+    } catch (error) {
+        console.error('Error fetching student names:', error);
+        throw new Error('Database error. See server log for details.');
     }
-    catch (error){
-        throw new Error('Database error. See server log for details.');    }
-}
+};
 
 
-const addStudent = async (studentData: Partial<Student>): Promise<Student> => {
-    if (!studentData.name || !studentData.email || !studentData.password) {
-        throw new Error("Required fields: 'name', 'email', and 'password' must be provided and cannot be empty.");
-    }
-
+const addStudent = async ({name,email,password,nationality}: Student): Promise<Student> => {
     try {
-
-        const existingStudent = await prisma.user.findUnique({
-            where: { email: studentData.email },
-        });
-
-        if (existingStudent) {
-            console.log(`Student with email ${studentData.email} already exists.`);
-            throw new Error("A student with this email already exists.");
-        }
-
         const prismaStudentData = {
-            name: studentData.name,
-            email: studentData.email,
-            password: studentData.password,
-            nationality: studentData.nationality ?? "Unknown",
+            name,
+            email,
+            password,
+            nationality: nationality ?? "Unknown",
             userType: UserTypes.STUDENT,
         };
 
@@ -103,7 +91,6 @@ const addStudent = async (studentData: Partial<Student>): Promise<Student> => {
             data: prismaStudentData,
         });
 
-        console.log("Student successfully created:", createdStudent);
 
         return Student.from(createdStudent);
 

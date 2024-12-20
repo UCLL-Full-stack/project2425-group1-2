@@ -2,6 +2,7 @@ import { Course } from './course';
 import { User } from './user';
 import { PrismaStudent } from '../types/prismaTypesExtension';
 import { Course as PrismaCourse } from '@prisma/client';
+import { StudentShortView } from '../types/studentShortView';
 export class Student extends User {
     public readonly nationality: string;
     public readonly passedCourses: Course[];
@@ -76,5 +77,13 @@ export class Student extends User {
             nationality,
             passedCourses: []
         });
+    }
+
+    public static fromName({
+        name
+    }:PrismaStudent): StudentShortView{
+        return new StudentShortView({
+            name
+        })
     }
 }

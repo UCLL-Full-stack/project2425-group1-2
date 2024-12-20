@@ -1,6 +1,7 @@
 import { Course } from '../model/course';
 import courses from '../data/courses';
 import DBtryCatcher from '../util/tryCatchWrapper';
+import prisma from './prisma/prismaClient';
 
 let DBcourses: Course[] = Array.from(courses);
 let idCounter = DBcourses.length+1;
@@ -9,9 +10,30 @@ const initDb = (): void => {
     DBcourses = Array.from(courses);
 };
 
-const findAll = DBtryCatcher((): Course[] => {
-    return DBcourses;
-});
+const getAllCourses = async (): Promise<Course[]> => {
+    try {
+        const courses = await prisma.course.findMany({
+            include: {
+                requiredPassedCourses: {
+                    select: {
+                        requiredCourse: true, // Fetch full details of the required courses
+                    },
+                },
+            },
+        });
+
+        return courses.map(course =>
+            Course.fromWithRequiredCourses({
+                ...course,
+                requiredPassedCourses: course.requiredPassedCourses.map(rc => rc.requiredCourse),
+            })
+        );
+    } catch (error) {
+        console.error("Error fetching courses:", error);
+        throw new Error("Could not retrieve courses.");
+    }
+};
+
 
 const findById = DBtryCatcher((id: number): Course | null => {
     return DBcourses.find(course => course.id === id) || null;
@@ -53,7 +75,7 @@ const save = DBtryCatcher((course: Course): Course => {
 
 export default {
     initDb,
-    findAll,
+    getAllCourses,
     findById,
     findAllByRequiredCourseId,
     findByNameAndPhase,

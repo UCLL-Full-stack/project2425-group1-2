@@ -3,6 +3,7 @@ import StudentRepository from '../repository/student.db';
 import { Prisma } from '@prisma/client';
 import { StudentInput } from '../types';
 import studentDb from '../repository/student.db';
+import { StudentShortView } from '../types/studentShortView';
 
 const getAllByPassedCourseId = (courseId: number) : Student[] => {
     return StudentRepository.findAllByPassedCourseId(courseId);
@@ -32,22 +33,29 @@ const getStudentById = async(id : number): Promise<Student|null> => {
     }
 }
 
-const addStudent = async ({user: UserInput, nationality,passedCourses: CourseInput[]}: StudentInput): Promise<Student> => {
-    try{
-        if (!UserInput.name || !UserInput.email || !Us.password) {
-            throw new Error("Required fields: 'name', 'email', and 'password' must be provided and cannot be empty.");
-        } else if(!StudentRepository.getStudentByEmail(user.email)){
+// const addStudent = async ({name, email,password,nationality}: StudentInput): Promise<Student> => {
+//     try{
+//         if (!name || !email || !password|| !nationality) {
+//             throw new Error("Required fields: 'name', 'email', 'password' and 'nationality' must be provided and cannot be empty.");
+//         }
+//         return StudentRepository.addStudent({name, email, password, nationality});
+//     }catch{
+//         throw new Error("Student service error!")
+//     }
+// };
 
+const getAllStudentsShortForm = async (): Promise<StudentShortView[]> => {
+    try {
+        const students = await StudentRepository.getAllStudentsShortForm();  // Assuming this returns a list of students
+        if (!students){
+            throw new Error("Database for students is empty")
         }
-        return StudentRepository.addStudent({user, nationality,passedCourses});
-    }catch{
-        throw new Error("Student service error!")
+        return students
+    } catch (error) {
+        console.error('Error fetching students:', error);
+        throw new Error('Error fetching students. See server log for details.');
     }
 };
-
-const getAllStudentsShortForm = async(): Promise<string[]> =>{
-    return StudentRepository.getAllStudentsShortForm();
-}
 const deleteStudentById= async(id: number): Promise<boolean> =>{
     try{
         const userExist = getStudentById(id);
@@ -65,7 +73,7 @@ export default {
     getAllByPassedCourseId,
     getAllStudents,
     getStudentById,
-    addStudent,
+    // addStudent,
     getAllStudentsShortForm,
     deleteStudentById
 }
