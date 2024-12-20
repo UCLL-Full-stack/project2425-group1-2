@@ -54,7 +54,7 @@
 
 import express, { NextFunction, Request, Response } from 'express';
 import courseService from '../service/course.service';
-import { CourseUpdateView } from '../types/courseUpdateView';
+import { CourseUpdateView } from '../types/coursesDTO';
 
 const courseRouter = express.Router();
 
@@ -74,14 +74,13 @@ const courseRouter = express.Router();
  *               items:
  *                 $ref: '#/components/schemas/Course'
  */
-courseRouter.get("/" , async (req: Request, res: Response, next: NextFunction) => {
+courseRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
         res.status(200).json(courseService.getAll());
     } catch (error) {
         next(error);
     }
 });
-
 
 /**
  * @swagger
@@ -99,9 +98,10 @@ courseRouter.get("/" , async (req: Request, res: Response, next: NextFunction) =
  *               items:
  *                 $ref: '#/components/schemas/CourseShortView'
  */
-courseRouter.get("/short" , async (req: Request, res: Response, next: NextFunction) => {
+courseRouter.get("/short", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.status(200).json(courseService.getAllShort());
+        let result = await courseService.getAllShort();
+        res.status(200).json(result);
     } catch (error) {
         next(error);
     }
@@ -130,7 +130,69 @@ courseRouter.get("/short" , async (req: Request, res: Response, next: NextFuncti
  */
 courseRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.status(200).json(courseService.getCourseById(parseInt(req.params.id)));
+        res.status(200).json(await courseService.getCourseById(parseInt(req.params.id)));
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /courses/by-isp/{id}:
+ *   get:
+ *     summary: Get courses by ISP ID.
+ *     tags: [Course]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The id of the ISP to retrieve courses for.
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved courses.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Course'
+ */
+courseRouter.get('/by-isp/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        res.status(200).json(await courseService.getCoursesByIspId(parseInt(req.params.id)));
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /courses/for-student/{id}:
+ *   get:
+ *     summary: Get courses appropriate for a student by student ID.
+ *     tags: [Course]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The id of the student to retrieve appropriate courses for.
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved courses appropriate for the student.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Course'
+ */
+courseRouter.get('/for-student/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        res.status(200).json(await courseService.getCoursesForStudent(parseInt(req.params.id)));
     } catch (error) {
         next(error);
     }
@@ -158,8 +220,8 @@ courseRouter.get('/:id', async (req: Request, res: Response, next: NextFunction)
  */
 courseRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const course : CourseUpdateView = req.body;
-        res.status(201).json(courseService.createCourse(course));
+        const course: CourseUpdateView = req.body;
+        res.status(201).json(await courseService.createCourse(course));
     } catch (error) {
         next(error);
     }
@@ -184,11 +246,11 @@ courseRouter.post('/', async (req: Request, res: Response, next: NextFunction) =
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Course'
-*/
+ */
 courseRouter.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const course : CourseUpdateView = req.body;
-        res.status(200).json(courseService.updateCourse(parseInt(req.params.id), course));
+        const course: CourseUpdateView = req.body;
+        res.status(200).json(await courseService.updateCourse(parseInt(req.params.id), course));
     } catch (error) {
         next(error);
     }
@@ -216,8 +278,8 @@ courseRouter.put('/:id', async (req: Request, res: Response, next: NextFunction)
 courseRouter.delete('/delete', async (req: Request<{}, {}, number[]>, res: Response, next: NextFunction) => {
     try {
         const courseIds: number[] = req.body;
-        const operationStatus : String= courseService.deleteCourses(courseIds);
-        res.status(200).send(operationStatus);
+        const operationStatus: String = await courseService.deleteCourses(courseIds);
+        res.status(200).json(operationStatus);
     } catch (error) {
         next(error);
     }

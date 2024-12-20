@@ -1,3 +1,5 @@
+import { Course as PrismaCourse } from '@prisma/client';
+
 export class Course {
     public readonly id?: number;
     public readonly name: string;
@@ -18,7 +20,7 @@ export class Course {
         isElective: boolean;
         requiredPassedCourses: Course[];
     }) {
-        this.validate(course);
+        Course.validate(course);
         this.id = course.id;
         this.name = course.name;
         this.description = course.description;
@@ -29,7 +31,7 @@ export class Course {
         this.requiredPassedCourses = course.requiredPassedCourses;
     }
 
-    validate(course: {name: string; description: string; phase: number; credits: number; lecturers: string[]; isElective: boolean; }) {
+    public static validate(course: {name: string; description: string; phase: number; credits: number; lecturers: string[]; isElective: boolean; requiredPassedCourses: Course[]}): void {
         if (!course.name || course.name.length === 0) {
             throw new Error("Name is required.");
         }
@@ -44,6 +46,9 @@ export class Course {
         }
         if (course.isElective === null) {
             throw new Error("Course has to be an elective or non elective.");
+        }
+        if (course.requiredPassedCourses.includes(course as Course)) {
+            throw new Error("Course cannot be a prerequisite of itself.");
         }
     }
 
@@ -63,5 +68,50 @@ export class Course {
             this.isElective === other.isElective &&
             this.lecturers.every((lecturer, index) => lecturer === other.lecturers[index])
         );
+    }
+
+    public static fromWithRequiredCourses({
+        id,
+        name,
+        description,
+        phase,
+        credits,
+        lecturers,
+        isElective,
+        requiredPassedCourses,
+    }: PrismaCourse & {requiredPassedCourses: PrismaCourse[]}): Course {
+
+        return new Course({
+            id,
+            name,
+            description,
+            phase,
+            credits,
+            lecturers,
+            isElective,
+            requiredPassedCourses: requiredPassedCourses.map((course) => Course.from(course)),
+        });
+    }
+
+    public static from({
+        id,
+        name,
+        description,
+        phase,
+        credits,
+        lecturers,
+        isElective
+    }: PrismaCourse): Course {
+
+        return new Course({
+            id,
+            name,
+            description,
+            phase,
+            credits,
+            lecturers,
+            isElective,
+            requiredPassedCourses: [],
+        });
     }
 }

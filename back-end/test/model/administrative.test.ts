@@ -1,15 +1,16 @@
 import { Privilege } from "../../model/privilege";
 import { Administrative } from "../../model/administrative";
+import { PrivilegeType } from "../../types/privilegeDTO";
 
 const mockPrivilege1 = new Privilege({
     id: 1,
-    name: "Edit",
+    name: PrivilegeType.UPDATE_COURSE,
     description: "Can edit content"
 });
 
 const mockPrivilege2 = new Privilege({
     id: 2,
-    name: "Delete",
+    name: PrivilegeType.DELETE_COURSE,
     description: "Can delete content"
 });
 

@@ -1,41 +1,50 @@
 import { Course } from '../model/course';
 import { ISP } from '../model/isp';
 import CourseRepository from '../repository/course.db';
+import StudentRepository from '../repository/student.db';
 import ISPService from './isp.service';
 import StudentService from './student.service';
-import CourseShortView from '../types/courseShortView';
 import { Student } from '../model/student';
-import { CourseUpdateView } from '../types/courseUpdateView';
+import { CourseUpdateView, CourseShortView } from '../types/coursesDTO';
+import { StudentIncludeCourses } from '../types/studentDTO';
 
-const getAll = () : Course[] => {
-    return CourseRepository.findAll();
+const getAll = async () : Promise<Course[]> => {
+    return await CourseRepository.findAll();
 }
 
-const getAllShort = () : CourseShortView[] => {
-    return CourseRepository.findAll().map((course:any) => {
-        return new CourseShortView(course);
-    });
+const getAllShort = async () : Promise<CourseShortView[]> => {
+    let result = await CourseRepository.findAllShort();
+    return result;
 }
 
-const getCourseById = (id: number): Course => {
-    let res: Course | null = CourseRepository.findById(id);
-    if (res === null) {
-        throw new Error(ERROR_COURSE_NOT_EXIST);
-    }
-    return res;
+const getCourseById = async (id: number): Promise<Course> => {
+    return await CourseRepository.findById(id);
 }
 
-const createCourse = (courseInfo: CourseUpdateView) : Course => {
-    throwErrorIfExist(courseInfo.name, courseInfo.phase);
+const getCoursesByIspId = async (ispId: number) : Promise<CourseShortView[]> => {
+    await ISPService.throwErrorIfNotExist(ispId);
+    let courses: Course[] = await CourseRepository.findAllByIspId(ispId);
+    return courses;
+}
+
+const getCoursesForStudent = async (studentId: number) : Promise<CourseShortView[]> => {
+    let student: StudentIncludeCourses = await StudentRepository.findById(studentId);
+    let desiredPhases = [student.studyYear * 2 - 1, student.studyYear * 2];
+    let passedCoursesIds = student.passedCourses.map(course => course.courseId);
+    let courses: CourseShortView[] = await CourseRepository.findAllShortByPhaseAndPassedCourses(desiredPhases, passedCoursesIds);
+    return courses;
+}
+
+const createCourse = async (courseInfo: CourseUpdateView) : Promise<Course> => {
+    await throwErrorIfExist(courseInfo.name, courseInfo.phase);
     
     let requiredCourses: Course[] = [];
-    courseInfo.requiredPassedCourses.forEach(courseId => {
-        let course: Course = getCourseById(courseId);
+    for (const courseId of courseInfo.requiredPassedCourses) {
+        let course: Course = await getCourseById(courseId);
         requiredCourses.push(course);
-    });
+    }
     
-    let course = new Course({
-        id: undefined,
+    Course.validate({
         name: courseInfo.name,
         description: courseInfo.description,
         phase: courseInfo.phase,
@@ -45,79 +54,80 @@ const createCourse = (courseInfo: CourseUpdateView) : Course => {
         requiredPassedCourses: requiredCourses
     });
     
-    return CourseRepository.save(course);
+    return await CourseRepository.create(courseInfo);
 }
 
-const updateCourse = (id: number, courseUpdateInfo: CourseUpdateView) : Course => {
-    let currentCourse = getCourseById(id);
+const updateCourse = async (id: number, courseInfo: CourseUpdateView) : Promise<Course> => {
+    let currentCourse = await getCourseById(id);
+
     let requiredCourses: Course[] = [];
-    courseUpdateInfo.requiredPassedCourses.forEach(courseId => {
-        if (courseId === id) throw new Error(ERROR_COURSE_REQUIRE_ITSELF);
-        let course: Course = getCourseById(courseId);
+    for (const courseId of courseInfo.requiredPassedCourses) {
+        if (courseId === id) throw new Error("Course cannot require itself");
+        let course: Course = await getCourseById(courseId);
         requiredCourses.push(course);
-    });
-    
-    if (currentCourse.phase !== courseUpdateInfo.phase
-        || currentCourse.credits !== courseUpdateInfo.credits) {
-        throwErrorIfChosenInIsp(id, ERROR_COURSE_PHASE_CREDITS_CHANGE);
     }
-    
-    let course = new Course({
-        id: id,
-        name: courseUpdateInfo.name,
-        description: courseUpdateInfo.description,
-        phase: courseUpdateInfo.phase,
-        credits: courseUpdateInfo.credits,
-        lecturers: courseUpdateInfo.lecturers,
-        isElective: courseUpdateInfo.isElective,
+
+    if (currentCourse.phase !== courseInfo.phase
+        || currentCourse.credits !== courseInfo.credits) {
+            let errorMessage = "Course's phase or credits cannot be changed, because it is chosen in ISP";
+        await throwErrorIfChosenInIsp(id, errorMessage);
+    }
+
+    Course.validate({
+        name: courseInfo.name,
+        description: courseInfo.description,
+        phase: courseInfo.phase,
+        credits: courseInfo.credits,
+        lecturers: courseInfo.lecturers,
+        isElective: courseInfo.isElective,
         requiredPassedCourses: requiredCourses
     });
     
-    return CourseRepository.save(course);
+    return await CourseRepository.update(id, courseInfo);
 }
 
-const deleteCourses = (ids: number[]) : String => {
-    ids.forEach(id => {
-        throwErrorIfNotExist(id);
-        throwErrorIfChosenInIsp(id);
-        throwErrorIfPassedByStudent(id);
-        throwErrorIfRequiredByCourse(id);
-    });
-    CourseRepository.deleteCourses(ids);
+const deleteCourses = async (ids: number[]) : Promise<String> => {
+    for (const id of ids) {
+        await throwErrorIfNotExist(id);
+        await throwErrorIfChosenInIsp(id);
+        await throwErrorIfPassedByStudent(id);
+        await throwErrorIfRequiredByCourse(id);
+    }
+    await CourseRepository.deleteAllById(ids);
     return "Courses are successfully deleted";
 }
 
-const throwErrorIfNotExist = (id: number) : void => {
-    let res: Course | null = CourseRepository.findById(id);
-    if (res === null) {
+const throwErrorIfNotExist = async (id: number) : Promise<void> => {
+    let res: boolean = await CourseRepository.existsById(id);
+    if (!res) {
         throw new Error(ERROR_COURSE_NOT_EXIST);
     }
 }
 
-const throwErrorIfExist = (name: string, phase: number) : void => {
-    let res: Course | null = CourseRepository.findByNameAndPhase(name, phase);
-    if (res !== null) {
+const throwErrorIfExist = async (name: string, phase: number) : Promise<void> => {
+    let res: boolean = await CourseRepository.existsByNameAndPhase(name, phase);
+    if (res) {
         throw new Error(ERROR_COURSE_EXIST(name, phase));
     }
 }
 
-const throwErrorIfChosenInIsp = (id: number, errorMessage?: string) : void => {
-    let res: ISP[] = ISPService.getAllByCourseId(id);
+const throwErrorIfChosenInIsp = async (id: number, errorMessage?: string) : Promise<void> => {
+    let res: ISP[] = await ISPService.getAllByCourseId(id);
     if (res.length > 0) {
         throw new Error(errorMessage || ERROR_COURSE_CHOSEN_IN_ISP);
     }
 }
 
-const throwErrorIfPassedByStudent = (id: number) : void => {
-    let res: Student[] = StudentService.getAllByPassedCourseId(id);
+const throwErrorIfPassedByStudent = async (id: number) : Promise<void> => {
+    let res: Student[] = await StudentService.getAllByPassedCourseId(id);
     if (res.length > 0) {
         throw new Error(ERROR_COURSE_PASSED_BY_STUDENT);
     }
 }
 
-const throwErrorIfRequiredByCourse = (id: number) : void => {
-    let res: Course[] = CourseRepository.findAllByRequiredCourseId(id);
-    if (res.length > 0) {
+const throwErrorIfRequiredByCourse = async (id: number) : Promise<void> => {
+    let res: boolean = await CourseRepository.isRequiredByAnotherCourse(id);
+    if (res) {
         throw new Error(ERROR_COURSE_REQUIRED_BY_COURSE);
     }
 }
@@ -134,6 +144,8 @@ export default {
     getAll,
     getAllShort,
     getCourseById,
+    getCoursesByIspId,
+    getCoursesForStudent,
     createCourse,
     updateCourse,
     deleteCourses,

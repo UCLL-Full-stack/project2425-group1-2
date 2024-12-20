@@ -1,6 +1,7 @@
 import { ISP } from "../../model/isp";
 import { Student } from "../../model/student";
 import { Course } from "../../model/course";
+import { IspStatus } from "@prisma/client";
 
 const mockCourse = new Course({
     id: 1,
@@ -19,24 +20,24 @@ const mockStudent = new Student({
     email: "jane.doe@example.com",
     password: "password123",
     nationality: "Belgian",
-    startYear: 2022,
+    studyYear: 2,
     passedCourses: []
 });
 
 test('given: valid values for ISP, when: ISP is created, then: ISP is created with those values', () => {
     const isp = new ISP({
         id: 1,
-        status: "active",
+        status: IspStatus.SUBMITTED,
         totalCredits: 18,
-        year: 2022,
+        startYear: 2022,
         courses: [mockCourse],
         student: mockStudent
     });
 
     expect(isp.id).toEqual(1);
-    expect(isp.status).toEqual("active");
+    expect(isp.status).toEqual(IspStatus.SUBMITTED);
     expect(isp.totalCredits).toEqual(18);
-    expect(isp.year).toEqual(2022);
+    expect(isp.startYear).toEqual(2022);
     expect(isp.courses).toContain(mockCourse);
     expect(isp.student).toEqual(mockStudent);
 });
@@ -44,9 +45,9 @@ test('given: valid values for ISP, when: ISP is created, then: ISP is created wi
 test("given: missing status, when: ISP is created, then: an error is thrown", () => {
     const createISP = () => new ISP({
         id: 1,
-        status: "",
+        status: undefined as any,
         totalCredits: 18,
-        year: 2022,
+        startYear: 2022,
         courses: [mockCourse],
         student: mockStudent
     });
@@ -57,9 +58,9 @@ test("given: missing status, when: ISP is created, then: an error is thrown", ()
 test("given: negative totalCredits, when: ISP is created, then: an error is thrown", () => {
     const createISP = () => new ISP({
         id: 1,
-        status: "active",
+        status: IspStatus.SUBMITTED,
         totalCredits: -10,
-        year: 2022,
+        startYear: 2022,
         courses: [mockCourse],
         student: mockStudent
     });
@@ -67,12 +68,12 @@ test("given: negative totalCredits, when: ISP is created, then: an error is thro
     expect(createISP).toThrow("Credits are required and cannot be negative");
 });
 
-test("given: invalid year format, when: ISP is created, then: an error is thrown", () => {
+test("given: invalid startYear format, when: ISP is created, then: an error is thrown", () => {
     const createISP = () => new ISP({
         id: 1,
-        status: "active",
+        status: IspStatus.SUBMITTED,
         totalCredits: 18,
-        year: 999,
+        startYear: 999,
         courses: [mockCourse],
         student: mockStudent
     });
@@ -83,9 +84,9 @@ test("given: invalid year format, when: ISP is created, then: an error is thrown
 test("given: no student, when: ISP is created, then: an error is thrown", () => {
     const createISP = () => new ISP({
         id: 1,
-        status: "active",
+        status: IspStatus.SUBMITTED,
         totalCredits: 18,
-        year: 2022,
+        startYear: 2022,
         courses: [mockCourse],
         student: undefined as any
     });
@@ -96,18 +97,18 @@ test("given: no student, when: ISP is created, then: an error is thrown", () => 
 test("given: two ISPs with same properties, when: equals is called, then: returns true", () => {
     const isp1 = new ISP({
         id: 1,
-        status: "active",
+        status: IspStatus.SUBMITTED,
         totalCredits: 18,
-        year: 2022,
+        startYear: 2022,
         courses: [mockCourse],
         student: mockStudent
     });
 
     const isp2 = new ISP({
         id: 1,
-        status: "active",
+        status: IspStatus.SUBMITTED,
         totalCredits: 18,
-        year: 2022,
+        startYear: 2022,
         courses: [mockCourse],
         student: mockStudent
     });
@@ -118,18 +119,18 @@ test("given: two ISPs with same properties, when: equals is called, then: return
 test("given: two ISPs with different properties, when: equals is called, then: returns false", () => {
     const isp1 = new ISP({
         id: 1,
-        status: "active",
+        status: IspStatus.SUBMITTED,
         totalCredits: 18,
-        year: 2022,
+        startYear: 2022,
         courses: [mockCourse],
         student: mockStudent
     });
 
     const isp2 = new ISP({
         id: 2,
-        status: "inactive",
+        status: IspStatus.NOTSUBMITTED,
         totalCredits: 24,
-        year: 2023,
+        startYear: 2023,
         courses: [],
         student: mockStudent
     });
