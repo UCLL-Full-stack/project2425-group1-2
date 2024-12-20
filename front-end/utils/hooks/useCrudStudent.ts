@@ -1,7 +1,8 @@
-import DummyStudentService from "@/services/DummyStudentService";
+import StudentService from "@/services/StudentService";
 import { Student, UserShort } from "@/types";
 import { ErrorState } from "@/types/errorState";
 import { useEffect, useState } from "react";
+import { mapStudentToUpdateView } from "../mappers";
 
 export const useCrudStudent = (
   errorCallback?: (error: ErrorState) => void
@@ -9,26 +10,26 @@ export const useCrudStudent = (
   const [students, setStudents] = useState<UserShort[]>([]);
 
   const getStudents = async () => {
-    const courses: UserShort[] = await DummyStudentService.getAllShortStudents(
+    const courses: UserShort[] = await StudentService.getAllShortStudents(
       errorCallback
     );
     setStudents(courses);
   };
 
   const updateStudent = async (student: Student) => {
-    // const updateStudentView = convertStudentToUpdateView(student);
-    await DummyStudentService.updateStudent(student.id, student, errorCallback);
+    const updateStudentView = mapStudentToUpdateView(student);
+    await StudentService.updateStudent(student.id, updateStudentView, errorCallback);
     await getStudents();
   };
 
   const createStudent = async (student: Student) => {
-    // const updateStudentView = convertStudentToUpdateView(student);
-    await DummyStudentService.createStudent(student, errorCallback);
+    const updateStudentView = mapStudentToUpdateView(student);
+    await StudentService.createStudent(updateStudentView, errorCallback);
     await getStudents();
   };
 
   const deleteStudent = async (id: number) => {
-    await DummyStudentService.deleteStudent(id, errorCallback);
+    await StudentService.deleteStudent(id, errorCallback);
     await getStudents();
   };
 

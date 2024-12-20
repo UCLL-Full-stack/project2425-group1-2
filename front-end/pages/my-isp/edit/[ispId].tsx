@@ -15,10 +15,11 @@ import { MY_ISP_URL } from "@/utils/urls";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
-
-const TITLE = "Compose ISP";
+import { useTranslation } from "next-i18next"; // Import useTranslation hook
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"; // Import serverSideTranslations function
 
 export default function ComposeISP() {
+  const { t } = useTranslation(); // Initialize translation
   const router = useRouter();
   const { ispId } = router.query;
   const id = parseInt(ispId as string);
@@ -82,7 +83,12 @@ export default function ComposeISP() {
     return <ISPSubmitNotification id={isp.id} />;
   }
 
-  const mainSectionTitle = `ISP ${isp.startYear}-${isp.startYear + 1}`;
+  // Use translation for dynamic main section title
+  const mainSectionTitle = t('composeISP.mainSectionTitle', {
+    startYear: isp.startYear,
+    endYear: isp.startYear + 1,
+  });
+
   const isActive = Object.keys(errors).length === 0;
 
   const updateISPByStudent = async (
@@ -145,7 +151,7 @@ export default function ComposeISP() {
   return (
     <>
       <Head>
-        <title>{TITLE}</title>
+        <title>{t('composeISP.title')}</title> {/* Use translation */}
       </Head>
       <ObjectsWithHeadingLayout
         objects={courses}
@@ -169,7 +175,10 @@ export default function ComposeISP() {
         )}
         <section className="flex flex-col items-center gap-2">
           <article className={`${submittable ? "" : "text-red-800"}`}>
-            <p>{`${totalCourseCredits}/${isp.totalCredits}`}</p>
+            <p>{t('composeISP.totalCredits', { 
+              totalCourseCredits: totalCourseCredits, 
+              totalCredits: isp.totalCredits 
+            })}</p> {/* Use translation */}
           </article>
           <button
             className={`p-3 rounded shadow-regular ${
@@ -178,7 +187,7 @@ export default function ComposeISP() {
             onClick={handleSubmit}
             disabled={!submittable}
           >
-            Submit
+            {t('composeISP.submitButton')} {/* Use translation */}
           </button>
         </section>
       </section>
@@ -191,3 +200,12 @@ export default function ComposeISP() {
     </>
   );
 }
+
+export const getServerSideProps = async (context: any) => {
+  const { locale } = context;
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["common"])),
+    },
+  };
+};

@@ -6,11 +6,11 @@ import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { useStudentsShortGetter } from "@/utils/hooks/useStudentsShortGetter";
 import { MY_ISP_URL } from "@/utils/urls";
 import Head from "next/head";
-
-const TITLE = "My ISP";
-const MAIN_SECTION_TITLE = "Choose student";
+import { useTranslation } from "next-i18next"; // Import useTranslation hook
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"; // Import serverSideTranslations function
 
 export default function MyISP() {
+  const { t } = useTranslation(); // Initialize translation
   const { errors, setErrors, handleError } = useErrorHandler();
   const { students } = useStudentsShortGetter(handleError);
 
@@ -19,10 +19,10 @@ export default function MyISP() {
   return (
     <>
       <Head>
-        <title>{TITLE}</title>
+        <title>{t('myISP.title')}</title> {/* Use translation */}
       </Head>
       <LowOpacityLayout isActive={!isActive}>
-        <h1 className="text-center mt-5">{MAIN_SECTION_TITLE}</h1>
+        <h1 className="text-center mt-5">{t('myISP.mainSectionTitle')}</h1> {/* Use translation */}
         <MapObjectsLayout
           objects={students}
           flex="row"
@@ -41,3 +41,12 @@ export default function MyISP() {
     </>
   );
 }
+
+export const getServerSideProps = async (context: any) => {
+  const { locale } = context;
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["common"])),
+    },
+  };
+};

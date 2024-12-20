@@ -1,8 +1,11 @@
 import React from "react";
-import { Tab, tabs } from "../../types/tab";
+import { Tab } from "../../types/tab";
 import TabItem from "./TabItem";
+interface TabsOverviewSectionProps {
+  tabs: Tab[];
+}
 
-const TabsOverviewSection = React.memo(() => {
+const TabsOverviewSection = React.memo(({ tabs }: TabsOverviewSectionProps) => {
   return (
     <>
       <section className="ml-4 mr-4 mt-4 flex flex-row flex-wrap">

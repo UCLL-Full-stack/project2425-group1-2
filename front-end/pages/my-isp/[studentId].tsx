@@ -7,11 +7,11 @@ import { useISPShortByStudentGetter } from "@/utils/hooks/useISPShortByStudentGe
 import { EDIT_URL, MY_ISP_URL, VIEW_URL } from "@/utils/urls";
 import Head from "next/head";
 import { useRouter } from "next/router";
-
-const TITLE = "your ISP";
-const MAIN_SECTION_TITLE = "Your ISP";
+import { useTranslation } from "next-i18next"; // Import useTranslation hook
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"; // Import serverSideTranslations function
 
 export default function StudentISP() {
+  const { t } = useTranslation(); // Initialize translation
   const router = useRouter();
   const { studentId } = router.query;
   const id = parseInt(studentId as string);
@@ -28,12 +28,12 @@ export default function StudentISP() {
   return (
     <>
       <Head>
-        <title>{TITLE}</title>
+        <title>{t('studentISP.title')}</title>
       </Head>
       <ObjectsWithHeadingLayout
         objects={isps}
         isActive={isActive}
-        headingTitle={MAIN_SECTION_TITLE}
+        headingTitle={t('studentISP.mainSectionTitle')} 
         flex="col"
         children={(isp) => (
           <ISPLinkItem
@@ -50,3 +50,12 @@ export default function StudentISP() {
     </>
   );
 }
+
+export const getServerSideProps = async (context: any) => {
+  const { locale } = context;
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["common"])),
+    },
+  };
+};

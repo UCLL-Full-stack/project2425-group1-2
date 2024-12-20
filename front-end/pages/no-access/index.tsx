@@ -5,21 +5,20 @@ import Head from "next/head";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-const TITLE = "your profile";
-const MAIN_SECTION_TITLE = "No access";
-
 export default function NoAccess() {
+  const { t } = useTranslation();
+
   return (
     <>
       <Head>
-        <title>{TITLE}</title>
+        <title>{t("noAccess.title")}</title>
       </Head>
       <CenteredFitContentLayout>
         <section className="flex flex-col gap-4 items-center">
-          <h2> {MAIN_SECTION_TITLE}</h2>
-          <p> You do not have access to this page</p>
+          <h2>{t("noAccess.mainSectionTitle")}</h2>
+          <p>{t("noAccess.message")}</p>
           <div className="w-fit">
-            <LinkButton text="Home" href={HOME_URL} />
+            <LinkButton text={t("noAccess.buttonText")} href={HOME_URL} />
           </div>
         </section>
       </CenteredFitContentLayout>
@@ -30,8 +29,8 @@ export default function NoAccess() {
 export const getServerSideProps = async (context: any) => {
   const { locale } = context;
   return {
-      props: {
-          ...(await serverSideTranslations(locale ?? "en", ["common"])),
-      },
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["common"])),
+    },
   };
 }

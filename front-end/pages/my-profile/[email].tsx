@@ -12,11 +12,11 @@ import { useUserByEmailGetter } from "@/utils/hooks/useUserByEmailGetter";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { Suspense } from "react";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"; 
 
-const TITLE = "your profile";
-const MAIN_SECTION_TITLE = "Your Profile";
-
-export default function MyProfile() {
+const MyProfile = () => {
+  const { t } = useTranslation(); 
   const router = useRouter();
   const { email } = router.query;
   const userEmail = email as string;
@@ -36,12 +36,12 @@ export default function MyProfile() {
   return (
     <>
       <Head>
-        <title>{TITLE}</title>
+        <title>{t('myProfile.title')}</title> {/* Use translation */}
       </Head>
       <Suspense fallback={user === null}>
         <LowOpacityLayout isActive={!isActive}>
           <FullVerticalLayout>
-            <h1 className="text-center mb-4">{MAIN_SECTION_TITLE}</h1>
+            <h1 className="text-center mb-4">{t('myProfile.mainSectionTitle')}</h1> {/* Use translation */}
             {user !== undefined && (
               <>
                 <div className="flex flex-col gap-2 items-start">
@@ -54,7 +54,11 @@ export default function MyProfile() {
                   )}
                 </div>
                 <section className="text-center">
-                  <LogoutButton isActive={isActive} onClick={handleLogout} />
+                  <LogoutButton
+                    isActive={isActive}
+                    onClick={handleLogout}
+                    text={t('myProfile.logoutButton')}
+                  />
                 </section>
               </>
             )}
@@ -66,4 +70,15 @@ export default function MyProfile() {
       </Suspense>
     </>
   );
+};
+
+export const getServerSideProps = async (context: any) => {
+  const { locale } = context;
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["common"])),
+    },
+  };
 }
+
+export default MyProfile;

@@ -5,11 +5,16 @@ import React from "react";
 import { AuthContextType, useAuth } from "../AuthProvider";
 import { ButtonStatus, ButtonType, HeaderButton } from "./HeaderButton";
 import HeaderProfileButton from "./HeaderProfileButton";
+import Language from "../language/Language";
 
 const IMAGE_WIDTH = 103;
 const IMAGE_HEIGHT = 32.25;
 
-const Header = React.memo(() => {
+interface HeaderProps {
+  translations: any;
+}
+
+const Header = React.memo(({ translations }: HeaderProps) => {
   const { pathname } = useRouter();
   const auth: AuthContextType = useAuth();
   const userData = auth.data;
@@ -30,12 +35,14 @@ const Header = React.memo(() => {
           width={IMAGE_WIDTH}
           height={IMAGE_HEIGHT}
         />
-        <h1>ISP submission system</h1>
+        <h1>{translations("header.title")}</h1>
       </div>
       <nav className="flex items-center">
+        <Language translations={translations} />
         <HeaderButton
           buttonType={ButtonType.Home}
           buttonStatus={homeButtonStatus}
+          translations={translations}
         />
         {(userData.email && (
           <HeaderProfileButton
@@ -47,6 +54,7 @@ const Header = React.memo(() => {
           <HeaderButton
             buttonType={ButtonType.Login}
             buttonStatus={loginButtonStatus}
+            translations={translations}
           />
         )}
       </nav>

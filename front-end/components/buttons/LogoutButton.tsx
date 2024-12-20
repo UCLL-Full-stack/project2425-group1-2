@@ -3,10 +3,11 @@ import React from "react";
 interface LogoutButtonProps {
   onClick: () => Promise<void>;
   isActive: boolean;
+  text: string;
 }
 
 const LogoutButton = React.memo(
-  ({ onClick, isActive }: LogoutButtonProps) => {
+  ({ onClick, isActive, text }: LogoutButtonProps) => {
     return (
       <article>
         <button
@@ -16,7 +17,7 @@ const LogoutButton = React.memo(
           onClick={async () => isActive && (await onClick())}
           disabled={!isActive}
         >
-          Logout
+          {text}
         </button>
       </article>
     );

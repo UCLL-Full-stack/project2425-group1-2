@@ -10,10 +10,11 @@ import { useIspByIdGetter } from "@/utils/hooks/useIspByIdGetter";
 import { MY_ISP_URL } from "@/utils/urls";
 import Head from "next/head";
 import { useRouter } from "next/router";
-
-const TITLE = "Review ISP";
+import { useTranslation } from "next-i18next"; // Import the useTranslation hook
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"; // Import the serverSideTranslations function
 
 export default function ReviewISP() {
+  const { t } = useTranslation(); // Initialize translation
   const router = useRouter();
   const { ispId } = router.query;
   const id = parseInt(ispId as string);
@@ -26,15 +27,22 @@ export default function ReviewISP() {
   if (!isp) {
     return <Loading />;
   }
-  const mainSectionTitle = `ISP ${isp.startYear}-${isp.startYear + 1}`;
+
+  // Use translation for dynamic main section title
+  const mainSectionTitle = t('reviewISP.mainSectionTitle', {
+    startYear: isp.startYear,
+    endYear: isp.startYear + 1,
+  });
+
   const totalCourseCredits =
     isp.courses.reduce((acc, c) => acc + c.credits, 0) || 0;
+
   const isActive = Object.keys(errors).length === 0;
 
   return (
     <>
       <Head>
-        <title>{TITLE}</title>
+        <title>{t('reviewISP.title')}</title> {/* Use translation */}
       </Head>
       <ObjectsWithHeadingLayout
         objects={isp.courses}
@@ -54,7 +62,10 @@ export default function ReviewISP() {
       />
       <section className="fixed bottom-8 right-8">
         <article>
-          <p>{`${totalCourseCredits}/${isp.totalCredits}`}</p>
+          <p>{t('reviewISP.totalCredits', { 
+            totalCourseCredits: totalCourseCredits, 
+            totalCredits: isp.totalCredits 
+          })}</p> {/* Use translation */}
         </article>
       </section>
 
@@ -66,3 +77,12 @@ export default function ReviewISP() {
     </>
   );
 }
+
+export const getServerSideProps = async (context: any) => {
+  const { locale } = context;
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["common"])),
+    },
+  };
+};
