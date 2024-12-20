@@ -138,7 +138,7 @@ let isps: ISP[] = [
         totalCredits: 40,
         startYear: 2021,
         courses: [courses[16]],
-        student: students[16],
+        student: students[0],
     }),
     new ISP({
         id: 18,
@@ -146,7 +146,7 @@ let isps: ISP[] = [
         totalCredits: 25,
         startYear: 2022,
         courses: [courses[17]],
-        student: students[17],
+        student: students[1],
     }),
     new ISP({
         id: 19,
@@ -154,7 +154,7 @@ let isps: ISP[] = [
         totalCredits: 30,
         startYear: 2023,
         courses: [courses[18]],
-        student: students[18],
+        student: students[2],
     }),
     new ISP({
         id: 20,
@@ -162,7 +162,7 @@ let isps: ISP[] = [
         totalCredits: 15,
         startYear: 2020,
         courses: [courses[19]],
-        student: students[19],
+        student: students[3],
     }),
     new ISP({
         id: 21,
@@ -170,7 +170,7 @@ let isps: ISP[] = [
         totalCredits: 30,
         startYear: 2021,
         courses: [courses[20]],
-        student: students[20],
+        student: students[4],
     }),
     new ISP({
         id: 22,
@@ -178,7 +178,7 @@ let isps: ISP[] = [
         totalCredits: 20,
         startYear: 2022,
         courses: [courses[21]],
-        student: students[21],
+        student: students[5],
     }),
     new ISP({
         id: 23,
@@ -186,7 +186,7 @@ let isps: ISP[] = [
         totalCredits: 35,
         startYear: 2023,
         courses: [courses[22]],
-        student: students[22],
+        student: students[6],
     }),
     new ISP({
         id: 24,
@@ -194,7 +194,7 @@ let isps: ISP[] = [
         totalCredits: 30,
         startYear: 2021,
         courses: [courses[23]],
-        student: students[23],
+        student: students[7],
     }),
     new ISP({
         id: 25,
@@ -202,7 +202,7 @@ let isps: ISP[] = [
         totalCredits: 40,
         startYear: 2022,
         courses: [courses[24]],
-        student: students[24],
+        student: students[8],
     }),
     new ISP({
         id: 26,
@@ -210,7 +210,7 @@ let isps: ISP[] = [
         totalCredits: 25,
         startYear: 2020,
         courses: [courses[25]],
-        student: students[25],
+        student: students[9],
     }),
     new ISP({
         id: 27,
@@ -218,7 +218,7 @@ let isps: ISP[] = [
         totalCredits: 30,
         startYear: 2023,
         courses: [courses[26]],
-        student: students[26],
+        student: students[10],
     }),
     new ISP({
         id: 28,
@@ -226,7 +226,7 @@ let isps: ISP[] = [
         totalCredits: 40,
         startYear: 2022,
         courses: [courses[27]],
-        student: students[27],
+        student: students[11],
     }),
     new ISP({
         id: 29,
@@ -234,7 +234,7 @@ let isps: ISP[] = [
         totalCredits: 20,
         startYear: 2021,
         courses: [courses[28]],
-        student: students[28],
+        student: students[12],
     }),
     new ISP({
         id: 30,
@@ -242,7 +242,7 @@ let isps: ISP[] = [
         totalCredits: 35,
         startYear: 2020,
         courses: [courses[29]],
-        student: students[29],
+        student: students[13],
     }),
     new ISP({
         id: 31,
@@ -250,7 +250,7 @@ let isps: ISP[] = [
         totalCredits: 30,
         startYear: 2023,
         courses: [courses[0]],
-        student: students[30],
+        student: students[14],
     }),
     new ISP({
         id: 32,
@@ -258,7 +258,7 @@ let isps: ISP[] = [
         totalCredits: 25,
         startYear: 2021,
         courses: [courses[1]],
-        student: students[31],
+        student: students[15],
     }),
     new ISP({
         id: 33,
@@ -266,7 +266,7 @@ let isps: ISP[] = [
         totalCredits: 20,
         startYear: 2022,
         courses: [courses[2]],
-        student: students[32],
+        student: students[0],
     }),
     new ISP({
         id: 34,
@@ -274,7 +274,7 @@ let isps: ISP[] = [
         totalCredits: 30,
         startYear: 2023,
         courses: [courses[3]],
-        student: students[33],
+        student: students[1],
     }),
     new ISP({
         id: 35,
@@ -282,7 +282,7 @@ let isps: ISP[] = [
         totalCredits: 40,
         startYear: 2020,
         courses: [courses[4]],
-        student: students[34],
+        student: students[2],
     }),
     new ISP({
         id: 36,
@@ -290,7 +290,7 @@ let isps: ISP[] = [
         totalCredits: 30,
         startYear: 2021,
         courses: [courses[5]],
-        student: students[35],
+        student: students[3],
     }),
     new ISP({
         id: 37,
@@ -298,7 +298,7 @@ let isps: ISP[] = [
         totalCredits: 25,
         startYear: 2022,
         courses: [courses[6]],
-        student: students[36],
+        student: students[4],
     }),
     new ISP({
         id: 38,
@@ -306,7 +306,7 @@ let isps: ISP[] = [
         totalCredits: 20,
         startYear: 2023,
         courses: [courses[7]],
-        student: students[37],
+        student: students[5],
     }),
     new ISP({
         id: 39,
@@ -314,7 +314,7 @@ let isps: ISP[] = [
         totalCredits: 35,
         startYear: 2020,
         courses: [courses[8]],
-        student: students[38],
+        student: students[6],
     }),
     new ISP({
         id: 40,
@@ -322,7 +322,7 @@ let isps: ISP[] = [
         totalCredits: 30,
         startYear: 2021,
         courses: [courses[9]],
-        student: students[39],
+        student: students[7],
     }),
 ];
 
