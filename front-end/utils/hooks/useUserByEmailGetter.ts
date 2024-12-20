@@ -1,4 +1,4 @@
-import DummyUserService from "@/services/DummyUserService";
+import UserService from "@/services/UserService";
 import { Admin, Student } from "@/types";
 import { ErrorState } from "@/types/errorState";
 import { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ export const useUserByEmailGetter = (
   const [user, setUser] = useState<Admin | Student | undefined>(undefined);
 
   const getUser = async () => {
-    const newUser = await DummyUserService.getUserByEmail(email, errorCallback);
+    const newUser = await UserService.getUserByEmail(email, errorCallback);
     setUser(newUser);
   };
 

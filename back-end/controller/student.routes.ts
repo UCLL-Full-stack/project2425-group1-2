@@ -19,6 +19,9 @@
  *           email:
  *             type: string
  *             description: Student's email address.
+ *           password:
+ *             type: string
+ *             description: Student's password.
  *           nationality:
  *             type: string
  *             description: Student's nationality.
@@ -29,7 +32,7 @@
  *             type: array
  *             items:
  *               $ref: '#/components/schemas/Course'
- *       StudentShortView:
+ *       UserShortView:
  *         type: object
  *         properties:
  *           id:
