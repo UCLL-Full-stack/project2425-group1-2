@@ -28,12 +28,15 @@ export default function ComposeISP() {
   const { detailedCourses, toggleCourseDetails } =
     useDetailedCoursesToggle(handleError);
   const { isp, setIsp } = useIspByIdGetter(id);
-  const { courses } = useCoursesForStudentGetter(isp ? isp.student.id : 0);
+  const { courses } = useCoursesForStudentGetter(isp ? isp.student.id : -1);
   const [changes, setChanges] = useState<
     { course: CourseShort; selected: boolean }[]
   >([]);
 
   const selectedCourses = useMemo(() => {
+    if (!isp || !isp.courses) {
+      return {};
+    }
     return (
       isp?.courses.reduce((acc, c) => {
         acc[c.id] = true;
@@ -43,6 +46,9 @@ export default function ComposeISP() {
   }, [isp?.courses]);
 
   const totalCourseCredits = useMemo(() => {
+    if (!isp?.courses) {
+      return 0;
+    }
     return isp?.courses.reduce((acc, c) => acc + c.credits, 0) || 0;
   }, [isp?.courses]);
 
@@ -51,6 +57,9 @@ export default function ComposeISP() {
   };
 
   const calculateLowestCreditsUnselected = () => {
+    if (!courses) {
+      return 0;
+    }
     const res = courses.reduce((acc, c) => {
       if (!isSelected(c.id)) {
         return Math.min(acc, c.credits);

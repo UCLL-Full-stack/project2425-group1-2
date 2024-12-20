@@ -1,4 +1,4 @@
-import { CourseShort, ISPShort } from "@/types";
+import { CourseShort, ISPShort, ISPStatusToString } from "@/types";
 import React from "react";
 
 interface ISPShortViewProps {
@@ -15,7 +15,7 @@ const ISPShortView = React.memo(({ isp }: ISPShortViewProps) => {
       </div>
       <div className="flex flex-row gap-2">
         <p className="hidden sm:block">Status:</p>
-        <p>{isp.status}</p>
+        <p>{ISPStatusToString(isp.status)}</p>
       </div>
     </article>
   );

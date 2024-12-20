@@ -89,7 +89,7 @@ const userRouter = express.Router();
  */
 userRouter.get('/:email', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.status(200).json(await userService.getUserByEmail(req.params.id));
+        res.status(200).json(await userService.getUserByEmail(req.params.email));
     } catch (error) {
         next(error);
     }

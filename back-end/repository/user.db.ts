@@ -3,7 +3,6 @@ import { tryCatchWrapper } from '../util/tryCatchWrapper';
 import { FullUser, UserView } from '../types/userDTO';
 
 const findByEmail = tryCatchWrapper(async (email: string): Promise<UserView> => {
-    console.log('findByEmail', email);
     const user = await prismaClient.user.findUnique({
         where: { email: email },
     });

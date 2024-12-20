@@ -10,8 +10,8 @@ const ISPItemLayout = React.memo(
   ({ ispStatus, children }: ISPItemLayoutProps) => {
     const sectionClass =
       ispStatus === ISPStatus.SUBMITTED
-        ? "bg-slate-500 shadow-activated mb-3"
-        : "bg-primary shadow-regular mb-3";
+        ? "bg-slate-500 shadow-activated mb-3 w-full"
+        : "bg-primary shadow-regular mb-3 w-full";
 
     return (
       <section className={sectionClass}>

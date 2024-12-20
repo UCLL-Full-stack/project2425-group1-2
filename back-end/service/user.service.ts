@@ -9,8 +9,8 @@ import {
 import bcrypt from 'bcrypt';
 import { generateJwtToken } from '../util/jwt';
 
-const getUserByEmail = async (email: string): Promise<User> => {
-    return await UserRepository.findByEmail(email);
+const getUserByEmail = async (email: string): Promise<FullUser> => {
+    return await UserRepository.findFullByEmail(email);
 };
 
 const authenticate = async ({
@@ -28,7 +28,7 @@ const authenticate = async ({
     const data: SessionData = {
         userId: user.id,
         email: user.email,
-        role: user.userType,
+        userType: user.userType,
         privileges: user.privileges.map((pr) => pr.id),
     };
     const token = generateJwtToken(email, user.userType);

@@ -46,7 +46,7 @@ export class AuthenticationRequest {
 export type SessionData = {
     userId: number;
     email: string;
-    role: string;
+    userType: string;
     privileges?: number[];
 }
 

@@ -3,11 +3,12 @@ import { tryCatchWrapper } from '../util/tryCatchWrapper';
 import { Student } from '../model/student';
 import { StudentUpdateView, StudentIncludeCourses } from '../types/studentDTO';
 import { UserShort } from '../types/userDTO';
+import { UserTypes } from '@prisma/client';
 
 const findAll = tryCatchWrapper(async (): Promise<Student[]> => {
     const result = await prismaClient.user.findMany({
         where: {
-            userType: 'STUDENT',
+            userType: UserTypes.Student,
         },
     });
     return result.map(Student.from);
@@ -16,7 +17,7 @@ const findAll = tryCatchWrapper(async (): Promise<Student[]> => {
 const findAllShort = tryCatchWrapper(async (): Promise<UserShort[]> => {
     const result = await prismaClient.user.findMany({
         where: {
-            userType: 'STUDENT',
+            userType: UserTypes.Student,
         },
         select: {
             id: true,
@@ -27,7 +28,6 @@ const findAllShort = tryCatchWrapper(async (): Promise<UserShort[]> => {
 });
 
 const findById = tryCatchWrapper(async (id: number): Promise<StudentIncludeCourses> => {
-    console.log('findById', id);
     const student = await prismaClient.user.findUnique({
         where: { id },
         include: {
@@ -47,7 +47,7 @@ const findById = tryCatchWrapper(async (id: number): Promise<StudentIncludeCours
 const findAllByPassedCourseId = tryCatchWrapper(async (courseId: number): Promise<Student[]> => {
     const students = await prismaClient.user.findMany({
         where: {
-            userType: 'STUDENT',
+            userType: UserTypes.Student,
             passedCourses: {
                 some: {
                     courseId,
@@ -80,7 +80,7 @@ const create = tryCatchWrapper(async (studentInfo: StudentUpdateView): Promise<S
             password: studentInfo.password,
             nationality: studentInfo.nationality,
             studyYear: studentInfo.studyYear,
-            userType: 'STUDENT',
+            userType: UserTypes.Student,
         },
     });
 

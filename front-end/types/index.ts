@@ -1,3 +1,5 @@
+import { UserType } from "./auth";
+
 export type Course = {
   id: number;
   name: string;
@@ -31,7 +33,7 @@ export type Student = {
   name: string;
   email: string;
   password: string;
-  role: Role;
+  userType: UserType;
   studyYear: number;
   nationality?: string;
   passedCourses: CourseShort[];
@@ -51,8 +53,17 @@ export type StudentUpdateView = {
 };
 
 export enum ISPStatus {
-  SUBMITTED = "Submitted",
-  NOTSUBMITTED = "Not submitted",
+  SUBMITTED = "SUBMITTED",
+  NOTSUBMITTED = "NOTSUBMITTED",
+}
+
+export const ISPStatusToString = (status: ISPStatus) => {
+  switch (status) {
+    case ISPStatus.SUBMITTED:
+      return "Submitted";
+    case ISPStatus.NOTSUBMITTED:
+      return "Not submitted";
+  }
 }
 
 export type ISP = {
@@ -98,13 +109,7 @@ export type User = {
   name: string;
   email: string;
   password: string;
-  role: Role;
-}
-
-export enum Role{
-  STUDENT = "student",
-  ADMIN = "admin",
-  NONE = "none",
+  userType: UserType;
 }
 
 export type Administrative = {
@@ -112,7 +117,7 @@ export type Administrative = {
   name: string;
   email: string;
   password: string;
-  role: Role;
+  userType: UserType;
   privileges: Privilege[];
 }
 
@@ -123,17 +128,16 @@ export type Privilege = {
 }
 
 export const enum PrivilegeType {
-  NONE = 1,
-  CREATE_ISP = 2,
-  UPDATE_ISP = 3,
-  DELETE_ISP = 4,
-  CREATE_STUDENT = 5,
-  UPDATE_STUDENT = 6,
-  DELETE_STUDENT = 7,
-  CREATE_COURSE = 8,
-  UPDATE_COURSE = 9,
-  DELETE_COURSE = 10,
-  CREATE_ADMINISTRATIVE = 11,
-  UPDATE_ADMINISTRATIVE = 12,
-  DELETE_ADMINISTRATIVE = 13,
+  CREATE_ISP = 1,
+  UPDATE_ISP = 2,
+  DELETE_ISP = 3,
+  CREATE_STUDENT = 4,
+  UPDATE_STUDENT = 5,
+  DELETE_STUDENT = 6,
+  CREATE_COURSE = 7,
+  UPDATE_COURSE = 8,
+  DELETE_COURSE = 9,
+  CREATE_ADMINISTRATIVE = 10,
+  UPDATE_ADMINISTRATIVE = 11,
+  DELETE_ADMINISTRATIVE = 12,
 }

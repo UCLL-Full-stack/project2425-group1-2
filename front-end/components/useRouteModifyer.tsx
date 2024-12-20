@@ -1,5 +1,4 @@
-import { Role } from "@/types";
-import { SessionData } from "@/types/auth";
+import { SessionData, UserType } from "@/types/auth";
 import {
   HOME_URL,
   LOGIN_REQUIRED_URL,
@@ -94,12 +93,12 @@ const modifyUrl = (url: string, userData: SessionData | null) => {
     url = modifyUrlBasedOnAccess(url, guestRoutes);
     return url;
   }
-  if (userData?.role === Role.ADMIN) {
+  if (userData?.userType === UserType.ADMINISTRATIVE) {
     const adminRoutes = getAdminUrlPatterns(userData);
     url = modifyUrlBasedOnAccess(url, adminRoutes);
     return url;
   }
-  if (userData?.role === Role.STUDENT) {
+  if (userData?.userType === UserType.STUDENT) {
     const studentRoutes = getStudentUrlPatterns(userData);
     url = modifyUrlBasedOnAccess(url, studentRoutes);
     return url;

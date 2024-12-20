@@ -1,5 +1,3 @@
-import { Role } from ".";
-
 export type LoginData = {
   username: string;
   password: string;
@@ -8,6 +6,13 @@ export type LoginData = {
 export type SessionData = {
   userId: number;
   email: string;
-  role: Role;
+  userType: UserType;
   privileges?: number[];
 };
+
+export enum UserType {
+  NONE = "None",
+  ADMINISTRATIVE = "Administrative",
+  STUDENT = "Student",
+}
+

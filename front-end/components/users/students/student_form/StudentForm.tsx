@@ -12,7 +12,10 @@ import FormInput from "../../../forms/FormInput";
 import SelectListInput from "../../../forms/SelectListInput";
 
 interface StudentFormProps {
-  student: Student | null;
+  formData: Student;
+  setFormData: (student: Student) => void;
+  formErrors: ErrorState;
+  setFormErrors: (errors: ErrorState) => void;
   formName: string;
   getPossiblePassedCourses: (student: Student) => CourseShort[];
   onSubmit: (student: Student) => Promise<void>;
@@ -22,15 +25,17 @@ interface StudentFormProps {
 
 const StudentForm = React.memo(
   ({
-    student,
+    formData,
+    setFormData,
+    formErrors,
+    setFormErrors,
     formName,
     getPossiblePassedCourses,
     onSubmit,
     onCancel,
     onDelete,
   }: StudentFormProps) => {
-    const [formData, setFormData] = useState(student);
-    const [errors, setErrors] = useState<ErrorState>({});
+
 
     const availablePassedCourses = useMemo(
       () => (formData && getPossiblePassedCourses(formData)) || [],
@@ -44,18 +49,13 @@ const StudentForm = React.memo(
       [availablePassedCourses, formData?.passedCourses]
     );
 
-    useEffect(() => {
-      setErrors({});
-      setFormData(student);
-    }, [student]);
-
     if (!formData) {
       return null;
     }
 
     const handleDelete = async () => {
-      if (student && onDelete) {
-        await onDelete(student.id);
+      if (formData && onDelete) {
+        await onDelete(formData.id);
       }
     };
 
@@ -101,7 +101,7 @@ const StudentForm = React.memo(
 
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
-      if (!validateStudent(formData, setErrors)) {
+      if (!validateStudent(formData, setFormErrors)) {
         return;
       }
       await onSubmit(formData);
@@ -116,7 +116,7 @@ const StudentForm = React.memo(
             inputType="text"
             value={formData.name}
             onChange={handleChange}
-            error={errors.name}
+            error={formErrors.name}
           />
           <FormInput
             name="email"
@@ -124,15 +124,7 @@ const StudentForm = React.memo(
             inputType="email"
             value={formData.email}
             onChange={handleChange}
-            error={errors.email}
-          />
-          <FormInput
-            name="password"
-            labelText="Password"
-            inputType="text"
-            value={formData.password}
-            onChange={handleChange}
-            error={errors.password}
+            error={formErrors.email}
           />
           <FormInput
             name="year"
@@ -140,7 +132,7 @@ const StudentForm = React.memo(
             inputType="number"
             value={formData.studyYear}
             onChange={handleChange}
-            error={errors.year}
+            error={formErrors.year}
           />
           <SelectListInput<string>
             value={formData.nationality}
@@ -149,7 +141,7 @@ const StudentForm = React.memo(
             defaultValue="Select nationality"
             values={nationalities}
             onChange={handleChange}
-            error={errors.nationality}
+            error={formErrors.nationality}
           />
           <FormObjectsInput
             objects={formData.passedCourses.map(mapCourseShortToString)}
@@ -162,7 +154,7 @@ const StudentForm = React.memo(
               mapCourseShortToString
             )}
             canAddNewObject={canAddPassedCourse}
-            error={errors.passedCourses}
+            error={formErrors.passedCourses}
           />
           <StudentFormButtons onCancel={onCancel} onDelete={handleDelete} />
         </FormLayout>

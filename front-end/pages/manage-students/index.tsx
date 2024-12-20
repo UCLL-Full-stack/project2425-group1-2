@@ -5,21 +5,23 @@ import StudentForm from "@/components/users/students/student_form/StudentForm";
 import UserEditableItem from "@/components/users/UserEditableItem";
 import StudentService from "@/services/StudentService";
 import { CourseShort, PrivilegeType, Student } from "@/types";
+import { ErrorState } from "@/types/errorState";
 import { getDefaultStudent } from "@/utils/defaultTypes";
 import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
 import { useCrudStudent } from "@/utils/hooks/useCrudStudent";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { usePrivilegeVerifier } from "@/utils/hooks/usePrivilegeVerifier";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Head from "next/head";
 import { useState } from "react";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const TITLE = "Manage Students";
 const MAIN_SECTION_TITLE = "Manage students";
 
 export default function ManageStudents() {
-  const [updatingStudent, setUpdatingStudent] = useState<Student | null>(null);
-  const [creatingStudent, setCreatingStudent] = useState<Student | null>(null);
+  const [updatingStudent, setUpdatingStudent] = useState<boolean>(false);
+  const [formData, setFormData] = useState<Student | null>(null);
+  const [formRrrors, setFormErrors] = useState<ErrorState>({});
   const { errors, setErrors, handleError } = useErrorHandler();
   const { students, updateStudent, createStudent, deleteStudent } =
     useCrudStudent(handleError);
@@ -28,14 +30,20 @@ export default function ManageStudents() {
 
   const handleCreate = () => {
     const student: Student = getDefaultStudent();
-    setCreatingStudent(student);
+    setFormData(student);
+    setFormErrors({});
+    setUpdatingStudent(false);
   };
 
   const handleUpdate = async (id: number) => {
-    const student: Student | undefined =
-      await StudentService.getStudentById(id, handleError);
+    const student: Student | undefined = await StudentService.getStudentById(
+      id,
+      handleError
+    );
     if (student) {
-      setUpdatingStudent(student);
+      setFormData(student);
+      setFormErrors({});
+      setUpdatingStudent(true);
     }
   };
 
@@ -45,7 +53,7 @@ export default function ManageStudents() {
       return;
     }
     await deleteStudent(id);
-    setUpdatingStudent(null);
+    setFormData(null);
   };
 
   const handleSubmit = async (student: Student) => {
@@ -58,7 +66,7 @@ export default function ManageStudents() {
       return;
     }
     await updateStudent(student);
-    setUpdatingStudent(null);
+    setFormData(null);
   };
 
   const create = async (student: Student) => {
@@ -67,12 +75,11 @@ export default function ManageStudents() {
       return;
     }
     await createStudent(student);
-    setCreatingStudent(null);
+    setFormData(null);
   };
 
   const handleCancel = () => {
-    setUpdatingStudent(null);
-    setCreatingStudent(null);
+    setFormData(null);
   };
 
   const getPossiblePassedCourses = (student: Student): CourseShort[] => {
@@ -84,9 +91,7 @@ export default function ManageStudents() {
   };
 
   const manageTabisActive =
-    updatingStudent == null &&
-    creatingStudent == null &&
-    Object.keys(errors).length === 0;
+    formData === null || Object.keys(errors).length === 0;
 
   return (
     <>
@@ -107,14 +112,19 @@ export default function ManageStudents() {
         )}
       />
       <FixedCreateButton onClick={handleCreate} isActive={manageTabisActive} />
-      <StudentForm
-        student={updatingStudent || creatingStudent}
-        formName={updatingStudent ? "Update Student" : "Create Student"}
-        getPossiblePassedCourses={getPossiblePassedCourses}
-        onSubmit={handleSubmit}
-        onCancel={handleCancel}
-        onDelete={updatingStudent ? handleDelete : undefined}
-      />
+      {formData && (
+        <StudentForm
+          formData={formData}
+          setFormData={setFormData}
+          formErrors={formRrrors}
+          setFormErrors={setFormErrors}
+          formName={updatingStudent ? "Update Student" : "Create Student"}
+          getPossiblePassedCourses={getPossiblePassedCourses}
+          onSubmit={handleSubmit}
+          onCancel={handleCancel}
+          onDelete={updatingStudent ? handleDelete : undefined}
+        />
+      )}
       {errors && Object.keys(errors).length > 0 && (
         <ErrorDialog errors={errors} setErrors={setErrors} />
       )}
@@ -122,12 +132,11 @@ export default function ManageStudents() {
   );
 }
 
-
 export const getServerSideProps = async (context: any) => {
   const { locale } = context;
   return {
-      props: {
-          ...(await serverSideTranslations(locale ?? "en", ["common"])),
-      },
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["common"])),
+    },
   };
-}
+};

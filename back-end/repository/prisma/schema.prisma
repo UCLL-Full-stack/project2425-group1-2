@@ -31,8 +31,8 @@ model User {
 }
 
 enum UserTypes {
-  STUDENT
-  ADMINISTRATIVE
+  Student
+  Administrative
 }
 
 model Privilege {

@@ -5,21 +5,23 @@ import AdminForm from "@/components/users/admins/AdminForm";
 import UserEditableItem from "@/components/users/UserEditableItem";
 import AdministrativeService from "@/services/AdministrativeService";
 import { Administrative, Privilege, PrivilegeType } from "@/types";
+import { ErrorState } from "@/types/errorState";
 import { getDefaultAdmin } from "@/utils/defaultTypes";
 import { useCrudAdmin } from "@/utils/hooks/useCrudAdmin";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { usePrivilegeGetter } from "@/utils/hooks/usePrivilegeGetter";
 import { usePrivilegeVerifier } from "@/utils/hooks/usePrivilegeVerifier";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Head from "next/head";
 import { useState } from "react";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const TITLE = "Manage Admins";
 const MAIN_SECTION_TITLE = "Manage admins";
 
 export default function ManageAdmins() {
-  const [updatingAdmin, setUpdatingAdmin] = useState<Administrative | null>(null);
-  const [creatingAdmin, setCreatingAdmin] = useState<Administrative | null>(null);
+  const [updatingAdmin, setUpdatingAdmin] = useState<boolean>(false);
+  const [formData, setFormData] = useState<Administrative | null>(null);
+  const [formRrrors, setFormErrors] = useState<ErrorState>({});
   const { errors, setErrors, handleError } = useErrorHandler();
   const { admins, updateAdmin, createAdmin, deleteAdmin } =
     useCrudAdmin(handleError);
@@ -27,18 +29,20 @@ export default function ManageAdmins() {
   const { verifyPrivilege } = usePrivilegeVerifier(handleError);
 
   const handleUpdate = async (id: number) => {
-    const admin: Administrative | undefined = await AdministrativeService.getAdministrativeById(
-      id,
-      handleError
-    );
+    const admin: Administrative | undefined =
+      await AdministrativeService.getAdministrativeById(id, handleError);
     if (admin) {
-      setUpdatingAdmin(admin);
+      setUpdatingAdmin(true);
+      setFormData(admin);
+      setFormErrors({});
     }
   };
 
   const handleCreate = () => {
     const admin: Administrative = getDefaultAdmin();
-    setCreatingAdmin(admin);
+    setFormData(admin);
+    setFormErrors({});
+    setUpdatingAdmin(false);
   };
 
   const handleSubmit = async (admin: Administrative) => {
@@ -51,7 +55,7 @@ export default function ManageAdmins() {
       return;
     }
     await updateAdmin(admin);
-    setUpdatingAdmin(null);
+    setFormData(null);
   };
 
   const create = async (admin: Administrative) => {
@@ -60,12 +64,11 @@ export default function ManageAdmins() {
       return;
     }
     await createAdmin(admin);
-    setCreatingAdmin(null);
+    setFormData(null);
   };
 
   const handleCancel = () => {
-    setCreatingAdmin(null);
-    setUpdatingAdmin(null);
+    setFormData(null);
   };
 
   const handleDelete = async (id: number) => {
@@ -74,7 +77,7 @@ export default function ManageAdmins() {
       return;
     }
     await deleteAdmin(id);
-    setUpdatingAdmin(null);
+    setFormData(null);
   };
 
   const getPossiblePrivileges = (admin: Administrative): Privilege[] => {
@@ -86,9 +89,7 @@ export default function ManageAdmins() {
   };
 
   const manageTabIsActive =
-    updatingAdmin == null &&
-    creatingAdmin == null &&
-    Object.keys(errors).length === 0;
+    formData === null && Object.keys(errors).length === 0;
 
   return (
     <>
@@ -108,14 +109,19 @@ export default function ManageAdmins() {
           />
         )}
       />
-      <AdminForm
-        admin={updatingAdmin || creatingAdmin}
-        formName={updatingAdmin ? "Update admin" : "Create admin"}
-        getPossiblePrivileges={getPossiblePrivileges}
-        onSubmit={handleSubmit}
-        onCancel={handleCancel}
-        onDelete={handleDelete}
-      />
+      {formData && (
+        <AdminForm
+          formData={formData}
+          setFormData={setFormData}
+          formErrors={formRrrors}
+          setFormErrors={setFormErrors}
+          formName={updatingAdmin ? "Update admin" : "Create admin"}
+          getPossiblePrivileges={getPossiblePrivileges}
+          onSubmit={handleSubmit}
+          onCancel={handleCancel}
+          onDelete={handleDelete}
+        />
+      )}
       <FixedCreateButton onClick={handleCreate} isActive={manageTabIsActive} />
       {errors && Object.keys(errors).length > 0 && (
         <ErrorDialog errors={errors} setErrors={setErrors} />
@@ -127,8 +133,8 @@ export default function ManageAdmins() {
 export const getServerSideProps = async (context: any) => {
   const { locale } = context;
   return {
-      props: {
-          ...(await serverSideTranslations(locale ?? "en", ["common"])),
-      },
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["common"])),
+    },
   };
-}
+};

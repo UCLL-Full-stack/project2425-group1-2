@@ -38,5 +38,11 @@
     "loginButton": "Login",
     "language": "Language"
   },
-  "language": "en"
+  "language": "en",
+  "login_required": {
+    "title": "Your Profile",
+    "main_section_title": "Login Required",
+    "login_message": "You must be logged in to access this page.",
+    "login_button": "Login"
+  }
 }

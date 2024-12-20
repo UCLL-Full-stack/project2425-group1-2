@@ -11,6 +11,9 @@ export const useCoursesForStudentGetter = (
   const [courses, setCourses] = useState<CourseShort[]>([]);
 
   const getCourses = async () => {
+    if (studentId === -1) {
+      return;
+    }
     const courses: CourseShort[] = await CourseService.getCoursesForStudent(
       studentId,
       errorCallback

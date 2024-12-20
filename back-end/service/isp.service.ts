@@ -57,6 +57,11 @@ const updateISP = async (id: number, ispInfo: UpdateISPView): Promise<ISP> => {
 
     let student = await studentService.getStudentById(ispInfo.studentId);
 
+    if (existingISP.startYear !== ispInfo.startYear ||
+        existingISP.student.id !== ispInfo.studentId) {
+        await throwErrorIfExistsByStudentIdAndStartYear(ispInfo.studentId, ispInfo.startYear);
+    }
+
     ISP.validateISP({
         student: student,
         status: ispInfo.status || existingISP.status,

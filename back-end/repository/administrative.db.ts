@@ -7,7 +7,7 @@ import { Privilege } from '../model/privilege';
 const findAll = tryCatchWrapper(async (): Promise<Administrative[]> => {
     const result = await prismaClient.user.findMany({
         where: {
-            userType: 'ADMINISTRATIVE',
+            userType: 'Administrative',
         },
     });
     const privileges = await prismaClient.privilege.findMany({
@@ -27,7 +27,7 @@ const findAll = tryCatchWrapper(async (): Promise<Administrative[]> => {
 const findAllShort = tryCatchWrapper(async (): Promise<UserShort[]> => {
     const result = await prismaClient.user.findMany({
         where: {
-            userType: 'ADMINISTRATIVE',
+            userType: 'Administrative',
         },
         select: {
             id: true,
@@ -76,7 +76,7 @@ const create = tryCatchWrapper(async (adminInfo: Administrative): Promise<Admini
             name: adminInfo.name,
             email: adminInfo.email,
             password: adminInfo.password,
-            userType: 'ADMINISTRATIVE',
+            userType: 'Administrative',
         },
     });
 

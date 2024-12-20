@@ -53,7 +53,6 @@ const CourseForm = React.memo(
 
     const handlePhaseChange = (value: number) => {
       let newFormData = { ...formData, phase: value };
-      console.log(newFormData);
       if (value < formData.phase) {
         newFormData.requiredPassedCourses = [];
       }

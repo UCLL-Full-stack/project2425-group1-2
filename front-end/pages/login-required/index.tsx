@@ -3,22 +3,22 @@ import CenteredFitContentLayout from "@/components/layouts/CenteredFitContentLay
 import { LOGIN_URL } from "@/utils/urls";
 import Head from "next/head";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-
-const TITLE = "your profile";
-const MAIN_SECTION_TITLE = "Login Required";
+import { useTranslation } from "next-i18next";
 
 export default function LoginRequired() {
+  const { t } = useTranslation("common");
+
   return (
     <>
       <Head>
-        <title>{TITLE}</title>
+        <title>{t("login_required.title")}</title>
       </Head>
       <CenteredFitContentLayout>
         <section className="flex flex-col gap-4 items-center">
-          <h2> {MAIN_SECTION_TITLE}</h2>
-          <p>You must be logged in to access this page.</p>
+          <h2>{t("login_required.main_section_title")}</h2>
+          <p>{t("login_required.login_message")}</p>
           <div className="w-fit">
-            <LinkButton text="Login" href={LOGIN_URL} />
+            <LinkButton text={t("login_required.login_button")} href={LOGIN_URL} />
           </div>
         </section>
       </CenteredFitContentLayout>
@@ -29,8 +29,8 @@ export default function LoginRequired() {
 export const getServerSideProps = async (context: any) => {
   const { locale } = context;
   return {
-      props: {
-          ...(await serverSideTranslations(locale ?? "en", ["common"])),
-      },
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["common"])),
+    },
   };
-}
+};

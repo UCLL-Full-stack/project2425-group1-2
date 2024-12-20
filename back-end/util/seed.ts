@@ -11,10 +11,15 @@ import { Student } from '../model/student';
 import { Course } from '../model/course';
 import { Privilege } from '../model/privilege';
 import { Administrative } from '../model/administrative';
+import { UserTypes } from '@prisma/client';
 
 async function main() {
+    await prisma.courseAddedISP.deleteMany();
     await prisma.isp.deleteMany();
+    await prisma.studentPassedCourse.deleteMany();
+    await prisma.administrativePrivilege.deleteMany();
     await prisma.user.deleteMany();
+    await prisma.courseRequiredPassedCourses.deleteMany();
     await prisma.course.deleteMany();
     await prisma.privilege.deleteMany();
 
@@ -70,27 +75,25 @@ async function createAdministrative(admin: Administrative) {
             name: admin.name,
             email: admin.email,
             password: hashedPassword,
-            userType: 'ADMINISTRATIVE',
+            userType: UserTypes.Administrative,
         },
     });
 }
 
 async function createStudent(student: Student) {
     let hashedPassword = await bcrypt.hash(student.password, 12);
-    return prisma.user.upsert({
-        where: { email: student.email },
-        update: {},
-        create: {
+    return prisma.user.create({
+        data: {
             name: student.name,
             email: student.email,
             password: hashedPassword,
-            userType: 'STUDENT',
+            userType: UserTypes.Student,
             nationality: student.nationality,
             studyYear: student.studyYear,
             isps: {
                 create: [],
             },
-            courses: {
+            passedCourses: {
                 create: [],
             },
             privileges: {

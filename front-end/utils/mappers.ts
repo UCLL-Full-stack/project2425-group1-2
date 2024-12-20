@@ -70,5 +70,5 @@ export function mapPrivilegeToString(privilege: Privilege): string {
 }
 
 export function mapUserToString( user: User): string {
-  return `${user.name} (${user.role})`;
+  return `${user.name} (${user.userType})`;
 }

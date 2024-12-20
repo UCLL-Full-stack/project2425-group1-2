@@ -8,10 +8,10 @@ interface UserFullViewProps {
 const UserFullView = React.memo(({ user }: UserFullViewProps) => {
   return (
     <article className="flex flex-col gap-2">
-      <p>{`${user.role} Id: ${user.id}`}</p>
+      <p>{`${user.userType} Id: ${user.id}`}</p>
       <p>{`Name: ${user.name}`}</p>
       <p>{`Email: ${user.email}`}</p>
-      <p>{`Password: ${user.password}`}</p>
+      {/* <p>{`Password: ${user.password}`}</p> */}
     </article>
   );
 });

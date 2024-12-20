@@ -1,34 +1,34 @@
-import { Role } from "@/types";
+import { UserType } from "@/types/auth";
+
+const userTypeOptions: { [key in UserType]: { class: string } } = {
+  Student: {
+    class: "bg-indigo-950 hover:shadow-success",
+  },
+  Administrative: {
+    class: "bg-success hover:shadow-safe",
+  },
+  None: {
+    class: "",
+  },
+};
 import Link from "next/link";
 import React from "react";
 
 interface HeaderProfileButtonProps {
   email: string;
-  role: Role;
+  userType: UserType;
   href: string;
 }
 
 const sharedClassOptions =
   "p-2 rounded-full w-12 h-12 text-center shadow-regular";
 
-const roleOptions = {
-  student: {
-    class: "bg-indigo-950 hover:shadow-success",
-  },
-  admin: {
-    class: "bg-success hover:shadow-safe",
-  },
-  none: {
-    class: "",
-  },
-};
-
 const HeaderProfileButton = ({
   email,
-  role,
+  userType,
   href,
 }: HeaderProfileButtonProps) => {
-  const buttonClass = `${sharedClassOptions} ${roleOptions[role].class}`;
+  const buttonClass = `${sharedClassOptions} ${userTypeOptions[userType].class}`;
   const buttonHref = `${href}/${email}`;
 
   return (

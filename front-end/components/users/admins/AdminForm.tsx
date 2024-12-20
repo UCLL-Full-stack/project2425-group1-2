@@ -10,7 +10,10 @@ import { validateAdmin } from "@/utils/validators";
 import React, { useEffect, useMemo, useState } from "react";
 
 interface AdminFormProps {
-  admin: Administrative | null;
+  formData: Administrative;
+  setFormData: (admin: Administrative) => void;
+  formErrors: ErrorState;
+  setFormErrors: (errors: ErrorState) => void;
   formName: string;
   getPossiblePrivileges: (admin: Administrative) => Privilege[];
   onSubmit: (admin: Administrative) => Promise<void>;
@@ -20,16 +23,16 @@ interface AdminFormProps {
 
 const AdminForm = React.memo(
   ({
-    admin,
+    formData,
+    setFormData,
+    formErrors,
+    setFormErrors,
     formName,
     getPossiblePrivileges,
     onSubmit,
     onCancel,
     onDelete,
   }: AdminFormProps) => {
-    const [formData, setFormData] = useState(admin);
-    const [errors, setErrors] = useState<ErrorState>({});
-
     const availablePrivileges = useMemo(
       () => (formData && getPossiblePrivileges(formData) || []),
       [formData?.privileges]
@@ -40,20 +43,15 @@ const AdminForm = React.memo(
         availablePrivileges.length > 0 &&
         !availablePrivileges.some((p) => p.id === -1),
       [availablePrivileges, formData?.privileges]
-    );
-
-    useEffect(() => {
-      setErrors({});
-      setFormData(admin);
-    }, [admin]);
+    );;
 
     if (!formData) {
       return null;
     }
 
     const handleDelete = async () => {
-      if (admin && onDelete) {
-        await onDelete(admin.id);
+      if (formData && onDelete) {
+        await onDelete(formData.id);
       }
     };
 
@@ -96,7 +94,7 @@ const AdminForm = React.memo(
 
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
-      if (!validateAdmin(formData, setErrors)) {
+      if (!validateAdmin(formData, setFormErrors)) {
         return;
       }
       await onSubmit(formData);
@@ -111,7 +109,7 @@ const AdminForm = React.memo(
             inputType="text"
             value={formData.name}
             onChange={handleChange}
-            error={errors.name}
+            error={formErrors.name}
           />
           <FormInput
             name="email"
@@ -119,15 +117,7 @@ const AdminForm = React.memo(
             inputType="email"
             value={formData.email}
             onChange={handleChange}
-            error={errors.email}
-          />
-          <FormInput
-            name="password"
-            labelText="Password"
-            inputType="text"
-            value={formData.password}
-            onChange={handleChange}
-            error={errors.password}
+            error={formErrors.email}
           />
           <FormObjectsInput
             objects={formData.privileges.map(mapPrivilegeToString)}
@@ -138,7 +128,7 @@ const AdminForm = React.memo(
             onChange={handlePrivilegeChange}
             canAddNewObject={canAddPrivilege}
             availableObjects={availablePrivileges.map(mapPrivilegeToString)}
-            error={errors.privileges}
+            error={formErrors.privileges}
           />
           <FormButtons onCancel={onCancel} onDelete={handleDelete} />
         </FormLayout>

@@ -1,17 +1,16 @@
 import { useAuth } from "@/components/AuthProvider";
-import ErrorDialog from "@/components/ErrorDialog";
 import FormInput from "@/components/forms/FormInput";
 import FormSelectObjectInput from "@/components/forms/FormSelectObjectInput";
 import AdministrativeService from "@/services/AdministrativeService";
 import StudentService from "@/services/StudentService";
-import { Role, User } from "@/types";
-import { LoginData } from "@/types/auth";
+import { User } from "@/types";
+import { LoginData, UserType } from "@/types/auth";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { mapUserToString } from "@/utils/mappers";
 import { validateLoginData } from "@/utils/validators";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const TITLE = "Login";
 
@@ -28,23 +27,23 @@ export default function Login() {
   const textInputClass = `p-1 pl-4 rounded shadow-regular text-gray-800 `;
 
   const getAvailableUsers = async () => {
-    const adminsData= await AdministrativeService.getAllAdministratives(handleError);
-    const studentsData = await StudentService.getAllStudents(
+    const adminsData = await AdministrativeService.getAllAdministratives(
       handleError
     );
+    const studentsData = await StudentService.getAllStudents(handleError);
     const admins: User[] = adminsData.map((admin) => ({
       id: admin.id,
       name: admin.name,
       email: admin.email,
-      password: admin.password,
-      role: Role.ADMIN,
+      password: "password123",
+      userType: UserType.ADMINISTRATIVE,
     }));
     const students: User[] = studentsData.map((student) => ({
       id: student.id,
       name: student.name,
       email: student.email,
-      password: student.password,
-      role: Role.STUDENT,
+      password: "password123",
+      userType: UserType.STUDENT,
     }));
     return [...admins, ...students];
   };
@@ -126,12 +125,11 @@ export default function Login() {
   );
 }
 
-
 export const getServerSideProps = async (context: any) => {
   const { locale } = context;
   return {
-      props: {
-          ...(await serverSideTranslations(locale ?? "en", ["common"])),
-      },
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["common"])),
+    },
   };
-}
+};

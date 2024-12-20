@@ -1,4 +1,4 @@
-import { LoginData, SessionData } from "@/types/auth";
+import { LoginData, SessionData, UserType } from "@/types/auth";
 import { useRouter } from "next/router";
 import React, {
   createContext,
@@ -8,8 +8,6 @@ import React, {
   useState,
 } from "react";
 import Loading from "./Loading";
-import { t } from "i18next";
-import { Role } from "@/types";
 import UserService from "@/services/UserService";
 import { ErrorState } from "@/types/errorState";
 
@@ -22,7 +20,7 @@ export interface AuthContextType {
 
 const AUTH_CONTEXT = createContext<AuthContextType>(
   {
-    data: { email: "", userId: -1, role: Role.NONE },
+    data: { email: "", userId: -1, userType: UserType.NONE },
     token: "",
     login: async () => {},
     logout: () => {},
@@ -34,7 +32,7 @@ interface AuthProviderProps {
 }
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [data, setData] = useState<SessionData>({ email: "", userId: -1, role: Role.NONE });
+  const [data, setData] = useState<SessionData>({ email: "", userId: -1, userType: UserType.NONE });
   const [token, setToken] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -67,7 +65,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const logout = () => {
-    setData({ email: "", userId: -1, role: Role.NONE });
+    setData({ email: "", userId: -1, userType: UserType.NONE });
     setToken("");
     localStorage.removeItem("token");
     localStorage.removeItem("data");

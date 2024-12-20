@@ -47,7 +47,7 @@ const Header = React.memo(({ translations }: HeaderProps) => {
         {(userData.email && (
           <HeaderProfileButton
             email={userData.email}
-            role={userData.role}
+            userType={userData.userType}
             href={MY_PROFILE_URL}
           />
         )) || (

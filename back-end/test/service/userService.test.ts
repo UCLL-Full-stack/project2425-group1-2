@@ -64,7 +64,7 @@ describe('User Service Tests', () => {
             data: {
                 userId: 1,
                 email: 'test@example.com',
-                role: 'admin',
+                userType: 'admin',
                 privileges: [1],
             },
         });
