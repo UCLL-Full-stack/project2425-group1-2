@@ -1,31 +1,22 @@
 import { Privilege } from "../../model/privilege";
+import { PrivilegeType } from "../../types/privilegeDTO";
 
 test('given: valid privilege data, when: privilege is created, then: fields are set correctly', () => {
     const privilege = new Privilege({
         id: 1,
-        name: 'Admin Access',
-        description: 'Grants access to admin features'
+        name: PrivilegeType.CREATE_ISP,
+        description: 'Grants access to create ISP'
     });
 
     expect(privilege.id).toEqual(1);
-    expect(privilege.name).toEqual('Admin Access');
-    expect(privilege.description).toEqual('Grants access to admin features');
-});
-
-test('given: missing name, when: privilege is created, then: an error is thrown', () => {
-    const createPrivilege = () => new Privilege({
-        id: 2,
-        name: '',
-        description: 'Grants access to admin features'
-    });
-
-    expect(createPrivilege).toThrow('Name is required.');
+    expect(privilege.name).toEqual(PrivilegeType.CREATE_ISP);
+    expect(privilege.description).toEqual('Grants access to create ISP');
 });
 
 test('given: missing description, when: privilege is created, then: an error is thrown', () => {
     const createPrivilege = () => new Privilege({
         id: 3,
-        name: 'User Access',
+        name: PrivilegeType.UPDATE_STUDENT,
         description: ''
     });
 
@@ -34,11 +25,11 @@ test('given: missing description, when: privilege is created, then: an error is 
 
 test('given: valid privilege with undefined id, when: privilege is created, then: fields are set correctly without id', () => {
     const privilege = new Privilege({
-        name: 'Editor Access',
-        description: 'Grants access to edit content'
+        name: PrivilegeType.CREATE_COURSE,
+        description: 'Grants access to create course'
     });
 
     expect(privilege.id).toBeUndefined();
-    expect(privilege.name).toEqual('Editor Access');
-    expect(privilege.description).toEqual('Grants access to edit content');
+    expect(privilege.name).toEqual(PrivilegeType.CREATE_COURSE);
+    expect(privilege.description).toEqual('Grants access to create course');
 });

@@ -20,6 +20,7 @@ const mockStudent = new Student({
     email: "jane.doe@example.com",
     password: "password123",
     nationality: "Belgian",
+    studyYear: 2,
     passedCourses: []
 });
 

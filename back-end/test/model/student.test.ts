@@ -19,6 +19,7 @@ test('given: valid student data, when: student is created, then: user fields are
         email: 'alice@example.com',
         password: 'password123',
         nationality: 'American',
+        studyYear: 1,
         passedCourses: [mockCourse]
     });
 
@@ -35,6 +36,7 @@ test('given: missing name, when: student is created, then: an error is thrown', 
         email: 'bob@example.com',
         password: 'password123',
         nationality: 'Canadian',
+        studyYear: 1,
         passedCourses: []
     });
 
@@ -48,6 +50,7 @@ test('given: missing email, when: student is created, then: an error is thrown',
         email: '',
         password: 'password123',
         nationality: 'Canadian',
+        studyYear: 1,
         passedCourses: []
     });
 
@@ -61,6 +64,7 @@ test('given: missing password, when: student is created, then: an error is throw
         email: 'bob@example.com',
         password: '',
         nationality: 'Canadian',
+        studyYear: 1,
         passedCourses: []
     });
 
@@ -74,6 +78,7 @@ test('given: valid data, when: two students are created, then: equals method ret
         email: 'diana@example.com',
         password: 'password123',
         nationality: 'Canadian',
+        studyYear: 1,
         passedCourses: [mockCourse]
     });
 
@@ -83,6 +88,7 @@ test('given: valid data, when: two students are created, then: equals method ret
         email: 'diana@example.com',
         password: 'password123',
         nationality: 'Canadian',
+        studyYear: 1,
         passedCourses: [mockCourse]
     });
 
@@ -96,6 +102,7 @@ test('given: different data, when: two students are compared, then: equals metho
         email: 'eve@example.com',
         password: 'password123',
         nationality: 'American',
+        studyYear: 1,
         passedCourses: []
     });
 
@@ -105,6 +112,7 @@ test('given: different data, when: two students are compared, then: equals metho
         email: 'evelyn@example.com',
         password: 'differentpassword',
         nationality: 'Canadian',
+        studyYear: 2,
         passedCourses: []
     });
 

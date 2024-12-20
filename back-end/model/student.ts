@@ -36,6 +36,17 @@ export class Student extends User {
         studyYear: number | null;
         passedCourses: Course[];
     }): void {
+        if (!student.name || student.name.trim() === '') {
+            throw new Error('Name is required.');
+        }
+
+        if (!student.email || student.email.trim() === '') {
+            throw new Error('Email is required.');
+        }
+
+        if (!student.password || student.password.trim() === '') {
+            throw new Error('Password is required.');
+        }
     }
 
     equals(student: Student): boolean {
