@@ -1,0 +1,9 @@
+{
+    "noAccess": {
+      "title": "Your Profile",
+      "mainSectionTitle": "No access",
+      "message": "You do not have access to this page",
+      "buttonText": "Home"
+    }
+  }
+  

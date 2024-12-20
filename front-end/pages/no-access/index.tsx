@@ -2,6 +2,8 @@ import LinkButton from "@/components/buttons/LinkButton";
 import CenteredFitContentLayout from "@/components/layouts/CenteredFitContentLayout";
 import { HOME_URL } from "@/utils/urls";
 import Head from "next/head";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const TITLE = "your profile";
 const MAIN_SECTION_TITLE = "No access";
@@ -23,4 +25,13 @@ export default function NoAccess() {
       </CenteredFitContentLayout>
     </>
   );
+}
+
+export const getServerSideProps = async (context: any) => {
+  const { locale } = context;
+  return {
+      props: {
+          ...(await serverSideTranslations(locale ?? "en", ["common"])),
+      },
+  };
 }
