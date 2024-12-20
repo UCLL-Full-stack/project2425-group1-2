@@ -12,6 +12,7 @@ import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { usePrivilegeVerifier } from "@/utils/hooks/usePrivilegeVerifier";
 import Head from "next/head";
 import { useState } from "react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const TITLE = "Manage Students";
 const MAIN_SECTION_TITLE = "Manage students";
@@ -119,4 +120,14 @@ export default function ManageStudents() {
       )}
     </>
   );
+}
+
+
+export const getServerSideProps = async (context: any) => {
+  const { locale } = context;
+  return {
+      props: {
+          ...(await serverSideTranslations(locale ?? "en", ["common"])),
+      },
+  };
 }

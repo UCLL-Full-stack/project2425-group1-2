@@ -30,7 +30,7 @@ const getAllStudents = async (
 const getAllShortStudents = async (
   errorCallback?: (error: ErrorState) => void
 ): Promise<UserShort[]> => {
-  const response = await fetch(`${URL}/shortform`, {
+  const response = await fetch(`${URL}/short`, {
     headers: getHeaders(),
   });
   return handleResponse(response, errorCallback);

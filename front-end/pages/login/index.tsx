@@ -11,6 +11,7 @@ import { mapUserToString } from "@/utils/mappers";
 import { validateLoginData } from "@/utils/validators";
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const TITLE = "Login";
 
@@ -123,4 +124,14 @@ export default function Login() {
       </section>
     </>
   );
+}
+
+
+export const getServerSideProps = async (context: any) => {
+  const { locale } = context;
+  return {
+      props: {
+          ...(await serverSideTranslations(locale ?? "en", ["common"])),
+      },
+  };
 }

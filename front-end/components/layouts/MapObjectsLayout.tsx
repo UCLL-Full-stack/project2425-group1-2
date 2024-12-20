@@ -15,17 +15,19 @@ const MapObjectsLayout = React.memo(
       : `flex-col ${gap ? `gap-${gap}` : "gap-6"}`;
 
     return (
-      <OverviewLayout>
-        <section className={`flex ${flexClass}`}>
-          {objects.map((obj, index) => {
-            return (
-              <div key={index} className="flex">
-                {children(obj, index)}
-              </div>
-            );
-          })}
-        </section>
-      </OverviewLayout>
+      objects && objects.length > 0 ? (
+        <OverviewLayout>
+          <section className={`flex ${flexClass}`}>
+            {objects.map((obj, index) => {
+              return (
+                <div key={index} className="flex">
+                  {children(obj, index)}
+                </div>
+              );
+            })}
+          </section>
+        </OverviewLayout>
+      ) : null
     );
   }
 );

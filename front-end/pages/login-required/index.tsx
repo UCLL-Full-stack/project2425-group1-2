@@ -2,6 +2,7 @@ import LinkButton from "@/components/buttons/LinkButton";
 import CenteredFitContentLayout from "@/components/layouts/CenteredFitContentLayout";
 import { LOGIN_URL } from "@/utils/urls";
 import Head from "next/head";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const TITLE = "your profile";
 const MAIN_SECTION_TITLE = "Login Required";
@@ -23,4 +24,13 @@ export default function LoginRequired() {
       </CenteredFitContentLayout>
     </>
   );
+}
+
+export const getServerSideProps = async (context: any) => {
+  const { locale } = context;
+  return {
+      props: {
+          ...(await serverSideTranslations(locale ?? "en", ["common"])),
+      },
+  };
 }

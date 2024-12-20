@@ -27,6 +27,7 @@ const findAllShort = tryCatchWrapper(async (): Promise<UserShort[]> => {
 });
 
 const findById = tryCatchWrapper(async (id: number): Promise<StudentIncludeCourses> => {
+    console.log('findById', id);
     const student = await prismaClient.user.findUnique({
         where: { id },
         include: {

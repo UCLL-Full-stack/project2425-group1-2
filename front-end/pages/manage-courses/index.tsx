@@ -13,6 +13,7 @@ import { usePrivilegeVerifier } from "@/utils/hooks/usePrivilegeVerifier";
 import { mapCourseShortToEntityItem } from "@/utils/mappers";
 import Head from "next/head";
 import { useState } from "react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const TITLE = "Manage Courses";
 const MAIN_SECTION_TITLE = "Manage courses";
@@ -126,4 +127,13 @@ export default function ManageCourses() {
       )}
     </>
   );
+}
+
+export const getServerSideProps = async (context: any) => {
+  const { locale } = context;
+  return {
+      props: {
+          ...(await serverSideTranslations(locale ?? "en", ["common"])),
+      },
+  };
 }
