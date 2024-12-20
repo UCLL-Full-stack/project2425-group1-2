@@ -49,6 +49,14 @@ const getCourseById = async (id: number, errorCallback?: (error: ErrorState) => 
   return handleJsonResponse(response, errorCallback);
 };
 
+const getCoursesByISPId = async (ispId: number, errorCallback?: (error: ErrorState) => void) => {
+  const response = await fetch(`${URL}/by-isp/${ispId}`, {
+    method: "GET",
+    headers: getHeaders(),
+  });
+  return handleJsonResponse(response, errorCallback);
+}
+
 const getCoursesForStudent = async (studentId: number, errorCallback?: (error: ErrorState) => void) => {
   const response = await fetch(`${URL}/for-student/${studentId}`, {
     method: "GET",
@@ -88,6 +96,7 @@ const CourseService = {
   getAllCourses,
   getAllShortCourses,
   getCourseById,
+  getCoursesByISPId,
   getCoursesForStudent,
   createCourse,
   updateCourse,

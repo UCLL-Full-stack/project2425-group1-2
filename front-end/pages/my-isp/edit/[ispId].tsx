@@ -7,7 +7,7 @@ import ObjectsWithHeadingLayout from "@/components/layouts/ObjectsWithHeadingLay
 import Loading from "@/components/Loading";
 import IspService from "@/services/IspService";
 import { CourseShort, ISPStatus } from "@/types";
-import { useCoursesForStudentGetter } from "@/utils/hooks/useCoursesForStudentGetter";
+import { useCoursesForStudentIspGetter } from "@/utils/hooks/useCoursesForStudentIspGetter";
 import { useDetailedCoursesToggle } from "@/utils/hooks/useDetailedCoursesToggle";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { useIspByIdGetter } from "@/utils/hooks/useIspByIdGetter";
@@ -28,7 +28,10 @@ export default function ComposeISP() {
   const { detailedCourses, toggleCourseDetails } =
     useDetailedCoursesToggle(handleError);
   const { isp, setIsp } = useIspByIdGetter(id);
-  const { courses } = useCoursesForStudentGetter(isp ? isp.student.id : -1);
+  const { courses } = useCoursesForStudentIspGetter(
+    isp ? isp.student.id : -1,
+    isp ? isp.id : -1
+  );
   const [changes, setChanges] = useState<
     { course: CourseShort; selected: boolean }[]
   >([]);

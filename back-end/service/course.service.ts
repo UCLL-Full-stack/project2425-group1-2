@@ -21,6 +21,12 @@ const getCourseById = async (id: number): Promise<Course> => {
     return await CourseRepository.findById(id);
 }
 
+const getCoursesByIspId = async (ispId: number) : Promise<CourseShortView[]> => {
+    await ISPService.throwErrorIfNotExist(ispId);
+    let courses: Course[] = await CourseRepository.findAllByIspId(ispId);
+    return courses;
+}
+
 const getCoursesForStudent = async (studentId: number) : Promise<CourseShortView[]> => {
     let student: StudentIncludeCourses = await StudentRepository.findById(studentId);
     let desiredPhases = [student.studyYear * 2 - 1, student.studyYear * 2];
@@ -138,6 +144,7 @@ export default {
     getAll,
     getAllShort,
     getCourseById,
+    getCoursesByIspId,
     getCoursesForStudent,
     createCourse,
     updateCourse,

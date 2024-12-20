@@ -118,6 +118,7 @@ export default {
     updateISPByStudent,
     deleteISPById,
     deleteISPByStudentId,
+    throwErrorIfNotExist,
 };
 
 export const errorMessages = {

@@ -138,6 +138,37 @@ courseRouter.get('/:id', async (req: Request, res: Response, next: NextFunction)
 
 /**
  * @swagger
+ * /courses/by-isp/{id}:
+ *   get:
+ *     summary: Get courses by ISP ID.
+ *     tags: [Course]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The id of the ISP to retrieve courses for.
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved courses.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Course'
+ */
+courseRouter.get('/by-isp/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        res.status(200).json(await courseService.getCoursesByIspId(parseInt(req.params.id)));
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
  * /courses/for-student/{id}:
  *   get:
  *     summary: Get courses appropriate for a student by student ID.
