@@ -131,6 +131,8 @@ studentRouter.get('/:id', async (req: Request, res: Response, next: NextFunction
  * @swagger
  * /students:
  *   post:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Create a new student
  *     tags: [Student]
  *     requestBody:

@@ -31,7 +31,7 @@ const authenticate = async ({
         role: user.userType,
         privileges: user.privileges.map((pr) => pr.id),
     };
-    const token = generateJwtToken(email);
+    const token = generateJwtToken(email, user.userType);
 
     return {
         token,

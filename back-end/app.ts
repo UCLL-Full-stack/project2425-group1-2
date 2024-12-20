@@ -5,17 +5,30 @@ import express, { Request, Response, NextFunction } from 'express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { courseRouter } from './controller/course.routes';
+import { expressjwt } from 'express-jwt';
 import { studentRouter } from './controller/student.routes';
 import { ispRouter } from './controller/isp.routes';
 import { privilegeRouter } from './controller/privilege.routes';
 import { userRouter } from './controller/user.routes';
 import { administrativeRouter } from './controller/administrative.routes';
+import helmet from 'helmet';
 
 
 const app = express();
+app.use(helmet());
+
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            // Allow connections to own server and the external API
+            connectSrc: ["'self'", 'https://api.ucll.be'],
+        },
+    })
+);
+
 dotenv.config();
 
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:8080' }));
 app.use(bodyParser.json());
 
 //Mappings
@@ -25,6 +38,15 @@ app.use("/isps", ispRouter);
 app.use("/privileges", privilegeRouter);
 app.use("/users", userRouter);
 app.use("/admins", administrativeRouter);
+
+app.use(
+    expressjwt({
+        secret: process.env.JWT_SECRET || 'default_secret',
+        algorithms: ['HS256'],
+    }).unless({
+        path: ['/api-docs', /^\/api-docs\/.*/, '/users/login', '/status'],
+    })
+);
 
 //Swagger
 const swaggerOpts = {
@@ -46,7 +68,11 @@ app.get('/status', (req, res) => {
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     console.error(err.stack);
-    res.status(400).json({ status: "application error", message: err.message });
+    if (err.name === 'UnauthorizedError') {
+        res.status(401).json({ status: 'unauthorized', message: err.message });
+    } else {
+        res.status(400).json({ status: 'application error', message: err.message });
+    }
 });
 
 module.exports = app;
