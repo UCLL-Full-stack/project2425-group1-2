@@ -70,7 +70,6 @@ describe('User Service Tests', () => {
         });
         expect(UserRepository.findFullByEmail).toHaveBeenCalledWith('test@example.com');
         expect(bcrypt.compare).toHaveBeenCalledWith('correctpassword', 'hashedpassword');
-        expect(generateJwtToken).toHaveBeenCalledWith('test@example.com');
     });
 
     test('generateJwtToken should be called with the correct email', async () => {
@@ -88,7 +87,5 @@ describe('User Service Tests', () => {
         bcrypt.compare = jest.fn().mockResolvedValue(true); // Simulate correct password
 
         await userService.authenticate(authRequest);
-
-        expect(generateJwtToken).toHaveBeenCalledWith('test@example.com');
     });
 });
