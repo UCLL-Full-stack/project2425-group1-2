@@ -9,11 +9,14 @@ import { getDefaultCourse } from "@/utils/defaultTypes";
 import { useStudentsShortGetter } from "@/utils/hooks/useStudentsShortGetter";
 import { mapCourseShortToString } from "@/utils/mappers";
 import { validateISP } from "@/utils/validators";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import FormInput from "../../forms/FormInput";
 
 interface ISPFormProps {
-  isp: ISP | null;
+  formData: ISP;
+  setFormData: (isp: ISP) => void;
+  formErrors: ErrorState;
+  setFormErrors: (errors: ErrorState) => void;
   formName: string;
   getPossibleCourses: (isp: ISP) => CourseShort[];
   onSubmit: (isp: ISP) => Promise<void>;
@@ -23,15 +26,16 @@ interface ISPFormProps {
 
 const ISPForm = React.memo(
   ({
-    isp,
+    formData,
+    setFormData,
+    formErrors,
+    setFormErrors,
     formName,
     getPossibleCourses,
     onSubmit,
     onCancel,
     onDelete,
   }: ISPFormProps) => {
-    const [formData, setFormData] = useState(isp);
-    const [errors, setErrors] = useState<ErrorState>({});
     const { students } = useStudentsShortGetter();
 
     const availableCourses = useMemo(
@@ -53,23 +57,14 @@ const ISPForm = React.memo(
       [availableCourses, formData?.courses]
     );
 
-    useEffect(() => {
-      setErrors({});
-      setFormData(isp);
-    }, [isp]);
-
-    if (!formData) {
-      return null;
-    }
-
     const availableYears = Array.from(
       { length: 27 },
       (_, i) => new Date().getFullYear() - 20 + i
     );
 
     const handleDelete = async () => {
-      if (isp && onDelete) {
-        await onDelete(isp.id);
+      if (formData && onDelete) {
+        await onDelete(formData.id);
       }
     };
 
@@ -136,7 +131,7 @@ const ISPForm = React.memo(
 
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
-      if (!validateISP(formData, setErrors)) {
+      if (!validateISP(formData, setFormErrors)) {
         return;
       }
       await onSubmit(formData);
@@ -151,7 +146,7 @@ const ISPForm = React.memo(
             inputType="number"
             value={formData.totalCredits}
             onChange={handleChange}
-            error={errors.name}
+            error={formErrors.name}
           />
           <FormInput
             name="submitted"
@@ -167,7 +162,7 @@ const ISPForm = React.memo(
             values={availableYears}
             onChange={handleChange}
             parseValue={(year) => `${year}-${year + 1}`}
-            error={errors.status}
+            error={formErrors.status}
           />
           <SelectEntityItemInput
             name="student"
@@ -175,7 +170,7 @@ const ISPForm = React.memo(
             value={formData.student}
             values={students}
             onChange={handleStudentChange}
-            error={errors.student}
+            error={formErrors.student}
           />
           <FormObjectsInput
             name="courses"
@@ -186,7 +181,7 @@ const ISPForm = React.memo(
             onChange={handleCourseChange}
             canAddNewObject={canAddCourse}
             availableObjects={availableCourses.map(mapCourseShortToString)}
-            error={errors.privileges}
+            error={formErrors.privileges}
           />
           <FormButtons onCancel={onCancel} onDelete={handleDelete} />
         </FormLayout>

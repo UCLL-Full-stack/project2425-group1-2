@@ -6,7 +6,7 @@ import { getDefaultCourse } from "@/utils/defaultTypes";
 import { mapCourseShortToString } from "@/utils/mappers";
 import { nationalities } from "@/utils/nationalities";
 import { validateStudent } from "@/utils/validators";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import StudentFormButtons from "../../../forms/FormButtons";
 import FormInput from "../../../forms/FormInput";
 import SelectListInput from "../../../forms/SelectListInput";
@@ -35,8 +35,6 @@ const StudentForm = React.memo(
     onCancel,
     onDelete,
   }: StudentFormProps) => {
-
-
     const availablePassedCourses = useMemo(
       () => (formData && getPossiblePassedCourses(formData)) || [],
       [formData?.passedCourses]

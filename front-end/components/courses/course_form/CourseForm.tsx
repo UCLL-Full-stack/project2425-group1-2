@@ -3,13 +3,16 @@ import FormLayout from "@/components/forms/FormLayout";
 import { Course, EntityItem } from "@/types";
 import { ErrorState } from "@/types/errorState";
 import { validateCourse } from "@/utils/validators";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import EntityItemsInput from "../../forms/EntityItemsInput";
 import FormInput from "../../forms/FormInput";
 import CourseLecturersInput from "./CourseLecturersInput";
 
 interface CourseFormProps {
-  course: Course | null;
+  formData: Course;
+  setFormData: (course: Course) => void;
+  formErrors: ErrorState;
+  setFormErrors: (errors: ErrorState) => void;
   formName: string;
   getPossibleRequiredCourses: (course: Course) => EntityItem[];
   onSubmit: (course: Course) => Promise<void>;
@@ -19,28 +22,20 @@ interface CourseFormProps {
 
 const CourseForm = React.memo(
   ({
-    course,
+    formData,
+    setFormData,
+    formErrors,
+    setFormErrors,
     formName,
     getPossibleRequiredCourses,
     onSubmit,
     onCancel,
     onDelete,
   }: CourseFormProps) => {
-    const [formData, setFormData] = useState(course);
-    const [errors, setErrors] = useState<ErrorState>({});
-
-    useEffect(() => {
-      setErrors({});
-      setFormData(course);
-    }, [course]);
-
-    if (!formData) {
-      return null;
-    }
 
     const handleDelete = async () => {
-      if (course && onDelete) {
-        await onDelete(course.id);
+      if (formData && onDelete) {
+        await onDelete(formData.id);
       }
     };
 
@@ -116,7 +111,7 @@ const CourseForm = React.memo(
 
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
-      if (!validateCourse(formData, setErrors)) {
+      if (!validateCourse(formData, setFormErrors)) {
         return;
       }
       await onSubmit(formData);
@@ -131,7 +126,7 @@ const CourseForm = React.memo(
             inputType="text"
             value={formData.name}
             onChange={handleChange}
-            error={errors.name}
+            error={formErrors.name}
           />
           <FormInput
             name="description"
@@ -139,7 +134,7 @@ const CourseForm = React.memo(
             inputType="textarea"
             value={formData.description}
             onChange={handleChange}
-            error={errors.description}
+            error={formErrors.description}
           />
           <FormInput
             name="phase"
@@ -147,7 +142,7 @@ const CourseForm = React.memo(
             inputType="number"
             value={formData.phase}
             onChange={(e) => handlePhaseChange(parseInt(e.target.value))}
-            error={errors.phase}
+            error={formErrors.phase}
           />
           <FormInput
             name="credits"
@@ -155,14 +150,14 @@ const CourseForm = React.memo(
             inputType="number"
             value={formData.credits}
             onChange={(e) => handleCreditsChange(parseInt(e.target.value))}
-            error={errors.credits}
+            error={formErrors.credits}
           />
           <CourseLecturersInput
             lecturers={formData.lecturers}
             onAdd={addEmptyLecturer}
             onRemove={removeLecturer}
             onChange={handleLecturerChange}
-            error={errors.lecturers}
+            error={formErrors.lecturers}
           />
           <FormInput
             name="isElective"
@@ -179,7 +174,7 @@ const CourseForm = React.memo(
             onRemove={removeRequiredPassedCourse}
             onChange={handleRequiredPassedCourseChange}
             getAvailableEntities={() => getPossibleRequiredCourses(formData)}
-            error={errors.requiredPassedCourses}
+            error={formErrors.requiredPassedCourses}
           />
           <FormButtons onCancel={onCancel} onDelete={handleDelete} />
         </FormLayout>

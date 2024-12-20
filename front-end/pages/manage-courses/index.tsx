@@ -5,22 +5,24 @@ import ErrorDialog from "@/components/ErrorDialog";
 import ObjectsWithHeadingLayout from "@/components/layouts/ObjectsWithHeadingLayout";
 import CourseService from "@/services/CourseService";
 import { Course, EntityItem, PrivilegeType } from "@/types";
+import { ErrorState } from "@/types/errorState";
 import { getDefaultCourse } from "@/utils/defaultTypes";
 import { useCrudCourse } from "@/utils/hooks/useCrudCourse";
 import { useDetailedCoursesToggle } from "@/utils/hooks/useDetailedCoursesToggle";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { usePrivilegeVerifier } from "@/utils/hooks/usePrivilegeVerifier";
 import { mapCourseShortToEntityItem } from "@/utils/mappers";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Head from "next/head";
 import { useState } from "react";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const TITLE = "Manage Courses";
 const MAIN_SECTION_TITLE = "Manage courses";
 
 export default function ManageCourses() {
-  const [updatingCourse, setUpdatingCourse] = useState<Course | null>(null);
-  const [creatingCourse, setCreatingCourse] = useState<Course | null>(null);
+  const [updatingCourse, setUpdatingCourse] = useState<boolean>(false);
+  const [formData, setFormData] = useState<Course | null>(null);
+  const [formErrors, setFormErrors] = useState<ErrorState>({});
   const { errors, setErrors, handleError } = useErrorHandler();
   const { courses, createCourse, updateCourse, deleteCourse } =
     useCrudCourse(handleError);
@@ -30,12 +32,16 @@ export default function ManageCourses() {
 
   const handleUpdate = async (id: number) => {
     const course: Course = await CourseService.getCourseById(id, handleError);
-    setUpdatingCourse(course);
+    setFormData(course);
+    setUpdatingCourse(true);
+    setFormErrors({});
   };
 
   const handleCreate = () => {
     const course: Course = getDefaultCourse();
-    setCreatingCourse(course);
+    setFormData(course);
+    setUpdatingCourse(false);
+    setFormErrors({});
   };
 
   const handleSubmit = async (isp: Course) => {
@@ -48,7 +54,7 @@ export default function ManageCourses() {
       return;
     }
     await updateCourse(course);
-    setUpdatingCourse(null);
+    setFormData(null);
   };
 
   const create = async (course: Course) => {
@@ -57,12 +63,11 @@ export default function ManageCourses() {
       return;
     }
     await createCourse(course);
-    setCreatingCourse(null);
+    setFormData(null);
   };
 
   const handleCancel = () => {
-    setCreatingCourse(null);
-    setUpdatingCourse(null);
+    setFormData(null);
   };
 
   const handleDelete = async (id: number) => {
@@ -71,7 +76,7 @@ export default function ManageCourses() {
       return;
     }
     await deleteCourse(id);
-    setUpdatingCourse(null);
+    setFormData(null);
   };
 
   const getPossibleRequiredPassedCourses = (course: Course): EntityItem[] => {
@@ -86,8 +91,7 @@ export default function ManageCourses() {
   };
 
   const manageTabIsActive =
-    updatingCourse == null &&
-    creatingCourse == null &&
+    formData === null && 
     Object.keys(errors).length === 0;
 
   return (
@@ -114,14 +118,19 @@ export default function ManageCourses() {
       )}
 
       <FixedCreateButton onClick={handleCreate} isActive={manageTabIsActive} />
-      <CourseForm
-        course={updatingCourse || creatingCourse}
-        formName={updatingCourse ? "Update Course" : "Create Course"}
-        getPossibleRequiredCourses={getPossibleRequiredPassedCourses}
-        onSubmit={handleSubmit}
-        onCancel={handleCancel}
-        onDelete={updatingCourse ? handleDelete : undefined}
-      />
+      {formData && (
+        <CourseForm
+          formData={formData}
+          setFormData={setFormData}
+          formErrors={errors}
+          setFormErrors={setErrors}
+          formName={updatingCourse ? "Update Course" : "Create Course"}
+          getPossibleRequiredCourses={getPossibleRequiredPassedCourses}
+          onSubmit={handleSubmit}
+          onCancel={handleCancel}
+          onDelete={updatingCourse ? handleDelete : undefined}
+        />
+      )}
       {errors && Object.keys(errors).length > 0 && (
         <ErrorDialog errors={errors} setErrors={setErrors} />
       )}
@@ -132,8 +141,8 @@ export default function ManageCourses() {
 export const getServerSideProps = async (context: any) => {
   const { locale } = context;
   return {
-      props: {
-          ...(await serverSideTranslations(locale ?? "en", ["common"])),
-      },
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["common"])),
+    },
   };
-}
+};

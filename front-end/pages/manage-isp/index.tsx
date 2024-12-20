@@ -5,21 +5,23 @@ import ISPEditableItem from "@/components/isps/ISPEditableItem";
 import ObjectsWithHeadingLayout from "@/components/layouts/ObjectsWithHeadingLayout";
 import ISPService from "@/services/IspService";
 import { CourseShort, ISP, PrivilegeType } from "@/types";
+import { ErrorState } from "@/types/errorState";
 import { getDefaultISP } from "@/utils/defaultTypes";
 import { useCoursesShortGetter } from "@/utils/hooks/useCoursesShortGetter";
 import { useCrudISP } from "@/utils/hooks/useCrudISP";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { usePrivilegeVerifier } from "@/utils/hooks/usePrivilegeVerifier";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Head from "next/head";
 import { useState } from "react";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const TITLE = "Manage ISP";
 const MAIN_SECTION_TITLE = "Manage ISP";
 
 export default function ManageISP() {
-  const [updatingISP, setUpdatingISP] = useState<ISP | null>(null);
-  const [creatingISP, setCreatingISP] = useState<ISP | null>(null);
+  const [updatingISP, setUpdatingISP] = useState<boolean>(false);
+  const [formData, setFormData] = useState<ISP | null>(null);
+  const [formErrors, setFormErrors] = useState<ErrorState>({});
   const { errors, setErrors, handleError } = useErrorHandler();
   const { isps, createISP, updateISP, deleteISP } = useCrudISP(handleError);
   const { courses } = useCoursesShortGetter(handleError);
@@ -30,12 +32,16 @@ export default function ManageISP() {
       id,
       handleError
     );
-    setUpdatingISP(updatingIsp);
+    setFormData(updatingIsp);
+    setUpdatingISP(true);
+    setFormErrors({});
   };
 
   const handleCreate = () => {
     const isp: ISP = getDefaultISP();
-    setCreatingISP(isp);
+    setFormData(isp);
+    setUpdatingISP(false);
+    setFormErrors({});
   };
 
   const handleSubmit = async (isp: ISP) => {
@@ -48,7 +54,7 @@ export default function ManageISP() {
       return;
     }
     await updateISP(isp);
-    setUpdatingISP(null);
+    setFormData(null);
   };
 
   const create = async (isp: ISP) => {
@@ -57,12 +63,11 @@ export default function ManageISP() {
       return;
     }
     await createISP(isp);
-    setCreatingISP(null);
+    setFormData(null);
   };
 
   const handleCancel = () => {
-    setCreatingISP(null);
-    setUpdatingISP(null);
+    setFormData(null);
   };
 
   const handleDelete = async (id: number) => {
@@ -71,7 +76,7 @@ export default function ManageISP() {
       return;
     }
     await deleteISP(id);
-    setUpdatingISP(null);
+    setFormData(null);
   };
 
   const getPossibleCourses = (isp: ISP): CourseShort[] => {
@@ -87,9 +92,7 @@ export default function ManageISP() {
   };
 
   const manageTabisActive =
-    updatingISP == null &&
-    creatingISP == null &&
-    Object.keys(errors).length === 0;
+    formData === null || Object.keys(errors).length === 0;
 
   return (
     <>
@@ -110,14 +113,19 @@ export default function ManageISP() {
         )}
       />
       <FixedCreateButton onClick={handleCreate} isActive={manageTabisActive} />
-      <ISPForm
-        isp={updatingISP || creatingISP}
-        formName={updatingISP ? "Update ISP" : "Create ISP"}
-        getPossibleCourses={getPossibleCourses}
-        onSubmit={handleSubmit}
-        onCancel={handleCancel}
-        onDelete={updatingISP ? handleDelete : undefined}
-      />
+      {formData && (
+        <ISPForm
+          formData={formData}
+          setFormData={setFormData}
+          formErrors={formErrors}
+          setFormErrors={setFormErrors}
+          formName={updatingISP ? "Update ISP" : "Create ISP"}
+          getPossibleCourses={getPossibleCourses}
+          onSubmit={handleSubmit}
+          onCancel={handleCancel}
+          onDelete={updatingISP ? handleDelete : undefined}
+        />
+      )}
       {errors && Object.keys(errors).length > 0 && (
         <ErrorDialog errors={errors} setErrors={setErrors} />
       )}
@@ -128,8 +136,8 @@ export default function ManageISP() {
 export const getServerSideProps = async (context: any) => {
   const { locale } = context;
   return {
-      props: {
-          ...(await serverSideTranslations(locale ?? "en", ["common"])),
-      },
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["common"])),
+    },
   };
-}
+};
