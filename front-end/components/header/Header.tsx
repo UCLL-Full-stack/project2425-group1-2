@@ -1,4 +1,4 @@
-import { MY_PROFILE_URL } from "@/utils/urls";
+import { MY_PROFILE_URL } from "../../utils/urls";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";

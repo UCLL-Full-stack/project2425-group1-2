@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { HOME_URL, LOGIN_URL } from "@/utils/urls";
+import { HOME_URL, LOGIN_URL } from "../../utils/urls";
 
 enum ButtonType {
   Home = "home",

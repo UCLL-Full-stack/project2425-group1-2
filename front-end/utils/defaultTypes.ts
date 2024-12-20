@@ -1,5 +1,5 @@
-import { Administrative, Course, ISP, ISPStatus, Privilege, Student } from "@/types";
-import { UserType } from "@/types/auth";
+import { Administrative, Course, ISP, ISPStatus, Privilege, Student } from "../types";
+import { UserType } from "../types/auth";
 
 const currentYear = new Date().getFullYear();
 

@@ -1,13 +1,13 @@
-import FormButtons from "@/components/forms/FormButtons";
-import FormInput from "@/components/forms/FormInput";
-import FormLayout from "@/components/forms/FormLayout";
-import FormObjectsInput from "@/components/forms/FormObjectsInput";
-import { Administrative, EntityItem, Privilege } from "@/types";
-import { ErrorState } from "@/types/errorState";
-import { getDefaultPrivilege } from "@/utils/defaultTypes";
-import { mapPrivilegeToString } from "@/utils/mappers";
-import { validateAdmin } from "@/utils/validators";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
+import FormButtons from "../../../components/forms/FormButtons";
+import FormInput from "../../../components/forms/FormInput";
+import FormLayout from "../../../components/forms/FormLayout";
+import FormObjectsInput from "../../../components/forms/FormObjectsInput";
+import { Administrative, Privilege } from "../../../types";
+import { ErrorState } from "../../../types/errorState";
+import { getDefaultPrivilege } from "../../../utils/defaultTypes";
+import { mapPrivilegeToString } from "../../../utils/mappers";
+import { validateAdmin } from "../../../utils/validators";
 
 interface AdminFormProps {
   formData: Administrative;
@@ -34,7 +34,7 @@ const AdminForm = React.memo(
     onDelete,
   }: AdminFormProps) => {
     const availablePrivileges = useMemo(
-      () => (formData && getPossiblePrivileges(formData) || []),
+      () => (formData && getPossiblePrivileges(formData)) || [],
       [formData?.privileges]
     );
     const canAddPrivilege = useMemo(
@@ -43,7 +43,7 @@ const AdminForm = React.memo(
         availablePrivileges.length > 0 &&
         !availablePrivileges.some((p) => p.id === -1),
       [availablePrivileges, formData?.privileges]
-    );;
+    );
 
     if (!formData) {
       return null;
