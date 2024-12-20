@@ -8,6 +8,9 @@ import { courseRouter } from './controller/course.routes';
 import { studentRouter } from './controller/student.routes';
 import { ispRouter } from './controller/isp.routes';
 import { privilegeRouter } from './controller/privilege.routes';
+import { userRouter } from './controller/user.routes';
+import { administrativeRouter } from './controller/administrative.routes';
+
 
 const app = express();
 dotenv.config();
@@ -20,6 +23,8 @@ app.use("/courses", courseRouter);
 app.use("/students", studentRouter);
 app.use("/isps", ispRouter);
 app.use("/privileges", privilegeRouter);
+app.use("/users", userRouter);
+app.use("/admins", administrativeRouter);
 
 //Swagger
 const swaggerOpts = {

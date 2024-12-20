@@ -2,8 +2,8 @@ import { useAuth } from "@/components/AuthProvider";
 import ErrorDialog from "@/components/ErrorDialog";
 import FormInput from "@/components/forms/FormInput";
 import FormSelectObjectInput from "@/components/forms/FormSelectObjectInput";
-import DummyAdminService from "@/services/DummyAdminService";
-import DummyStudentService from "@/services/DummyStudentService";
+import AdministrativeService from "@/services/AdministrativeService";
+import StudentService from "@/services/StudentService";
 import { Role, User } from "@/types";
 import { LoginData } from "@/types/auth";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
@@ -27,8 +27,8 @@ export default function Login() {
   const textInputClass = `p-1 pl-4 rounded shadow-regular text-gray-800 `;
 
   const getAvailableUsers = async () => {
-    const adminsData= await DummyAdminService.getAllAdmins(handleError);
-    const studentsData = await DummyStudentService.getAllStudents(
+    const adminsData= await AdministrativeService.getAllAdministratives(handleError);
+    const studentsData = await StudentService.getAllStudents(
       handleError
     );
     const admins: User[] = adminsData.map((admin) => ({

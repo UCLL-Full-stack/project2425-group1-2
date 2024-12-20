@@ -1,7 +1,7 @@
 import { Role } from "@/types";
 import { LoginData, SessionData } from "@/types/auth";
 import { BACKEND_APP_URL } from "@/utils/urls";
-import { admins } from "./DummyAdminService";
+import { admins } from "./AdministrativeService";
 import { students } from "./DummyStudentService";
 
 const URL = BACKEND_APP_URL + "/auth";

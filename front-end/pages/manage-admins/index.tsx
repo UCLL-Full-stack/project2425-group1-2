@@ -3,8 +3,8 @@ import ErrorDialog from "@/components/ErrorDialog";
 import ObjectsWithHeadingLayout from "@/components/layouts/ObjectsWithHeadingLayout";
 import AdminForm from "@/components/users/admins/AdminForm";
 import UserEditableItem from "@/components/users/UserEditableItem";
-import AdminService from "@/services/DummyAdminService";
-import { Admin, Privilege, PrivilegeType } from "@/types";
+import AdministrativeService from "@/services/AdministrativeService";
+import { Administrative, Privilege, PrivilegeType } from "@/types";
 import { getDefaultAdmin } from "@/utils/defaultTypes";
 import { useCrudAdmin } from "@/utils/hooks/useCrudAdmin";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
@@ -17,8 +17,8 @@ const TITLE = "Manage Admins";
 const MAIN_SECTION_TITLE = "Manage admins";
 
 export default function ManageAdmins() {
-  const [updatingAdmin, setUpdatingAdmin] = useState<Admin | null>(null);
-  const [creatingAdmin, setCreatingAdmin] = useState<Admin | null>(null);
+  const [updatingAdmin, setUpdatingAdmin] = useState<Administrative | null>(null);
+  const [creatingAdmin, setCreatingAdmin] = useState<Administrative | null>(null);
   const { errors, setErrors, handleError } = useErrorHandler();
   const { admins, updateAdmin, createAdmin, deleteAdmin } =
     useCrudAdmin(handleError);
@@ -26,7 +26,7 @@ export default function ManageAdmins() {
   const { verifyPrivilege } = usePrivilegeVerifier(handleError);
 
   const handleUpdate = async (id: number) => {
-    const admin: Admin | undefined = await AdminService.getAdminById(
+    const admin: Administrative | undefined = await AdministrativeService.getAdministrativeById(
       id,
       handleError
     );
@@ -36,15 +36,15 @@ export default function ManageAdmins() {
   };
 
   const handleCreate = () => {
-    const admin: Admin = getDefaultAdmin();
+    const admin: Administrative = getDefaultAdmin();
     setCreatingAdmin(admin);
   };
 
-  const handleSubmit = async (admin: Admin) => {
+  const handleSubmit = async (admin: Administrative) => {
     updatingAdmin ? await update(admin) : await create(admin);
   };
 
-  const update = async (admin: Admin) => {
+  const update = async (admin: Administrative) => {
     const verified = await verifyPrivilege(PrivilegeType.UPDATE_ADMINISTRATIVE);
     if (!verified) {
       return;
@@ -53,7 +53,7 @@ export default function ManageAdmins() {
     setUpdatingAdmin(null);
   };
 
-  const create = async (admin: Admin) => {
+  const create = async (admin: Administrative) => {
     const verified = await verifyPrivilege(PrivilegeType.CREATE_ADMINISTRATIVE);
     if (!verified) {
       return;
@@ -76,7 +76,7 @@ export default function ManageAdmins() {
     setUpdatingAdmin(null);
   };
 
-  const getPossiblePrivileges = (admin: Admin): Privilege[] => {
+  const getPossiblePrivileges = (admin: Administrative): Privilege[] => {
     const privilegesIds = new Set(
       admin.privileges.map((privilege) => privilege.id)
     );
@@ -99,7 +99,7 @@ export default function ManageAdmins() {
         isActive={manageTabIsActive}
         flex="row"
         headingTitle={MAIN_SECTION_TITLE}
-        children={(admin: Admin) => (
+        children={(admin: Administrative) => (
           <UserEditableItem
             student={admin}
             redactorStudent={handleUpdate}

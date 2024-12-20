@@ -107,7 +107,7 @@ export enum Role{
   NONE = "none",
 }
 
-export type Admin = {
+export type Administrative = {
   id: number;
   name: string;
   email: string;

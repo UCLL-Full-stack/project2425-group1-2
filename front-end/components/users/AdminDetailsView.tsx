@@ -1,10 +1,10 @@
-import { Admin } from "@/types";
+import { Administrative } from "@/types";
 import React from "react";
 import SmallTextLayout from "../layouts/SmallTextLayout";
 import MapObjectsLayout from "../layouts/MapObjectsLayout";
 
 interface AdminDetailsViewProps {
-  user: Admin;
+  user: Administrative;
 }
 
 const AdminDetailsView = React.memo(({ user }: AdminDetailsViewProps) => {

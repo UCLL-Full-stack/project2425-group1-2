@@ -8,7 +8,7 @@ export class Administrative extends User {
     public readonly privileges: Privilege[];
 
     constructor(administrative: {
-        id: number;
+        id?: number;
         name: string;
         email: string;
         password: string;

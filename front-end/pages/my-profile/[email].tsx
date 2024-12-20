@@ -6,7 +6,7 @@ import LowOpacityLayout from "@/components/layouts/LowOpacityLayout";
 import AdminDetailsView from "@/components/users/AdminDetailsView";
 import StudentDetailsView from "@/components/users/StudentDetailsView";
 import UserFullView from "@/components/users/UserFullView";
-import { Admin, Role, Student } from "@/types";
+import { Administrative, Role, Student } from "@/types";
 import { useErrorHandler } from "@/utils/hooks/useErrorHandler";
 import { useUserByEmailGetter } from "@/utils/hooks/useUserByEmailGetter";
 import Head from "next/head";
@@ -50,7 +50,7 @@ export default function MyProfile() {
                     <StudentDetailsView user={user as Student} />
                   )}
                   {user.role === Role.ADMIN && (
-                    <AdminDetailsView user={user as Admin} />
+                    <AdminDetailsView user={user as Administrative} />
                   )}
                 </div>
                 <section className="text-center">

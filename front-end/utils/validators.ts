@@ -1,4 +1,4 @@
-import { Admin, Course, ISP, Student } from "@/types";
+import { Administrative, Course, ISP, Student } from "@/types";
 import { LoginData } from "@/types/auth";
 import { ErrorState } from "@/types/errorState";
 
@@ -55,7 +55,7 @@ const validateStudent = (
 };
 
 const validateAdmin = (
-  data: Admin,
+  data: Administrative,
   errorCallback?: (errors: ErrorState) => void
 ) => {
   const newErrors: ErrorState = {};

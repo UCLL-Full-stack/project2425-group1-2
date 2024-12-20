@@ -2,7 +2,7 @@ import FormButtons from "@/components/forms/FormButtons";
 import FormInput from "@/components/forms/FormInput";
 import FormLayout from "@/components/forms/FormLayout";
 import FormObjectsInput from "@/components/forms/FormObjectsInput";
-import { Admin, EntityItem, Privilege } from "@/types";
+import { Administrative, EntityItem, Privilege } from "@/types";
 import { ErrorState } from "@/types/errorState";
 import { getDefaultPrivilege } from "@/utils/defaultTypes";
 import { mapPrivilegeToString } from "@/utils/mappers";
@@ -10,10 +10,10 @@ import { validateAdmin } from "@/utils/validators";
 import React, { useEffect, useMemo, useState } from "react";
 
 interface AdminFormProps {
-  admin: Admin | null;
+  admin: Administrative | null;
   formName: string;
-  getPossiblePrivileges: (admin: Admin) => Privilege[];
-  onSubmit: (admin: Admin) => Promise<void>;
+  getPossiblePrivileges: (admin: Administrative) => Privilege[];
+  onSubmit: (admin: Administrative) => Promise<void>;
   onCancel: () => void;
   onDelete?: (id: number) => Promise<void>;
 }

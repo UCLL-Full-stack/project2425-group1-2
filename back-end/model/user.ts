@@ -4,7 +4,7 @@ export abstract class User {
     public readonly email: string;
     public readonly password: string;
 
-    constructor(user: { id: number, name: string, email: string, password: string }) {
+    constructor(user: { id?: number, name: string, email: string, password: string }) {
         User.validateUser(user);
         this.id = user.id;
         this.name = user.name;
