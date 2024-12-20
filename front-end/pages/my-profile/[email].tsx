@@ -44,7 +44,7 @@ const MyProfile = () => {
         <LowOpacityLayout isActive={!isActive}>
           <FullVerticalLayout>
             <h1 className="text-center mb-4">{t('myProfile.mainSectionTitle')}</h1> {/* Use translation */}
-            {user !== undefined && (
+            {user && (
               <>
                 <div className="flex flex-col gap-2 items-start">
                   <UserFullView user={user} />

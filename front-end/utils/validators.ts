@@ -42,7 +42,6 @@ const validateStudent = (
   const newErrors: ErrorState = {};
   if (!data.name) newErrors.name = "Student name is required.";
   if (!data.email) newErrors.email = "Email is required.";
-  if (!data.password) newErrors.password = "Password is required.";
   if (data.passedCourses && data.passedCourses.some((c) => c.id === -1)) {
     newErrors.passedCourses = "Passed courses must be chosen.";
   }
@@ -61,7 +60,6 @@ const validateAdmin = (
   const newErrors: ErrorState = {};
   if (!data.name) newErrors.name = "Student name is required.";
   if (!data.email) newErrors.email = "Email is required.";
-  if (!data.password) newErrors.password = "Password is required.";
   if (data.privileges && data.privileges.some((c) => c.id === -1)) {
     newErrors.passedCourses = "Privileges must be chosen.";
   }

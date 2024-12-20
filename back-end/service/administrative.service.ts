@@ -50,7 +50,7 @@ const updateAdministrative = async (id: number, adminInfo: Administrative): Prom
     await throwErrorIfNotExist(id);
 
     const existingAdmin: Administrative = await getAdministrativeById(id);
-    const hashedPassword = adminInfo.password ? await bcrypt.hash(adminInfo.password, 12) : '';
+    const hashedPassword = adminInfo.password ? await bcrypt.hash(adminInfo.password, 12) : existingAdmin.password;
 
     let privileges: Privilege[] = [];
     for (const pr of adminInfo.privileges) {

@@ -119,6 +119,15 @@ const AdminForm = React.memo(
             onChange={handleChange}
             error={formErrors.email}
           />
+          <FormInput
+            name="password"
+            labelText="Password"
+            inputType="password"
+            value={formData.password}
+            onChange={handleChange}
+            error={formErrors.password}
+            required={false}
+          />
           <FormObjectsInput
             objects={formData.privileges.map(mapPrivilegeToString)}
             name="privileges"

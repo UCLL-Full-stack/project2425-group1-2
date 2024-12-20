@@ -52,7 +52,7 @@ const updateStudent = async (id: number, studentInfo: StudentUpdateView): Promis
     await throwErrorIfNotExist(id);
 
     const existingStudent: Student = await getStudentById(id);
-    const hashedPassword = studentInfo.password ? await bcrypt.hash(studentInfo.password, 12) : "";
+    const hashedPassword = studentInfo.password ? await bcrypt.hash(studentInfo.password, 12) : existingStudent.password;
 
     let passedCourses: Course[] = [];
     for (const courseId of studentInfo.passedCourses) {
@@ -63,13 +63,13 @@ const updateStudent = async (id: number, studentInfo: StudentUpdateView): Promis
     Student.validateStudent({
         name: studentInfo.name || existingStudent.name,
         email: studentInfo.email || existingStudent.email,
-        password: hashedPassword || existingStudent.password,
+        password: hashedPassword,
         nationality: studentInfo.nationality || existingStudent.nationality,
         studyYear: studentInfo.studyYear || existingStudent.studyYear,
         passedCourses: passedCourses || existingStudent.passedCourses, 
     });
 
-    studentInfo.password = hashedPassword || existingStudent.password;
+    studentInfo.password = hashedPassword
 
     return await StudentRepository.update(id, studentInfo);
 };

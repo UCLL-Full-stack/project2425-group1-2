@@ -30,7 +30,7 @@ export default function ManageStudents() {
 
   const handleCreate = () => {
     const student: Student = getDefaultStudent();
-    setFormData(student);
+    setFormData({...student, password: ""});
     setFormErrors({});
     setUpdatingStudent(false);
   };
@@ -41,7 +41,7 @@ export default function ManageStudents() {
       handleError
     );
     if (student) {
-      setFormData(student);
+      setFormData({...student, password: ""});
       setFormErrors({});
       setUpdatingStudent(true);
     }

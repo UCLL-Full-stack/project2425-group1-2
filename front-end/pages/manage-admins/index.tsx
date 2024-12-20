@@ -33,14 +33,14 @@ export default function ManageAdmins() {
       await AdministrativeService.getAdministrativeById(id, handleError);
     if (admin) {
       setUpdatingAdmin(true);
-      setFormData(admin);
+      setFormData({...admin, password: ""});
       setFormErrors({});
     }
   };
 
   const handleCreate = () => {
     const admin: Administrative = getDefaultAdmin();
-    setFormData(admin);
+    setFormData({...admin, password: ""});
     setFormErrors({});
     setUpdatingAdmin(false);
   };

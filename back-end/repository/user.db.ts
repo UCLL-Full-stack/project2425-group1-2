@@ -1,6 +1,7 @@
 import prismaClient from './prisma/prismaClient';
 import { tryCatchWrapper } from '../util/tryCatchWrapper';
 import { FullUser, UserView } from '../types/userDTO';
+import { CourseShortView } from '../types/coursesDTO';
 
 const findByEmail = tryCatchWrapper(async (email: string): Promise<UserView> => {
     const user = await prismaClient.user.findUnique({
@@ -28,7 +29,24 @@ const findFullByEmail = tryCatchWrapper(async (email: string): Promise<FullUser>
             },
         },
     });
-    return {...user, privileges};
+    const passedCourses: CourseShortView[] = await prismaClient.course.findMany({
+        select: {
+            id: true,
+            name: true,
+            phase: true,
+            credits: true,
+        },
+        where: {
+            passedStudents: {
+                some: {
+                    studentId: user.id,
+                },
+            },
+        },
+    });
+
+
+    return {...user, privileges, passedCourses};
 });
 
 const ERROR_USER_NOT_EXIST = (email: string) => `User with email ${email} does not exist`;

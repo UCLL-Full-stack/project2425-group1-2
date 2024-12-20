@@ -45,7 +45,7 @@ let students: Student[] = [
         email: 'ethan.hunt@example.com',
         password: 'password123',
         nationality: nationalities[122], // New Zealander
-        passedCourses: [courses[0]],
+        passedCourses: [],
         studyYear: 5,
     }),
     new Student({
@@ -54,7 +54,7 @@ let students: Student[] = [
         email: 'frank.castle@example.com',
         password: 'password123',
         nationality: nationalities[1], // American
-        passedCourses: [courses[1]],
+        passedCourses: [],
         studyYear: 2,
     }),
     new Student({
@@ -63,7 +63,7 @@ let students: Student[] = [
         email: 'grace.lee@example.com',
         password: 'password123',
         nationality: nationalities[8], // South Korean
-        passedCourses: [courses[2]],
+        passedCourses: [],
         studyYear: 3,
     }),
     new Student({
@@ -72,7 +72,7 @@ let students: Student[] = [
         email: 'harry.potter@example.com',
         password: 'password123',
         nationality: nationalities[25], // British
-        passedCourses: [courses[3]],
+        passedCourses: [],
         studyYear: 2,
     }),
     new Student({
@@ -81,7 +81,7 @@ let students: Student[] = [
         email: 'isla.fisher@example.com',
         password: 'password123',
         nationality: nationalities[2], // Australian
-        passedCourses: [courses[4]],
+        passedCourses: [],
         studyYear: 4,
     }),
     new Student({
@@ -90,7 +90,7 @@ let students: Student[] = [
         email: 'jack.daniels@example.com',
         password: 'password123',
         nationality: nationalities[6], // French
-        passedCourses: [courses[5]],
+        passedCourses: [],
         studyYear: 5,
     }),
     new Student({
@@ -99,7 +99,7 @@ let students: Student[] = [
         email: 'lena.dunham@example.com',
         password: 'password123',
         nationality: nationalities[7], // German
-        passedCourses: [courses[6]],
+        passedCourses: [],
         studyYear: 4,
     }),
     new Student({
@@ -108,7 +108,7 @@ let students: Student[] = [
         email: 'michael.jordan@example.com',
         password: 'password123',
         nationality: nationalities[3], // American
-        passedCourses: [courses[7]],
+        passedCourses: [],
         studyYear: 1,
     }),
     new Student({
@@ -117,7 +117,7 @@ let students: Student[] = [
         email: 'nina.simone@example.com',
         password: 'password123',
         nationality: nationalities[0], // South African
-        passedCourses: [courses[8]],
+        passedCourses: [],
         studyYear: 3,
     }),
     new Student({
@@ -126,7 +126,7 @@ let students: Student[] = [
         email: 'oscar.wilde@example.com',
         password: 'password123',
         nationality: nationalities[25], // British
-        passedCourses: [courses[9]],
+        passedCourses: [],
         studyYear: 4,
     }),
     new Student({
@@ -135,7 +135,7 @@ let students: Student[] = [
         email: 'paul.rudd@example.com',
         password: 'password123',
         nationality: nationalities[3], // American
-        passedCourses: [courses[10]],
+        passedCourses: [],
         studyYear: 2,
     }),
     new Student({
@@ -144,7 +144,7 @@ let students: Student[] = [
         email: 'quinn.sullivan@example.com',
         password: 'password123',
         nationality: nationalities[12], // Irish
-        passedCourses: [courses[11]],
+        passedCourses: [],
         studyYear: 5,
     }),
     new Student({
@@ -153,7 +153,7 @@ let students: Student[] = [
         email: 'rachel.green@example.com',
         password: 'password123',
         nationality: nationalities[6], // French
-        passedCourses: [courses[12]],
+        passedCourses: [],
         studyYear: 4,
     }),
     new Student({
@@ -162,7 +162,7 @@ let students: Student[] = [
         email: 'sammy.davis@example.com',
         password: 'password123',
         nationality: nationalities[4], // Japanese
-        passedCourses: [courses[13]],
+        passedCourses: [],
         studyYear: 5,
     }),
     new Student({
@@ -171,7 +171,7 @@ let students: Student[] = [
         email: 'tessa.thompson@example.com',
         password: 'password123',
         nationality: nationalities[0], // South African
-        passedCourses: [courses[14]],
+        passedCourses: [],
         studyYear: 6,
     }),
     new Student({
@@ -180,7 +180,7 @@ let students: Student[] = [
         email: 'uma.thurman@example.com',
         password: 'password123',
         nationality: nationalities[5], // Canadian
-        passedCourses: [courses[15]],
+        passedCourses: [],
         studyYear: 6,
     }),
     new Student({
@@ -189,7 +189,7 @@ let students: Student[] = [
         email: 'vince.vaughn@example.com',
         password: 'password123',
         nationality: nationalities[10], // Mexican
-        passedCourses: [courses[16]],
+        passedCourses: [],
         studyYear: 2,
     }),
     new Student({
@@ -198,7 +198,7 @@ let students: Student[] = [
         email: 'wendy.williams@example.com',
         password: 'password123',
         nationality: nationalities[11], // Italian
-        passedCourses: [courses[17]],
+        passedCourses: [],
         studyYear: 3,
     }),
     new Student({
@@ -207,7 +207,7 @@ let students: Student[] = [
         email: 'xander.cage@example.com',
         password: 'password123',
         nationality: nationalities[9], // Australian
-        passedCourses: [courses[18]],
+        passedCourses: [],
         studyYear: 4,
     }),
     new Student({
@@ -216,7 +216,7 @@ let students: Student[] = [
         email: 'yara.shahidi@example.com',
         password: 'password123',
         nationality: nationalities[8], // South Korean
-        passedCourses: [courses[19]],
+        passedCourses: [],
         studyYear: 5,
     }),
     new Student({
@@ -225,7 +225,7 @@ let students: Student[] = [
         email: 'zoe.saldana@example.com',
         password: 'password123',
         nationality: nationalities[16], // Spanish
-        passedCourses: [courses[20]],
+        passedCourses: [],
         studyYear: 6,
     }),
     new Student({

@@ -9,7 +9,7 @@ let isps: ISP[] = [
         status: IspStatus.SUBMITTED,
         totalCredits: 30,
         startYear: 2021,
-        courses: [courses[2]],
+        courses: [],
         student: students[0],
     }),
     new ISP({
@@ -17,7 +17,7 @@ let isps: ISP[] = [
         status: IspStatus.NOTSUBMITTED,
         totalCredits: 20,
         startYear: 2020,
-        courses: [courses[0]],
+        courses: [],
         student: students[1],
     }),
     new ISP({
@@ -25,7 +25,7 @@ let isps: ISP[] = [
         status: IspStatus.SUBMITTED,
         totalCredits: 25,
         startYear: 2022,
-        courses: [courses[3]],
+        courses: [],
         student: students[2],
     }),
     new ISP({
@@ -33,7 +33,7 @@ let isps: ISP[] = [
         status: IspStatus.NOTSUBMITTED,
         totalCredits: 15,
         startYear: 2019,
-        courses: [courses[1]],
+        courses: [],
         student: students[3],
     }),
     new ISP({
@@ -41,7 +41,7 @@ let isps: ISP[] = [
         status: IspStatus.SUBMITTED,
         totalCredits: 35,
         startYear: 2023,
-        courses: [courses[4]],
+        courses: [],
         student: students[4],
     }),
     new ISP({
@@ -49,7 +49,7 @@ let isps: ISP[] = [
         status: IspStatus.NOTSUBMITTED,
         totalCredits: 30,
         startYear: 2022,
-        courses: [courses[5]],
+        courses: [],
         student: students[5],
     }),
     new ISP({
@@ -57,7 +57,7 @@ let isps: ISP[] = [
         status: IspStatus.SUBMITTED,
         totalCredits: 40,
         startYear: 2021,
-        courses: [courses[6]],
+        courses: [],
         student: students[6],
     }),
     new ISP({
@@ -65,7 +65,7 @@ let isps: ISP[] = [
         status: IspStatus.NOTSUBMITTED,
         totalCredits: 25,
         startYear: 2020,
-        courses: [courses[7]],
+        courses: [],
         student: students[7],
     }),
     new ISP({
@@ -73,7 +73,7 @@ let isps: ISP[] = [
         status: IspStatus.SUBMITTED,
         totalCredits: 30,
         startYear: 2021,
-        courses: [courses[8]],
+        courses: [],
         student: students[8],
     }),
     new ISP({
@@ -81,15 +81,15 @@ let isps: ISP[] = [
         status: IspStatus.NOTSUBMITTED,
         totalCredits: 20,
         startYear: 2019,
-        courses: [courses[9]],
+        courses: [],
         student: students[9],
     }),
     new ISP({
         id: 11,
         status: IspStatus.SUBMITTED,
         totalCredits: 35,
-        startYear: 2022,
-        courses: [courses[10]],
+        startYear: 2023,
+        courses: [],
         student: students[10],
     }),
     new ISP({
@@ -97,7 +97,7 @@ let isps: ISP[] = [
         status: IspStatus.NOTSUBMITTED,
         totalCredits: 25,
         startYear: 2020,
-        courses: [courses[11]],
+        courses: [],
         student: students[11],
     }),
     new ISP({
@@ -105,7 +105,7 @@ let isps: ISP[] = [
         status: IspStatus.SUBMITTED,
         totalCredits: 40,
         startYear: 2023,
-        courses: [courses[12]],
+        courses: [],
         student: students[12],
     }),
     new ISP({
@@ -113,7 +113,7 @@ let isps: ISP[] = [
         status: IspStatus.NOTSUBMITTED,
         totalCredits: 30,
         startYear: 2021,
-        courses: [courses[13]],
+        courses: [],
         student: students[13],
     }),
     new ISP({
@@ -121,7 +121,7 @@ let isps: ISP[] = [
         status: IspStatus.SUBMITTED,
         totalCredits: 20,
         startYear: 2022,
-        courses: [courses[14]],
+        courses: [],
         student: students[14],
     }),
     new ISP({
@@ -129,7 +129,7 @@ let isps: ISP[] = [
         status: IspStatus.NOTSUBMITTED,
         totalCredits: 35,
         startYear: 2020,
-        courses: [courses[15]],
+        courses: [],
         student: students[15],
     }),
     new ISP({

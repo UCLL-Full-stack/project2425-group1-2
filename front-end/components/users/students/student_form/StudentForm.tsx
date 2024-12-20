@@ -125,8 +125,17 @@ const StudentForm = React.memo(
             error={formErrors.email}
           />
           <FormInput
-            name="year"
-            labelText="Year"
+            name="password"
+            labelText="Password"
+            inputType="password"
+            value={formData.password}
+            onChange={handleChange}
+            error={formErrors.password}
+            required={false}
+          />
+          <FormInput
+            name="studyYear"
+            labelText="Study Year"
             inputType="number"
             value={formData.studyYear}
             onChange={handleChange}

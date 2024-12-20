@@ -1,4 +1,5 @@
 import { Privilege, UserTypes } from "@prisma/client";
+import { CourseShortView } from "./coursesDTO";
 
 export class UserShort {
     public id: number;
@@ -30,6 +31,9 @@ export type FullUser = {
     email: string;
     password: string;
     userType: UserTypes;
+    nationality: string | null;
+    studyYear: number | null;
+    passedCourses: CourseShortView[];
     privileges: Privilege[];
 }
 

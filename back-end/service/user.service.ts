@@ -1,4 +1,3 @@
-import { User } from '../model/user';
 import UserRepository from '../repository/user.db';
 import {
     AuthenticationRequest,
