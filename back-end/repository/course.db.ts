@@ -35,9 +35,21 @@ const getAllCourses = async (): Promise<Course[]> => {
 };
 
 
-const findById = DBtryCatcher((id: number): Course | null => {
-    return DBcourses.find(course => course.id === id) || null;
-});
+const getCourseById = async(id: number): Promise<Course | null> => {
+    try {
+        const coursePrisma = await prisma.course.findUnique({
+            where: { id,
+             },
+        });
+
+        if (coursePrisma === null) {
+            throw new Error("No student exists with this id.") 
+        }
+
+        return Course.from(coursePrisma);
+    } catch (error) {
+        throw new Error('Database error. See server log for details.');
+    }};
 
 const findAllByRequiredCourseId = DBtryCatcher((id: number): Course[] => {
     return DBcourses.filter(course => course.requiredPassedCourses.some(requiredCourse => requiredCourse.id === id));
@@ -76,7 +88,7 @@ const save = DBtryCatcher((course: Course): Course => {
 export default {
     initDb,
     getAllCourses,
-    findById,
+    getCourseById,
     findAllByRequiredCourseId,
     findByNameAndPhase,
     save,

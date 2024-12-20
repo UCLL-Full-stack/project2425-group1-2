@@ -27,13 +27,17 @@ const getAll= async (): Promise<Course[]> => {
 //     });
 // }
 
-// const getCourseById = (id: number): Course => {
-//     let res: Course | null = CourseRepository.findById(id);
-//     if (res === null) {
-//         throw new Error(ERROR_COURSE_NOT_EXIST);
-//     }
-//     return res;
-// }
+const getCourseById = async(id: number): Promise<Course|null> => {
+    try{
+        const coursePrisma = CourseRepository.getCourseById(id);
+        if (coursePrisma === null) {
+            throw new Error("No course exists with this id.") 
+        }
+    return coursePrisma;
+    } catch(error){
+        throw new Error("Student service error!")
+    }
+}
 
 // const createCourse = (courseInfo: CourseUpdateView) : Course => {
 //     throwErrorIfExist(courseInfo.name, courseInfo.phase);
@@ -145,7 +149,7 @@ const getAll= async (): Promise<Course[]> => {
  export default {
      getAll,
 //     getAllShort,
-//     getCourseById,
+     getCourseById,
 //     createCourse,
 //     updateCourse,
 //     deleteCourses,

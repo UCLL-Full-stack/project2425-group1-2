@@ -100,7 +100,7 @@ courseRouter.get("/", async (req: Request, res: Response, next: NextFunction) =>
 //  *               items:
 //  *                 $ref: '#/components/schemas/CourseShortView'
 //  */
-// courseRouter.get("/short", async (req: Request, res: Response, next: NextFunction) => {
+// courseRouter.get("/shortform", async (req: Request, res: Response, next: NextFunction) => {
 //     try {
 //         res.status(200).json(courseService.getAllShort());
 //     } catch (error) {
@@ -108,34 +108,41 @@ courseRouter.get("/", async (req: Request, res: Response, next: NextFunction) =>
 //     }
 // });
 
-// /**
-//  * @swagger
-//  * /courses/{id}:
-//  *   get:
-//  *     summary: Get a course by ID.
-//  *     tags: [Course]
-//  *     parameters:
-//  *       - in: path
-//  *         name: id
-//  *         schema:
-//  *           type: integer
-//  *         required: true
-//  *         description: The id of the course to retrieve.
-//  *     responses:
-//  *       200:
-//  *         description: Successfully retrieved course.
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               $ref: '#/components/schemas/Course'
-//  */
-// courseRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//         res.status(200).json(courseService.getCourseById(parseInt(req.params.id)));
-//     } catch (error) {
-//         next(error);
-//     }
-// });
+/**
+ * @swagger
+ * /courses/{id}:
+ *   get:
+ *     summary: Get a course by ID.
+ *     tags: [Course]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The id of the course to retrieve.
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved course.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Course'
+ */
+courseRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const id = parseInt(req.params.id);
+        const course = await courseService.getCourseById(id);
+
+        if (course) {
+            res.status(200).json(course);
+        } else {
+            res.status(404).json({ message: "Student not found" });
+        }
+    } catch (error) {
+        next(error);
+    }
+});
 
 // /**
 //  * @swagger
