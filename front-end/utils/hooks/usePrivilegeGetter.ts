@@ -1,4 +1,4 @@
-import PrivilegeService from "@/services/DummyPrivilegeService";
+import PrivilegeService from "@/services/PrivilegeService";
 import { Privilege } from "@/types";
 import { ErrorState } from "@/types/errorState";
 import { useEffect, useState } from "react";

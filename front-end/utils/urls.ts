@@ -16,4 +16,4 @@ export const EDIT_URL = '/edit';
 export const VIEW_URL = '/view';
 
 // BACKEND URL
-export const BACKEND_APP_URL='http://localhost:3000'
+export const BACKEND_APP_URL= process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
