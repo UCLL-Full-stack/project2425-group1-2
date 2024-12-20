@@ -55,6 +55,26 @@ const findAllShortByPhaseAndPassedCourses = tryCatchWrapper(async (phases: numbe
     return courses;
 });
 
+const findAllByIspId = tryCatchWrapper(async (ispId: number): Promise<CourseShortView[]> => {
+    const courses = await prismaClient.course.findMany({
+        select: {
+            id: true,
+            name: true,
+            phase: true,
+            credits: true,
+        },
+        where: {
+            isps: {
+                some: {
+                    ispId,
+                },
+            },
+        },
+    });
+
+    return courses;
+});
+
 const existsById = tryCatchWrapper(async (id: number): Promise<boolean> => {
     const existingCourse = await prismaClient.course.findUnique({
         where: { id },
@@ -160,6 +180,7 @@ export default {
     findAllShort,
     findById,
     findAllShortByPhaseAndPassedCourses,
+    findAllByIspId,
     existsById,
     existsByNameAndPhase,
     isRequiredByAnotherCourse,

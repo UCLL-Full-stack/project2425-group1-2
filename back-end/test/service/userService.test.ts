@@ -16,12 +16,12 @@ describe('User Service Tests', () => {
     test('getUserByEmail should return a user by email', async () => {
         const mockUser = { id: 1, email: 'test@example.com', password: 'hashedpassword' };
 
-        UserRepository.findByEmail = jest.fn().mockResolvedValue(mockUser);
+        UserRepository.findFullByEmail = jest.fn().mockResolvedValue(mockUser);
 
         const result = await userService.getUserByEmail('test@example.com');
 
         expect(result).toEqual(mockUser);
-        expect(UserRepository.findByEmail).toHaveBeenCalledWith('test@example.com');
+        expect(UserRepository.findFullByEmail).toHaveBeenCalledWith('test@example.com');
     });
 
     test('authenticate should throw error if password is incorrect', async () => {
