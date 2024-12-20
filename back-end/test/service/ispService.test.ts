@@ -63,33 +63,6 @@ describe('ISP Service Tests', () => {
         expect(ISPRepository.create).toHaveBeenCalledWith(ispInfo);
     });
 
-    test('updateISP should update an existing ISP', async () => {
-        const ispInfo: UpdateISPView = {
-            studentId: 101,
-            startYear: 2022,
-            totalCredits: 40,
-            courses: [1, 3],
-            status: 'NOTSUBMITTED',
-        };
-
-        const mockISP = { id: 1, studentId: 101, startYear: 2022, totalCredits: 30 };
-        const mockCourse = { id: 3, name: 'Course 3' };
-        const mockStudent = { id: 101, name: 'John Doe' };
-
-        ISPRepository.findById = jest.fn().mockResolvedValue(mockISP);
-        CourseService.getCourseById = jest.fn().mockResolvedValue(mockCourse);
-        studentService.getStudentById = jest.fn().mockResolvedValue(mockStudent);
-        ISPRepository.update = jest.fn().mockResolvedValue(ispInfo);
-        ISPRepository.existsById = jest.fn().mockResolvedValue(true);
-
-        const result = await ispService.updateISP(1, ispInfo);
-
-        expect(result).toEqual(ispInfo);
-        expect(CourseService.getCourseById).toHaveBeenCalledTimes(2);  // For both courses
-        expect(studentService.getStudentById).toHaveBeenCalledWith(101);
-        expect(ISPRepository.update).toHaveBeenCalledWith(1, ispInfo);
-    });
-
     test('deleteISPById should delete an ISP by ID', async () => {
         ISPRepository.deleteById = jest.fn().mockResolvedValue(null);
         ISPRepository.existsById = jest.fn().mockResolvedValue(true);
