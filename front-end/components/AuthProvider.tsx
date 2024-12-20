@@ -1,4 +1,3 @@
-import { DummyAuthService } from "@/services/DummyAuthService";
 import { LoginData, SessionData } from "@/types/auth";
 import { useRouter } from "next/router";
 import React, {
@@ -11,6 +10,8 @@ import React, {
 import Loading from "./Loading";
 import { t } from "i18next";
 import { Role } from "@/types";
+import UserService from "@/services/UserService";
+import { ErrorState } from "@/types/errorState";
 
 export interface AuthContextType {
   data: SessionData;
@@ -51,7 +52,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const ROUTER = useRouter();
   const login = async (data: LoginData) => {
     try {
-      const response = await DummyAuthService.login(data);
+      const response = await UserService.loginUser(data, (error: ErrorState)=>console.error(error));
       if (response.data) {
         setData(response.data);
         setToken(response.token);
@@ -60,7 +61,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         ROUTER.push("/");
         return;
       }
-      throw new Error(response.message);
     } catch (err) {
       console.error(err);
     }

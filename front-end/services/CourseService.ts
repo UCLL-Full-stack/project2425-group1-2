@@ -1,6 +1,7 @@
 import { BACKEND_APP_URL } from "@/utils/urls";
 import { CourseUpdateView } from "../types/index";
 import { ErrorState } from "@/types/errorState";
+import { getHeaders } from "@/utils/getHeaders";
 
 const URL = BACKEND_APP_URL + "/courses";
 
@@ -25,31 +26,41 @@ const handleTextResponse = async (response: Response, errorCallback?: (error: Er
 }
 
 const getAllCourses = async (errorCallback?: (error: ErrorState) => void) => {
-  const response = await fetch(URL);
+  const response = await fetch(URL, {
+    method: "GET",
+    headers: getHeaders(),
+  });
   return handleJsonResponse(response, errorCallback);
 };
 
 const getAllShortCourses = async (errorCallback?: (error: ErrorState) => void) => {
-  const response = await fetch(`${URL}/short`);
+  const response = await fetch(`${URL}/short`, {
+    method: "GET",
+    headers: getHeaders(),
+  });
   return handleJsonResponse(response, errorCallback);
 };
 
 const getCourseById = async (id: number, errorCallback?: (error: ErrorState) => void) => {
-  const response = await fetch(`${URL}/${id}`);
+  const response = await fetch(`${URL}/${id}`, {
+    method: "GET",
+    headers: getHeaders(),
+  });
   return handleJsonResponse(response, errorCallback);
 };
 
 const getCoursesForStudent = async (studentId: number, errorCallback?: (error: ErrorState) => void) => {
-  const response = await fetch(`${URL}/for-student/${studentId}`);
+  const response = await fetch(`${URL}/for-student/${studentId}`, {
+    method: "GET",
+    headers: getHeaders(),
+  });
   return handleJsonResponse(response, errorCallback);
 }
 
 const createCourse = async (course: CourseUpdateView, errorCallback?: (error: ErrorState) => void) => {
   const response = await fetch(URL, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: getHeaders(),
     body: JSON.stringify(course),
   });
   return handleJsonResponse(response, errorCallback);
@@ -58,9 +69,7 @@ const createCourse = async (course: CourseUpdateView, errorCallback?: (error: Er
 const updateCourse = async (id: number, course: CourseUpdateView, errorCallback?: (error: ErrorState) => void) => {
   const response = await fetch(`${URL}/${id}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: getHeaders(),
     body: JSON.stringify(course),
   });
   return handleJsonResponse(response, errorCallback);
@@ -69,9 +78,7 @@ const updateCourse = async (id: number, course: CourseUpdateView, errorCallback?
 const deleteCourses = async (courseIds: number[], errorCallback?: (error: ErrorState) => void) => {
   const response = await fetch(`${URL}/delete`, {
     method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: getHeaders(),
     body: JSON.stringify(courseIds),
   });
   return handleJsonResponse(response, errorCallback);

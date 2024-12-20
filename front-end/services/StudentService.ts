@@ -1,6 +1,7 @@
 import { ErrorState } from "@/types/errorState";
 import { BACKEND_APP_URL } from "@/utils/urls";
 import { Student, StudentUpdateView, UserShort } from "../types/index";
+import { getHeaders } from "@/utils/getHeaders";
 
 const URL = BACKEND_APP_URL + "/students";
 
@@ -20,14 +21,18 @@ const handleResponse = async (
 const getAllStudents = async (
   errorCallback?: (error: ErrorState) => void
 ): Promise<Student[]> => {
-  const response = await fetch(URL);
+  const response = await fetch(URL, {
+    headers: getHeaders(),
+  });
   return handleResponse(response, errorCallback);
 };
 
 const getAllShortStudents = async (
   errorCallback?: (error: ErrorState) => void
 ): Promise<UserShort[]> => {
-  const response = await fetch(`${URL}/shortform`);
+  const response = await fetch(`${URL}/shortform`, {
+    headers: getHeaders(),
+  });
   return handleResponse(response, errorCallback);
 };
 
@@ -35,7 +40,9 @@ const getStudentById = async (
   id: number,
   errorCallback?: (error: ErrorState) => void
 ): Promise<Student> => {
-  const response = await fetch(`${URL}/${id}`);
+  const response = await fetch(`${URL}/${id}`, {
+    headers: getHeaders(),
+  });
   return handleResponse(response, errorCallback);
 };
 
@@ -45,9 +52,7 @@ const createStudent = async (
 ): Promise<Student> => {
   const response = await fetch(URL, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: getHeaders(),
     body: JSON.stringify(student),
   });
   return handleResponse(response, errorCallback);
@@ -60,9 +65,7 @@ const updateStudent = async (
 ): Promise<Student> => {
   const response = await fetch(`${URL}/${id}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: getHeaders(),
     body: JSON.stringify(student),
   });
   return handleResponse(response, errorCallback);
@@ -74,9 +77,7 @@ const deleteStudent = async (
 ): Promise<String> => {
   const response = await fetch(`${URL}/${id}`, {
     method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: getHeaders(),
   });
   return handleResponse(response, errorCallback);
 };
